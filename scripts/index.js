@@ -1,4 +1,4 @@
-import Tile from "./tiles/tile.js";
+import Tile from "./tiles/empty.js";
 import Placeable from './tiles/placeable.js';
 
 const createErrorMsg = (body) => {
