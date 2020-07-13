@@ -1,5 +1,5 @@
 import Tile from "./tiles/reflector.js";
-import Placeable from './tiles/obstacle.js';
+import Placeable from './tiles/void.js';
 
 const createErrorMsg = (body) => {
   const msg = document.createElement("p");
