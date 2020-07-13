@@ -1,5 +1,5 @@
-import Tile from "./tiles/reflector.js";
-import Placeable from './tiles/void.js';
+import Map from './map.js';
+import Level1 from '../maps/01.js';
 
 const createErrorMsg = (body) => {
   const msg = document.createElement("p");
@@ -63,7 +63,7 @@ const render = (time) => {
   ctx.fillStyle = "#D3D0CB";
   ctx.fillRect(0, 0, width, height);
   
-  const update = new CustomEvent("Update", { detail: { canvas, delta, ctx, width, height, unit } });
+  const update = new CustomEvent("Update", { detail: { canvas, delta, ctx, width, height, unit, mouseX, mouseY } });
   document.dispatchEvent(update);
   window.requestAnimationFrame(render);
 };
@@ -72,19 +72,12 @@ document.addEventListener("DOMContentLoaded", () => {
   initialize();
 });
 
-const elts = [];
-
 document.addEventListener("Init", ({ detail }) => {
-  elts.push(new Tile(0, 0, detail.unit, 0b10000));
-  elts.push(new Tile(0, detail.unit, detail.unit, 0b01000));
-  elts.push(new Tile(detail.unit, 0, detail.unit, 0b00100));
-  elts.push(new Tile(detail.unit, detail.unit, detail.unit, 0b00010));
-  elts.push(new Placeable(detail.unit * 2, detail.unit, detail.unit));
-  elts.push(new Placeable(detail.unit * 3, detail.unit, detail.unit));
+  new Map(Level1, detail.unit);
 });
 
-document.addEventListener("Update", ({ detail }) => {
-  elts.forEach(elt => {
-    elt.update({ ...detail, mouseX, mouseY });
-  });
-});
+// document.addEventListener("Update", ({ detail }) => {
+//   elts.forEach(elt => {
+//     elt.update({ ...detail, mouseX, mouseY });
+//   });
+// });
