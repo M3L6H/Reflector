@@ -8,14 +8,18 @@ class Reflector extends Tile {
     this.colorDark = "#507C63";
     this.colorCenter = "#18DB6C";
     this.caretWidth = this.size / 8;
+    this.elapsed = 0;
+    this.speed = 0.1;
   }
 
-  update({ ctx }) {
+  update({ ctx, delta }) {
     Tile.prototype.update.apply(this, arguments);
+    this.elapsed = (this.elapsed + delta * this.speed) % 100;
 
     ctx.save();
     ctx.translate(this.x + this.size / 2, this.y + this.size / 2);
     ctx.rotate(Math.PI / 4);
+    ctx.scale(this.elapsed / 100, this.elapsed / 100);
 
     // Fill center
     ctx.fillStyle = this.colorCenter;
