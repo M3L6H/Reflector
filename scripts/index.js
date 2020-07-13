@@ -1,3 +1,5 @@
+import Tile from './tile.js';
+
 const createErrorMsg = (body) => {
   const msg = document.createElement("p");
   msg.classList.add("error");
@@ -39,7 +41,7 @@ const initialize = () => {
   }
   
   // Let all the elements of the game know we have finished initialization
-  const init = new Event("Init", { unit, width, height });
+  const init = new CustomEvent("Init", { detail: { unit, width, height } });
   document.dispatchEvent(init);
   window.requestAnimationFrame(render);
 };
@@ -51,13 +53,29 @@ const render = (time) => {
   const delta = (!start && 0) + (start && (time - start));
   start = time;
 
-  ctx.clearRect(0, 0, width, height);
+  ctx.fillStyle = "#D3D0CB";
+  ctx.fillRect(0, 0, width, height);
   
-  const update = new Event("Update", { delta, ctx, width, height });
+  const update = new CustomEvent("Update", { detail: { delta, ctx, width, height, unit } });
   document.dispatchEvent(update);
   window.requestAnimationFrame(render);
 };
 
 document.addEventListener("DOMContentLoaded", () => {
   initialize();
+});
+
+const elts = [];
+
+document.addEventListener("Init", ({ detail }) => {
+  elts.push(new Tile(0, 0, detail.unit));
+  elts.push(new Tile(0, detail.unit, detail.unit));
+  elts.push(new Tile(detail.unit, 0, detail.unit));
+  elts.push(new Tile(detail.unit, detail.unit, detail.unit));
+});
+
+document.addEventListener("Update", ({ detail }) => {
+  elts.forEach(elt => {
+    elt.update(detail.ctx);
+  });
 });
