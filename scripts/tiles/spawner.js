@@ -1,6 +1,6 @@
 import Tile from "./tile.js";
 
-class Reflector extends Tile {
+class Spawner extends Tile {
   constructor(x, y, size) {
     super(x, y, size);
     this.colorLight = "#5F9577";
@@ -41,4 +41,4 @@ class Reflector extends Tile {
   }
 }
 
-export default Reflector;
+export default Spawner;

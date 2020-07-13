@@ -1,6 +1,6 @@
 import Tile from "./tile.js";
 
-class Reflector extends Tile {
+class End extends Tile {
   constructor(x, y, size) {
     super(x, y, size);
     this.colorLight = "#8D0147";
@@ -59,4 +59,4 @@ class Reflector extends Tile {
   }
 }
 
-export default Reflector;
+export default End;
