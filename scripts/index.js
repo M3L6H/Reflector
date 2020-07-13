@@ -1,4 +1,5 @@
-import Tile from './tile.js';
+import Tile from "./tiles/tile.js";
+import Placeable from './tiles/placeable.js';
 
 const createErrorMsg = (body) => {
   const msg = document.createElement("p");
@@ -7,7 +8,7 @@ const createErrorMsg = (body) => {
   return msg;
 }
 
-let canvas, ctx, width, height, unit;
+let canvas, ctx, width, height, unit, mouseX, mouseY;
 
 // Initialization
 const initialize = () => {
@@ -36,6 +37,12 @@ const initialize = () => {
     ctx = canvas.getContext("2d");
     width = canvas.width;
     height = canvas.height;
+
+    canvas.addEventListener("mousemove", e => {
+      const rect = canvas.getBoundingClientRect();
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
+    });
     
     root.appendChild(canvas);
   }
@@ -56,7 +63,7 @@ const render = (time) => {
   ctx.fillStyle = "#D3D0CB";
   ctx.fillRect(0, 0, width, height);
   
-  const update = new CustomEvent("Update", { detail: { delta, ctx, width, height, unit } });
+  const update = new CustomEvent("Update", { detail: { canvas, delta, ctx, width, height, unit } });
   document.dispatchEvent(update);
   window.requestAnimationFrame(render);
 };
@@ -72,10 +79,12 @@ document.addEventListener("Init", ({ detail }) => {
   elts.push(new Tile(0, detail.unit, detail.unit));
   elts.push(new Tile(detail.unit, 0, detail.unit));
   elts.push(new Tile(detail.unit, detail.unit, detail.unit));
+  elts.push(new Placeable(detail.unit * 2, detail.unit, detail.unit));
+  elts.push(new Placeable(detail.unit * 3, detail.unit, detail.unit));
 });
 
 document.addEventListener("Update", ({ detail }) => {
   elts.forEach(elt => {
-    elt.update(detail.ctx);
+    elt.update({ ...detail, mouseX, mouseY });
   });
 });
