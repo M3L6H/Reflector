@@ -1,4 +1,4 @@
-import Tile from "./tiles/empty.js";
+import Tile from "./tiles/reflector.js";
 import Placeable from './tiles/placeable.js';
 
 const createErrorMsg = (body) => {
@@ -75,10 +75,10 @@ document.addEventListener("DOMContentLoaded", () => {
 const elts = [];
 
 document.addEventListener("Init", ({ detail }) => {
-  elts.push(new Tile(0, 0, detail.unit));
-  elts.push(new Tile(0, detail.unit, detail.unit));
-  elts.push(new Tile(detail.unit, 0, detail.unit));
-  elts.push(new Tile(detail.unit, detail.unit, detail.unit));
+  elts.push(new Tile(0, 0, detail.unit, 0b10000));
+  elts.push(new Tile(0, detail.unit, detail.unit, 0b01000));
+  elts.push(new Tile(detail.unit, 0, detail.unit, 0b00100));
+  elts.push(new Tile(detail.unit, detail.unit, detail.unit, 0b00010));
   elts.push(new Placeable(detail.unit * 2, detail.unit, detail.unit));
   elts.push(new Placeable(detail.unit * 3, detail.unit, detail.unit));
 });
