@@ -3,7 +3,7 @@ class Tile {
     this.x = x;
     this.y = y;
     this.size = size;
-    this.lineWidth = 2;
+    this.borderWidth = 2;
     this.colorLight = "#FF0000";
     this.color = "#FF0000";
     this.colorDark = "#FF0000";
@@ -23,13 +23,13 @@ class Tile {
 
     // Top left
     ctx.fillStyle = this.colorLight;
-    ctx.fillRect(0, 0, this.size, this.lineWidth);
-    ctx.fillRect(0, 0, this.lineWidth, this.size);
+    ctx.fillRect(0, 0, this.size, this.borderWidth);
+    ctx.fillRect(0, 0, this.borderWidth, this.size);
     
     // Bottom right
     ctx.fillStyle = this.colorDark;
-    ctx.fillRect(0, this.size - this.lineWidth, this.size, this.lineWidth);
-    ctx.fillRect(this.size - this.lineWidth, 0, this.lineWidth, this.size);
+    ctx.fillRect(0, this.size - this.borderWidth, this.size, this.borderWidth);
+    ctx.fillRect(this.size - this.borderWidth, 0, this.borderWidth, this.size);
     
     ctx.restore();
   }
