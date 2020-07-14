@@ -6,8 +6,8 @@ class Reflector extends Tile {
     this.colorLight = "#946638";
     this.color = "#7A542E";
     this.colorDark = "#76522D";
-    this.colorReflector = "#E8E676";
-    this.colorHighlight = "#F5F4C1";
+    this.colorReflector = "#C0C0C0";
+    this.colorHighlight = "#EEEEEE";
     this.thickness = this.size / 8;
 
     this.up = code & 0b00010;
