@@ -6,30 +6,36 @@ import Obstacle from './tiles/obstacle.js';
 import Void from './tiles/void.js';
 import Reflector from './tiles/reflector.js';
 
+import Enemy from './enemies/enemy.js';
+
 class Map {
-  constructor({ map, paths }, size) {
+  constructor({ map, paths }, unit) {
     this.paths = paths;
     
     this.map = map.map((row, y) => {
       return row.map((code, x) => {
         switch (code) {
           case 0b00000:
-            return new Empty(x * size, y * size, size);
+            return new Empty(x * unit, y * unit, unit);
           case 0b00001:
-            return new Placeable(x * size, y * size, size);
+            return new Placeable(x * unit, y * unit, unit);
           case 0b00011:
-            return new Spawner(x * size, y * size, size);
+            return new Spawner(x * unit, y * unit, unit);
           case 0b00101:
-            return new End(x * size, y * size, size);
+            return new End(x * unit, y * unit, unit);
           case 0b11101:
-            return new Obstacle(x * size, y * size, size);
+            return new Obstacle(x * unit, y * unit, unit);
           case 0b11111:
-            return new Void(x * size, y * size, size);
+            return new Void(x * unit, y * unit, unit);
           default:
-            return new Reflector(x * size, y * size, size, code);
+            return new Reflector(x * unit, y * unit, unit, code);
         }
       });
     });
+
+    this.enemies = [
+      new Enemy(Object.values(this.paths)[0], unit)
+    ];
 
     this.elapsed = 0;
     this.speed = 0.2;
@@ -87,6 +93,10 @@ class Map {
     for (let i = 0; i < 10; ++i) {
       this.drawPath(ctx, unit, 8 * i);
     }
+
+    this.enemies.forEach(enemy => {
+      enemy.update(...arguments);
+    });
   }
 }
 
