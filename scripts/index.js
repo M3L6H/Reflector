@@ -20,7 +20,7 @@ const initialize = () => {
     root.appendChild(createErrorMsg("your screen is not wide enough to play this game!"));
     return;
   } else {
-    unit = Math.floor(winWidth / 20);
+    unit = Math.min(Math.floor(winWidth / 20), Math.floor(winHeight / 12));
     const usableWidth = unit * 20;
     const targetHeight = unit * 12;
   
