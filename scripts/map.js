@@ -43,7 +43,7 @@ class Map {
     this.pathWidth = 4;
     this.pathLength = 8;
     
-    document.addEventListener("Update", ({ detail }) => this.update(detail));
+    // document.addEventListener("Update", ({ detail }) => this.update(detail));
   }
 
   calculateDir(x, y) {

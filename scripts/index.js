@@ -1,5 +1,4 @@
-import Map from './map.js';
-import Level1 from '../maps/01.js';
+import Renderer from './renderer.js';
 
 const createErrorMsg = (body) => {
   const msg = document.createElement("p");
@@ -73,11 +72,5 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("Init", ({ detail }) => {
-  new Map(Level1, detail.unit);
+  new Renderer(detail.unit);
 });
-
-// document.addEventListener("Update", ({ detail }) => {
-//   elts.forEach(elt => {
-//     elt.update({ ...detail, mouseX, mouseY });
-//   });
-// });

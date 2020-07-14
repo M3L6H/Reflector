@@ -37,7 +37,7 @@ class Vector {
     return new Vector(this.x / mag, this.y / mag);
   }
 
-  angle(other) {
+  angle(other=new Vector(1, 0)) {
     return Math.acos(this.dot(other) / (this.mag() * other.mag()));
   }
 
