@@ -8,7 +8,7 @@ const createErrorMsg = (body) => {
 }
 
 let canvas, ctx, width, height, unit, mouseX, mouseY;
-let debug = true;
+let debug = false;
 
 // Initialization
 const initialize = () => {
@@ -52,32 +52,6 @@ const initialize = () => {
   document.dispatchEvent(init);
   window.requestAnimationFrame(render);
 };
-
-// import Collider from './physics/collider.js';
-// import Vector from './physics/vector.js';
-// import Ray from './physics/ray.js';
-
-// let c1 = new Collider(new Vector(300, 400), Math.PI / 6, [new Vector(-100, 100), new Vector(100, 100), new Vector(100, -100), new Vector(-100, -100)], "default");
-// let c2 = new Collider(new Vector(400, 300), 0, [new Vector(-150, 150), new Vector(150, 150), new Vector(150, -150), new Vector(-150, -150)], "default");
-
-// document.addEventListener("click", () => {
-//   const ray = new Ray(new Vector(mouseX, mouseY), new Vector(1, 0));
-//   ray.cast(ctx);
-//   console.log(ray.numCollisions);
-//   console.log(ray.collisions);
-
-//   let numCollisions = new Map();
-//   for (let i = 0; i < ray.numCollisions; ++i) {
-//     const rayhit = ray.collisions[i];
-//     numCollisions.set(rayhit.colliderHit, (numCollisions.get(rayhit.colliderHit) || 0) + 1);
-//   }
-
-//   for (let [collider, numCol] of numCollisions) {
-//     if (numCol % 2 === 1) {
-//       console.log("Inside of", collider);
-//     }
-//   }
-// });
 
 let start = 0;
 

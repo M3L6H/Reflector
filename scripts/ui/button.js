@@ -5,7 +5,6 @@ class Button extends Collider {
     super(pos, 0, points, `ui-${ zIndex }`);
     this.zIndex = zIndex;
     this.onClick = onClick;
-    console.log(this.vertices);
   }
 
   // Dummy update to overwrite Collider update
