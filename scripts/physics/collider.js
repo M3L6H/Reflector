@@ -81,7 +81,11 @@ class Collider {
       
       for (let v = 0; v < numVerts; ++v) {
         const vec = collider1.vertices[(v + 1) % numVerts].sub(collider1.vertices[v]);
-        const norm = vec.normal();
+        let norm = vec.normal().unit();
+        const diff = other.pos.sub(this.pos);
+        if (norm.dot(diff) > 0) {
+          norm = norm.inv();
+        }
 
         let max1 = -Infinity;
         let max2 = -Infinity;
@@ -105,11 +109,7 @@ class Collider {
         const newOverlap = Math.min(max1, max2) - Math.max(min1, min2);
         if (newOverlap < overlap) {
           overlap = newOverlap;
-          minimumAxis = norm.unit();
-          const diff = other.pos.sub(this.pos);
-          if (diff.dot(minimumAxis) > 0) {
-            minimumAxis = minimumAxis.inv();
-          }
+          minimumAxis = norm;
         }
 
         if (!(max1 > min2 && min1 < max2)) {
