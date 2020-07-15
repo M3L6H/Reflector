@@ -13,7 +13,8 @@ class Placeable extends Tile {
   }
 
   handleClick() {
-    console.log("Placeable", this.x, this.y);
+    const customEvent = new CustomEvent("TowerMenu", { detail: { pos: new Vector(this.x, this.y )} });
+    document.dispatchEvent(customEvent);
   }
 
   update({ mouseX, mouseY, ctx, canvas }) {

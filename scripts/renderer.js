@@ -6,7 +6,7 @@ import UI from './ui/ui.js';
 class Renderer {
   constructor(unit, canvas) {
     this.map = new Map(Level1, unit);;
-    this.ui = new UI(canvas);
+    this.ui = new UI(canvas, unit);
 
     document.addEventListener("Update", ({ detail }) => this.render(detail));
   }

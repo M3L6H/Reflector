@@ -51,6 +51,11 @@ class Collider {
     this.updateVertices();
   }
 
+  updateLayer(layer) {
+    this.layer = layer;
+    this.updateLayers();
+  }
+
   updateVertices() {
     this.vertices = this.model.map(vert => vert.rotate(this.rot).add(this.pos));
   }
