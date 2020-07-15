@@ -54,9 +54,29 @@ const initialize = () => {
 
 import Collider from './physics/collider.js';
 import Vector from './physics/vector.js';
+import Ray from './physics/ray.js';
 
-let c1 = new Collider(new Vector(0, 0), Math.PI / 6, [new Vector(-10, 10), new Vector(10, 10), new Vector(10, -10), new Vector(-10, -10)], "ui");
-let c2 = new Collider(new Vector(500, 250), 0, [new Vector(-10, 10), new Vector(10, 10), new Vector(10, -10), new Vector(-10, -10)], "ui");
+let c1 = new Collider(new Vector(300, 400), Math.PI / 6, [new Vector(-100, 100), new Vector(100, 100), new Vector(100, -100), new Vector(-100, -100)], "ui");
+let c2 = new Collider(new Vector(500, 250), 0, [new Vector(-150, 150), new Vector(150, 150), new Vector(150, -150), new Vector(-150, -150)], "ui");
+
+document.addEventListener("click", () => {
+  const ray = new Ray(new Vector(mouseX, mouseY), new Vector(1, 0));
+  ray.cast(ctx);
+  console.log(ray.numCollisions);
+  console.log(ray.collisions);
+
+  let numCollisions = new Map();
+  for (let i = 0; i < ray.numCollisions; ++i) {
+    const rayhit = ray.collisions[i];
+    numCollisions.set(rayhit.colliderHit, (numCollisions.get(rayhit.colliderHit) || 0) + 1);
+  }
+
+  for (let [collider, numCol] of numCollisions) {
+    if (numCol % 2 === 1) {
+      console.log("Inside of", collider);
+    }
+  }
+});
 
 let start = 0;
 
@@ -68,7 +88,7 @@ const render = (time) => {
   ctx.fillStyle = "#D3D0CB";
   ctx.fillRect(0, 0, width, height);
 
-  c1.updatePos(new Vector(mouseX || 0, mouseY || 0));
+  // c1.updatePos(new Vector(mouseX || 0, mouseY || 0));
 
   ctx.save();
   ctx.beginPath();
@@ -105,7 +125,7 @@ const render = (time) => {
   
   const update = new CustomEvent("Update", { detail: { canvas, delta, ctx, width, height, unit, mouseX, mouseY } });
   document.dispatchEvent(update);
-  window.requestAnimationFrame(render);
+  // window.requestAnimationFrame(render);
 };
 
 document.addEventListener("DOMContentLoaded", () => {

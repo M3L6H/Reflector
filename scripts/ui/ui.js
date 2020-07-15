@@ -3,6 +3,7 @@ import Vector from '../physics/vector.js';
 
 class UI {
   constructor(unit) {
+    this.zIndex = 0;
     this.towerMenu = new RadialMenu([], new Vector(100, 100));
   }
 

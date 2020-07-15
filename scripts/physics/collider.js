@@ -1,38 +1,52 @@
+import Vector from "./vector.js";
+
 class Collider {
   static layers = {
     reflectors: [],
     lasers: [],
     enemies: [],
-    ui: []
+    ui: [],
+    ray: []
   };
   static layerMasks = {
-    reflectors: { reflectors: false, lasers: true, enemies: false, ui: false },
-    lasers: { lasers: false, reflectors: true, enemies: true, ui: false },
-    enemies: { enemies: false, reflectors: false, lasers: true, ui: false },
-    ui: { ui: true, reflectors: false, lasers: false, enemies: false }
+    reflectors: { reflectors: false, lasers: true, enemies: false, ui: false, ray: false },
+    lasers: { lasers: false, reflectors: true, enemies: true, ui: false, ray: false },
+    enemies: { enemies: false, reflectors: false, lasers: true, ui: false, ray: false },
+    ui: { ui: false, reflectors: false, lasers: false, enemies: false, ray: false },
+    ray: { ray: false, ui: true, reflectors: false, lasers: false, enemies: false }
   };
+  static mouseCollider = null;
   
-  constructor(pos, rot, model, layer=1) {
+  constructor(pos, rot, model, layer="default", mouseEnabled=false) {
     this.pos = pos;
     this.rot = rot;
     this.model = model;
     this.layer = layer;
+    this.mouseEnabled = mouseEnabled;
+    this.enabled = true;
     this.collisions = [];
-    
+
     this.updateVertices();
     this.updateLayers();
 
     document.addEventListener("Update", this.update.bind(this));
   }
 
-  update() {
+  update({ mouseX, mouseY }) {
     this.collisions = [];
     this.numCollisions = 0;
+
+    if (!this.enabled) return;
+
+    if (this === Collider.mouseCollider) {
+      this.updatePos(new Vector(mouseX, mouseY));
+      return;
+    }
     
     for (let layer in Collider.layers) {
       if (Collider.layerMasks[this.layer][layer]) {
         Collider.layers[layer].forEach(collider => {
-          if (collider === this) return;
+          if (collider === this || !collider.enabled) return;
           this.isCollidingWith(collider);
         });
       }

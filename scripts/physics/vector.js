@@ -51,7 +51,7 @@ class Vector {
   }
 
   vectorProj(other) {
-    return this.scalarProj(other) * other.unit();
+    return other.unit().scale(this.scalarProj(other));
   }
 
   inv() {
