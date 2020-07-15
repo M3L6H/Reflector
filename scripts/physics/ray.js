@@ -3,13 +3,24 @@ import Collider from './collider.js';
 const precision = 0.01;
 
 class Ray extends Collider {
-  constructor(pos, dir) {
-    super(pos, 0, [dir], "ray");
+  constructor(pos, dir, layer="ray") {
+    super(pos, 0, [dir], layer);
+    this.steps = [];
   }
 
   // Dummy update to overwrite the one in Collider
-  update() {
-
+  update({ ctx, debug }) {
+    if (debug) {
+      this.steps.forEach(([point, min]) => {
+        ctx.save();
+        ctx.strokeStyle = "#0000FF";
+        ctx.beginPath();
+        ctx.moveTo(point.x, point.y);
+        ctx.arc(point.x, point.y, min, 0, 2 * Math.PI);
+        ctx.stroke();
+        ctx.restore();
+      })
+    }
   }
 
   // The point is where we are calculating the distance from
@@ -17,7 +28,7 @@ class Ray extends Collider {
   distToLine(p, a, b)
   {
     const ab = b.sub(a);
-    if (a.sub(p).dot(ab) > 0) {
+    if (a.sub(p).dot(ab) > 0 || ab.magSq() === 0) {
       return a.sub(p).mag();
     }
 
@@ -35,6 +46,7 @@ class Ray extends Collider {
     for (let layer in Collider.layers) {
       if (Collider.layerMasks[this.layer][layer]) {
         Collider.layers[layer].forEach(collider => {
+          if (collider === this || !collider.enabled) return;
           collider.vertices.forEach((vert, idx) => {
             const next = collider.vertices[(idx + 1) % collider.vertices.length];
             const dist = this.distToLine(point, vert, next);
@@ -52,8 +64,9 @@ class Ray extends Collider {
   }
 
   // An implementation of ray marching
-  cast(ctx) {
+  cast() {
     this.collisions = [];
+    this.steps = [];
     this.numCollisions = 0;
     const dir = this.model[0].unit();
     let dist = 0;
@@ -64,13 +77,7 @@ class Ray extends Collider {
 
     while (dist < 10000 && steps > 0) {
       steps--;
-      ctx.save();
-      ctx.strokeStyle = "#0000FF";
-      ctx.beginPath();
-      ctx.moveTo(point.x, point.y);
-      ctx.arc(point.x, point.y, min, 0, 2 * Math.PI);
-      ctx.stroke();
-      ctx.restore();
+      this.steps.push([point, min]);
       if (min <= precision) min = 5 * precision; // We want to step through edges we collide with
       point = point.add(dir.scale(min));
       dist += min;

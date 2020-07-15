@@ -15,33 +15,26 @@ class Collider {
     ui: { ui: false, reflectors: false, lasers: false, enemies: false, ray: false },
     ray: { ray: false, ui: true, reflectors: false, lasers: false, enemies: false }
   };
-  static mouseCollider = null;
   
-  constructor(pos, rot, model, layer="default", mouseEnabled=false) {
+  constructor(pos, rot, model, layer="default") {
     this.pos = pos;
     this.rot = rot;
     this.model = model;
     this.layer = layer;
-    this.mouseEnabled = mouseEnabled;
     this.enabled = true;
     this.collisions = [];
 
     this.updateVertices();
     this.updateLayers();
 
-    document.addEventListener("Update", this.update.bind(this));
+    document.addEventListener("PhysicsUpdate", ({ detail }) => this.update(detail));
   }
 
-  update({ mouseX, mouseY }) {
+  update() {
     this.collisions = [];
     this.numCollisions = 0;
 
     if (!this.enabled) return;
-
-    if (this === Collider.mouseCollider) {
-      this.updatePos(new Vector(mouseX, mouseY));
-      return;
-    }
     
     for (let layer in Collider.layers) {
       if (Collider.layerMasks[this.layer][layer]) {
@@ -73,8 +66,8 @@ class Collider {
       const layerMask = { [this.layer]: true };
 
       for (let mask in Collider.layerMasks) {
-        Collider.layerMasks[mask][this.layer] = true;
-        layerMask[mask] = true;
+        Collider.layerMasks[mask][this.layer] = false;
+        layerMask[mask] = false;
       }
 
       Collider.layerMasks[this.layer] = layerMask;

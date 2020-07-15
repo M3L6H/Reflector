@@ -8,6 +8,7 @@ const createErrorMsg = (body) => {
 }
 
 let canvas, ctx, width, height, unit, mouseX, mouseY;
+let debug = true;
 
 // Initialization
 const initialize = () => {
@@ -47,36 +48,36 @@ const initialize = () => {
   }
   
   // Let all the elements of the game know we have finished initialization
-  const init = new CustomEvent("Init", { detail: { unit, width, height } });
+  const init = new CustomEvent("Init", { detail: { unit, width, height, canvas } });
   document.dispatchEvent(init);
   window.requestAnimationFrame(render);
 };
 
-import Collider from './physics/collider.js';
-import Vector from './physics/vector.js';
-import Ray from './physics/ray.js';
+// import Collider from './physics/collider.js';
+// import Vector from './physics/vector.js';
+// import Ray from './physics/ray.js';
 
-let c1 = new Collider(new Vector(300, 400), Math.PI / 6, [new Vector(-100, 100), new Vector(100, 100), new Vector(100, -100), new Vector(-100, -100)], "ui");
-let c2 = new Collider(new Vector(500, 250), 0, [new Vector(-150, 150), new Vector(150, 150), new Vector(150, -150), new Vector(-150, -150)], "ui");
+// let c1 = new Collider(new Vector(300, 400), Math.PI / 6, [new Vector(-100, 100), new Vector(100, 100), new Vector(100, -100), new Vector(-100, -100)], "default");
+// let c2 = new Collider(new Vector(400, 300), 0, [new Vector(-150, 150), new Vector(150, 150), new Vector(150, -150), new Vector(-150, -150)], "default");
 
-document.addEventListener("click", () => {
-  const ray = new Ray(new Vector(mouseX, mouseY), new Vector(1, 0));
-  ray.cast(ctx);
-  console.log(ray.numCollisions);
-  console.log(ray.collisions);
+// document.addEventListener("click", () => {
+//   const ray = new Ray(new Vector(mouseX, mouseY), new Vector(1, 0));
+//   ray.cast(ctx);
+//   console.log(ray.numCollisions);
+//   console.log(ray.collisions);
 
-  let numCollisions = new Map();
-  for (let i = 0; i < ray.numCollisions; ++i) {
-    const rayhit = ray.collisions[i];
-    numCollisions.set(rayhit.colliderHit, (numCollisions.get(rayhit.colliderHit) || 0) + 1);
-  }
+//   let numCollisions = new Map();
+//   for (let i = 0; i < ray.numCollisions; ++i) {
+//     const rayhit = ray.collisions[i];
+//     numCollisions.set(rayhit.colliderHit, (numCollisions.get(rayhit.colliderHit) || 0) + 1);
+//   }
 
-  for (let [collider, numCol] of numCollisions) {
-    if (numCol % 2 === 1) {
-      console.log("Inside of", collider);
-    }
-  }
-});
+//   for (let [collider, numCol] of numCollisions) {
+//     if (numCol % 2 === 1) {
+//       console.log("Inside of", collider);
+//     }
+//   }
+// });
 
 let start = 0;
 
@@ -87,51 +88,16 @@ const render = (time) => {
 
   ctx.fillStyle = "#D3D0CB";
   ctx.fillRect(0, 0, width, height);
-
-  // c1.updatePos(new Vector(mouseX || 0, mouseY || 0));
-
-  ctx.save();
-  ctx.beginPath();
-  ctx.strokeStyle = "#FF0000";
-  ctx.moveTo(c1.pos.x, c1.pos.y);
-  c1.vertices.forEach(vert => {
-    ctx.lineTo(vert.x, vert.y);
-  });
-  ctx.lineTo(c1.vertices[0].x, c1.vertices[0].y);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.strokeStyle = "#00FF00";
-  ctx.moveTo(c2.pos.x, c2.pos.y);
-  c2.vertices.forEach(vert => {
-    ctx.lineTo(vert.x, vert.y);
-  });
-  ctx.lineTo(c2.vertices[0].x, c2.vertices[0].y);
-  ctx.stroke();
-  if (c1.collisions.length > 0) {
-    ctx.beginPath();
-    ctx.strokeStyle = "#0000FF";
-    ctx.moveTo(c1.pos.x, c1.pos.y);
-    ctx.lineTo(c1.collisions[0].penetration.x + c1.pos.x, c1.collisions[0].penetration.y + c1.pos.y);
-    ctx.stroke();
-  }
-  if (c2.collisions.length > 0) {
-    ctx.beginPath();
-    ctx.strokeStyle = "#0000FF";
-    ctx.moveTo(c2.pos.x, c2.pos.y);
-    ctx.lineTo(c2.collisions[0].penetration.x + c2.pos.x, c2.collisions[0].penetration.y + c2.pos.y);
-    ctx.stroke();
-  }
-  ctx.restore();
   
-  const update = new CustomEvent("Update", { detail: { canvas, delta, ctx, width, height, unit, mouseX, mouseY } });
+  const update = new CustomEvent("Update", { detail: { canvas, delta, ctx, width, height, unit, mouseX, mouseY, debug } });
   document.dispatchEvent(update);
-  // window.requestAnimationFrame(render);
+  window.requestAnimationFrame(render);
 };
 
 document.addEventListener("DOMContentLoaded", () => {
   initialize();
 });
 
-document.addEventListener("Init", ({ detail }) => {
-  // new Renderer(detail.unit);
+document.addEventListener("Init", ({ detail: { unit, canvas } }) => {
+  new Renderer(unit, canvas);
 });
