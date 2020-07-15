@@ -52,6 +52,12 @@ const initialize = () => {
   window.requestAnimationFrame(render);
 };
 
+import Collider from './physics/collider.js';
+import Vector from './physics/vector.js';
+
+let c1 = new Collider(new Vector(0, 0), Math.PI / 6, [new Vector(-10, 10), new Vector(10, 10), new Vector(10, -10), new Vector(-10, -10)], "ui");
+let c2 = new Collider(new Vector(500, 250), 0, [new Vector(-10, 10), new Vector(10, 10), new Vector(10, -10), new Vector(-10, -10)], "ui");
+
 let start = 0;
 
 // Render loop
@@ -61,6 +67,41 @@ const render = (time) => {
 
   ctx.fillStyle = "#D3D0CB";
   ctx.fillRect(0, 0, width, height);
+
+  c1.updatePos(new Vector(mouseX || 0, mouseY || 0));
+
+  ctx.save();
+  ctx.beginPath();
+  ctx.strokeStyle = "#FF0000";
+  ctx.moveTo(c1.pos.x, c1.pos.y);
+  c1.vertices.forEach(vert => {
+    ctx.lineTo(vert.x, vert.y);
+  });
+  ctx.lineTo(c1.vertices[0].x, c1.vertices[0].y);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.strokeStyle = "#00FF00";
+  ctx.moveTo(c2.pos.x, c2.pos.y);
+  c2.vertices.forEach(vert => {
+    ctx.lineTo(vert.x, vert.y);
+  });
+  ctx.lineTo(c2.vertices[0].x, c2.vertices[0].y);
+  ctx.stroke();
+  if (c1.collisions.length > 0) {
+    ctx.beginPath();
+    ctx.strokeStyle = "#0000FF";
+    ctx.moveTo(c1.pos.x, c1.pos.y);
+    ctx.lineTo(c1.collisions[0].penetration.x + c1.pos.x, c1.collisions[0].penetration.y + c1.pos.y);
+    ctx.stroke();
+  }
+  if (c2.collisions.length > 0) {
+    ctx.beginPath();
+    ctx.strokeStyle = "#0000FF";
+    ctx.moveTo(c2.pos.x, c2.pos.y);
+    ctx.lineTo(c2.collisions[0].penetration.x + c2.pos.x, c2.collisions[0].penetration.y + c2.pos.y);
+    ctx.stroke();
+  }
+  ctx.restore();
   
   const update = new CustomEvent("Update", { detail: { canvas, delta, ctx, width, height, unit, mouseX, mouseY } });
   document.dispatchEvent(update);
@@ -72,5 +113,5 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("Init", ({ detail }) => {
-  new Renderer(detail.unit);
+  // new Renderer(detail.unit);
 });

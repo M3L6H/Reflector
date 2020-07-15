@@ -2,12 +2,14 @@ class Collider {
   static layers = {
     reflectors: [],
     lasers: [],
-    enemies: []
+    enemies: [],
+    ui: []
   };
   static layerMasks = {
-    reflectors: { reflectors: false, lasers: true, enemies: false },
-    lasers: { lasers: false, reflectors: true, enemies: true },
-    enemies: { enemies: false, reflectors: false, lasers: true }
+    reflectors: { reflectors: false, lasers: true, enemies: false, ui: false },
+    lasers: { lasers: false, reflectors: true, enemies: true, ui: false },
+    enemies: { enemies: false, reflectors: false, lasers: true, ui: false },
+    ui: { ui: true, reflectors: false, lasers: false, enemies: false }
   };
   
   constructor(pos, rot, model, layer=1) {
@@ -15,9 +17,31 @@ class Collider {
     this.rot = rot;
     this.model = model;
     this.layer = layer;
+    this.collisions = [];
     
     this.updateVertices();
     this.updateLayers();
+
+    document.addEventListener("Update", this.update.bind(this));
+  }
+
+  update() {
+    this.collisions = [];
+    this.numCollisions = 0;
+    
+    for (let layer in Collider.layers) {
+      if (Collider.layerMasks[this.layer][layer]) {
+        Collider.layers[layer].forEach(collider => {
+          if (collider === this) return;
+          this.isCollidingWith(collider);
+        });
+      }
+    }
+  }
+
+  updatePos(pos) {
+    this.pos = pos;
+    this.updateVertices();
   }
 
   updateVertices() {
@@ -48,6 +72,10 @@ class Collider {
     let collider1 = this;
     let collider2 = other;
 
+    let overlap = Infinity;
+    let minimumAxis = null;
+
+    // Calculate collisions
     for (let i = 0; i < 2; ++i) {
       const numVerts = collider1.vertices.length;
       
@@ -74,6 +102,16 @@ class Collider {
           min2 = Math.min(min2, prod);
         });
 
+        const newOverlap = Math.min(max1, max2) - Math.max(min1, min2);
+        if (newOverlap < overlap) {
+          overlap = newOverlap;
+          minimumAxis = norm.unit();
+          const diff = other.pos.sub(this.pos);
+          if (diff.dot(minimumAxis) > 0) {
+            minimumAxis = minimumAxis.inv();
+          }
+        }
+
         if (!(max1 > min2 && min1 < max2)) {
           return false;
         }
@@ -83,8 +121,21 @@ class Collider {
       collider2 = this;
     }
 
+    this.collisions.push(new Collider.Collision(this, other, overlap, minimumAxis));
+    this.numCollisions += 1;
+
     return true;
   }
 }
+
+Collider.Collision = class {
+  constructor(collider, collidingWith, overlap, minimumAxis) {
+    this.collider = collider;
+    this.collidingWith = collidingWith;
+    this.overlap = overlap;
+    this.minimumAxis = minimumAxis;
+    this.penetration = this.minimumAxis.scale(this.overlap);
+  }
+};
 
 export default Collider;
