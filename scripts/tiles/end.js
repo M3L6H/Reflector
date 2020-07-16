@@ -1,23 +1,23 @@
 import Tile from "./tile.js";
 
 class End extends Tile {
-  constructor(x, y, size) {
-    super(x, y, size);
+  constructor(x, y, unit) {
+    super(x, y, unit);
     this.colorLight = "#8D0147";
     this.color = "#6A0136";
     this.colorDark = "#650133";
     this.colorX = "#C20C2D";
-    this.xWidth = this.size / 8;
+    this.xWidth = this.unit / 8;
     this.elapsed = 0;
     this.speed = 0.25;
   }
 
-  update({ ctx, delta }) {
+  update({ ctx, delta, unit }) {
     Tile.prototype.update.apply(this, arguments);
     this.elapsed = (this.elapsed + delta * this.speed) % 360;
 
     ctx.save();
-    ctx.translate(this.x + this.size / 2, this.y + this.size / 2);
+    ctx.translate(this.x + unit / 2, this.y + unit / 2);
     ctx.rotate(Math.PI / 180 * (this.elapsed));
 
     ctx.strokeStyle = this.colorX;
@@ -34,7 +34,7 @@ class End extends Tile {
     ctx.restore();
 
     ctx.save();
-    ctx.translate(this.x + this.size / 2, this.y + this.size / 2);
+    ctx.translate(this.x + unit / 2, this.y + unit / 2);
     ctx.fillStyle = this.colorX;
 
     if (this.elapsed > 270) {

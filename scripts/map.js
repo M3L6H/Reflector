@@ -5,33 +5,16 @@ import End from './tiles/end.js';
 import Obstacle from './tiles/obstacle.js';
 import Void from './tiles/void.js';
 import Reflector from './tiles/reflector.js';
+import Tower from './tiles/tower.js';
 
 import Enemy from './enemies/enemy.js';
 
 class Map {
   constructor({ map, paths }, unit) {
+    this.unit = unit;
+
     this.paths = paths;
-    
-    this.map = map.map((row, y) => {
-      return row.map((code, x) => {
-        switch (code) {
-          case 0b00000:
-            return new Empty(x * unit, y * unit, unit);
-          case 0b00001:
-            return new Placeable(x * unit, y * unit, unit);
-          case 0b00011:
-            return new Spawner(x * unit, y * unit, unit);
-          case 0b00101:
-            return new End(x * unit, y * unit, unit);
-          case 0b11101:
-            return new Obstacle(x * unit, y * unit, unit);
-          case 0b11111:
-            return new Void(x * unit, y * unit, unit);
-          default:
-            return new Reflector(x * unit, y * unit, unit, code);
-        }
-      });
-    });
+    this.map = this.generateMap(map);
 
     this.enemies = [
       new Enemy(Object.values(this.paths)[0], unit)
@@ -42,8 +25,36 @@ class Map {
     this.colorPath = "rgba(0, 255, 217, 0.1)";
     this.pathWidth = 4;
     this.pathLength = 8;
-    
-    // document.addEventListener("Update", ({ detail }) => this.update(detail));
+
+    document.addEventListener("PlaceTower", ({ detail: { pos, color } }) => this.placeTower(pos.x, pos.y, color));
+  }
+
+  placeTower(x, y, color="red") {
+    this.map[Math.floor(y / this.unit)][Math.floor(x / this.unit)].removeButton();
+    this.map[Math.floor(y / this.unit)][Math.floor(x / this.unit)] = new Tower(x, y, this.unit, color);
+  }
+
+  generateMap(map) {
+    return map.map((row, y) => {
+      return row.map((code, x) => {
+        switch (code) {
+          case 0b00000:
+            return new Empty(x * this.unit, y * this.unit, this.unit);
+          case 0b00001:
+            return new Placeable(x * this.unit, y * this.unit, this.unit);
+          case 0b00011:
+            return new Spawner(x * this.unit, y * this.unit, this.unit);
+          case 0b00101:
+            return new End(x * this.unit, y * this.unit, this.unit);
+          case 0b11101:
+            return new Obstacle(x * this.unit, y * this.unit, this.unit);
+          case 0b11111:
+            return new Void(x * this.unit, y * this.unit, this.unit);
+          default:
+            return new Reflector(x * this.unit, y * this.unit, this.unit, code);
+        }
+      });
+    });
   }
 
   calculateDir(x, y) {

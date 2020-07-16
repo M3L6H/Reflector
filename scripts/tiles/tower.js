@@ -1,7 +1,12 @@
-export default class Tower {
-  constructor(pos, offset, color) {
-    this.pos = pos;
-    this.offset = offset;
+import Tile from './tile.js';
+
+class Tower extends Tile {
+  constructor(x, y, unit, color) {
+    super(x, y, unit);
+    this.aimed = false;
+    this.colorLight = "#A2B3B9";
+    this.color = "#97ABB1";
+    this.colorDark = "#8BA1A7";
 
     this.baseColor = "#2B2D42";
     this.baseDark = "#020202";
@@ -26,14 +31,12 @@ export default class Tower {
     }
   }
 
-  updatePos(vec) {
-    this.pos = vec;
-  }
+  update({ ctx, unit })  {
+    Tile.prototype.update.apply(this, arguments);
 
-  update({ ctx, unit }) {
     ctx.save();
-    ctx.translate(this.pos.x + this.offset.x, this.pos.y + this.offset.y);
-
+    ctx.translate(this.x + unit / 2, this.y + unit / 2);
+    
     // Base
     ctx.fillStyle = this.baseColor;
     ctx.strokeStyle = this.baseDark;
@@ -47,8 +50,8 @@ export default class Tower {
     ctx.lineTo(-unit / 2, -unit / 8);
     ctx.lineTo(-unit / 2, unit / 8);
     ctx.lineTo(-unit / 8, unit / 2);
-    ctx.stroke();
     ctx.fill();
+    ctx.stroke();
 
     // Orb
     ctx.fillStyle = this.orbColor;
@@ -71,4 +74,6 @@ export default class Tower {
     ctx.stroke();
     ctx.restore();
   }
-};
+}
+
+export default Tower;

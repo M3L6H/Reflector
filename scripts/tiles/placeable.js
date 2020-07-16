@@ -12,6 +12,10 @@ class Placeable extends Tile {
     this.button = new Button(new Vector(x, y), [new Vector(0, 0), new Vector(0, unit), new Vector(unit, unit), new Vector(unit, 0)], 0, this.handleClick.bind(this));
   }
 
+  removeButton() {
+    this.button.remove();
+  }
+
   handleClick() {
     const customEvent = new CustomEvent("TowerMenu", { detail: { pos: new Vector(this.x, this.y )} });
     document.dispatchEvent(customEvent);

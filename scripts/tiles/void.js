@@ -1,8 +1,8 @@
 import Tile from "./tile.js";
 
 class Void extends Tile {
-  constructor(x, y, size) {
-    super(x, y, size);
+  constructor(x, y, unit) {
+    super(x, y, unit);
     this.colorLight = "#000000";
     this.color = "#000000";
     this.colorDark = "#000000";

@@ -79,6 +79,11 @@ class Collider {
     }
   }
 
+  remove() {
+    const idx = Collider.layers[this.layer].indexOf(this);
+    Collider.layers[this.layer].splice(idx, 1);
+  }
+
   // Implementation of Separated Axis Theorem
   isCollidingWith(other) {
     let collider1 = this;
