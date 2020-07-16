@@ -15,7 +15,7 @@ class UI {
     this.canvas.addEventListener("click", this.handleClick.bind(this));
     this.canvas.addEventListener("mousemove", debouncer(this.hover.bind(this), 100));
     document.addEventListener("TowerMenu", this.handleTowerMenu.bind(this));
-    document.addEventListener("PlaceTower", () => this.zIndex = 0);
+    document.addEventListener("PlaceTower", () => this.zIndex = 2);
     this.mouseRay = new Ray(new Vector(0, 0), new Vector(1, 0));
   }
 

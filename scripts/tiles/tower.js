@@ -7,6 +7,7 @@ import debouncer from '../util/debouncer.js';
 class Tower extends Tile {
   constructor(x, y, unit, color) {
     super(x, y, unit);
+    this.clicks = 0;
     this.aimed = false;
     this.ray = new Ray(new Vector(x + unit / 2, y + unit / 2), new Vector(0, 0), "lasers");
     this.colorLight = "#A2B3B9";
@@ -40,6 +41,20 @@ class Tower extends Tile {
     }
 
     this.calculateBounce = debouncer(this.calculateBounce.bind(this), 17);
+
+    this.lockIn = this.lockIn.bind(this);
+
+    document.addEventListener("click", this.lockIn);
+  }
+
+  lockIn() {
+    // Dumb, but necessary because the click triggers when the tower is placed
+    this.clicks++;
+
+    if (this.clicks > 1) {
+      this.aimed = true;
+      document.removeEventListener("click", this.lockIn);
+    }
   }
 
   calculateBounce() {
