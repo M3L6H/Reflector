@@ -91,3 +91,4 @@ class UI {
 }
 
 export default UI;
+export { default as Tower } from './tower.js';

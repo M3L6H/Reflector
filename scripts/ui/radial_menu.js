@@ -1,5 +1,6 @@
 import Vector from '../physics/vector.js';
-import Button from '../ui/button.js';
+import Button from './button.js';
+import { Tower } from './ui.js';
 
 class RadialMenu {
   constructor(items, unit, zIndex, pos=new Vector(0, 0)) {
@@ -18,27 +19,23 @@ class RadialMenu {
 
   setupButtons() {
     this.buttons = [];
+    this.towers = [];
+    const colors = ["blue", "green", "yellow", "red"];
     for (let i = 0; i < 4; ++i) {
       const a = (new Vector(this.innerRadius, 0)).rotate(Math.PI / 16).rotate(i * Math.PI / 2);
       const b = a.rotate(Math.PI * 6 / 16);
       const c = b.add((new Vector(0, this.ringThickness)).rotate(i * Math.PI / 2));
       const d = (new Vector(1, 1)).rotate(i * Math.PI / 2).unit().scale(c.mag());
       const e = a.add((new Vector(this.ringThickness, 0)).rotate(i * Math.PI / 2));
-      this.buttons.push(new Button(this.pos, [a, b, c, d, e], this.zIndex, () => console.log("Click"), this));
+      this.towers.push(new Tower(this.pos, (new Vector(this.innerRadius + this.ringThickness / 2.1, 0)).rotate(Math.PI / 4).rotate(i * Math.PI / 2), colors[i]));
+      this.buttons.push(new Button(this.pos, [a, b, c, d, e], this.zIndex, () => console.log("Click")));
     }
-  }
-
-  hover() {
-
-  }
-
-  unhover() {
-
   }
 
   updatePos(vec) {
     this.pos = vec;
     this.buttons.forEach(button => button.updatePos(vec));
+    this.towers.forEach(tower => tower.updatePos(vec));
   }
 
   update({ ctx, width, height }) {
@@ -52,8 +49,8 @@ class RadialMenu {
     const endOuterVec = endVec.add(new Vector(0, this.ringThickness));
     const outerRadius = outerVec.mag();
 
-    ctx.fillStyle = "#FF0000";
-    ctx.strokeStyle = "#0000FF";
+    ctx.fillStyle = "#AAAAAA";
+    ctx.strokeStyle = "#888888";
     for (let i = 0; i < 4; ++i) {
       ctx.rotate(Math.PI / 2 * i);
       ctx.beginPath();
@@ -65,6 +62,8 @@ class RadialMenu {
       ctx.stroke();
     }
     ctx.restore();
+
+    this.towers.forEach(tower => tower.update(...arguments));
   }
 }
 

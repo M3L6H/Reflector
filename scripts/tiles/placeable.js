@@ -9,7 +9,7 @@ class Placeable extends Tile {
     this.color = "#13293D";
     this.colorDark = "#0E1F2F";
     this.over = false;
-    this.button = new Button(new Vector(x, y), [new Vector(0, 0), new Vector(0, unit), new Vector(unit, unit), new Vector(unit, 0)], 0, this.handleClick.bind(this), this);
+    this.button = new Button(new Vector(x, y), [new Vector(0, 0), new Vector(0, unit), new Vector(unit, unit), new Vector(unit, 0)], 0, this.handleClick.bind(this));
   }
 
   handleClick() {

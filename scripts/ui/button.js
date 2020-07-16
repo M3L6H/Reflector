@@ -1,11 +1,10 @@
 import Collider from '../physics/collider.js';
 
 class Button extends Collider {
-  constructor(pos, points, zIndex, onClick, graphic) {
+  constructor(pos, points, zIndex, onClick) {
     super(pos, 0, points, `ui-${ zIndex }`);
     this.zIndex = zIndex;
     this.onClick = onClick;
-    this.graphic = graphic;
   }
 
   // Dummy update to overwrite Collider update
