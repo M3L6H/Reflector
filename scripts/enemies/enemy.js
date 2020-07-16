@@ -2,6 +2,7 @@ import Collider from '../physics/collider.js';
 import Vector from '../physics/vector.js';
 import normalize from '../util/normalize.js';
 import clamp from '../util/clamp.js';
+import debouncer from '../util/debouncer.js';
 
 class Enemy {
   constructor(path, unit) {
@@ -11,7 +12,7 @@ class Enemy {
     this.y = this.path[this.currNode][1] * unit;
     this.speed = 20;
 
-    this.collider = new Collider(new Vector(this.x + unit / 2, this.y + unit / 2), 0, [new Vector(-unit * 0.4, -unit * 0.4), new Vector(unit * 0.4, -unit * 0.4), new Vector(unit * 0.4, unit * 0.4), new Vector(-unit * 0.4, unit * 0.4)], "enemies");
+    this.collider = new Collider(new Vector(this.x + unit / 2, this.y + unit / 2), 0, [new Vector(-unit * 0.4, -unit * 0.4), new Vector(unit * 0.4, -unit * 0.4), new Vector(unit * 0.4, unit * 0.4), new Vector(-unit * 0.4, unit * 0.4)], "enemies", this);
 
     this.maxHealth = 100;
     this.health = 100;
@@ -25,6 +26,22 @@ class Enemy {
 
     this.colorBase = "#0C090D";
     this.color = "#E01A4F";
+
+    this.damage = debouncer(this.damage.bind(this), 500);
+  }
+
+  damage(dmg, pen, poison=0, slow=1) {
+    if (slow !== 1) {
+      const originalSpeed = this.speed;
+      this.speed *= slow;
+      if (this.timeout) clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => this.speed = originalSpeed, 1000);
+    }
+    this.health -= dmg - Math.max(0, this.armor - pen);
+
+    if (poison !== 0 && !this.interval) {
+      this.interval = setInterval(() => this.health -= poison, 100);
+    }
   }
 
   update({ ctx, delta, unit }) {

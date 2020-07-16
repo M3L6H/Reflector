@@ -4,6 +4,7 @@ import Ray from '../physics/ray.js';
 import normalize from "../util/normalize.js";
 
 import debouncer from '../util/debouncer.js';
+import Collider from "../physics/collider.js";
 
 class Tower extends Tile {
   constructor(x, y, unit, color) {
@@ -17,6 +18,7 @@ class Tower extends Tile {
     this.color = "#97ABB1";
     this.colorDark = "#8BA1A7";
     this.laserBolts = [];
+    this.colliders = [];
 
     this.baseColor = "#2B2D42";
     this.baseDark = "#020202";
@@ -24,6 +26,9 @@ class Tower extends Tile {
     switch(color) {
       case "blue":
         this.speed = 0.8;
+        this.damage = 15;
+        this.pen = 0;
+        this.slow = 0.5;
         this.laserLength = unit;
         this.laserWidth = unit / 6;
         this.laserColor = "rgba(8, 164, 189, 0.8)";
@@ -32,6 +37,8 @@ class Tower extends Tile {
         break;
       case "red":
         this.speed = 0.4;
+        this.damage = 25;
+        this.pen = 15;
         this.laserLength = unit * 3 / 4;
         this.laserWidth = unit / 8;
         this.laserColor = "rgba(255, 63, 120, 0.8)";
@@ -40,14 +47,22 @@ class Tower extends Tile {
         break;
       case "green":
         this.speed = 1.4;
+        this.damage = 15;
+        this.pen = 5;
+        this.poison = 1;
         this.laserWidth = unit / 8;
         this.laserColor = "rgba(134, 205, 130, 0.8)";
         this.orbColor = "#86CD82";
         this.orbBorder = "#57A773";
-        setInterval(() => this.emitting = !this.emitting, this.speed * 1000);
+        setInterval(() => {
+          this.emitting = !this.emitting;
+          this.colliders.forEach(collider => collider.enabled = this.emitting);
+        }, this.speed * 1000);
         break;
       case "yellow":
         this.laserWidth = unit / 5;
+        this.damage = 30;
+        this.pen = 0;
         this.laserColor = "rgba(242, 220, 93, 0.8)";
         this.orbColor = "#F2DC5D";
         this.orbBorder = "#ED9B40";
@@ -67,6 +82,20 @@ class Tower extends Tile {
 
     if (this.clicks > 1) {
       this.aimed = true;
+
+      if (!this.laserLength) {
+        this.colliders.forEach(collider => collider.remove());
+        this.colliders = [];
+        
+        let start = new Vector(this.x + this.unit / 2, this.y + this.unit / 2);
+        for (let i = 0; i < this.ray.numCollisions; ++i) {
+          const rayHit = this.ray.collisions[i];
+          const endPoint = rayHit.hitPoint;
+          this.colliders.push(new Collider(new Vector(0, 0), 0, [start, endPoint], "lasers"));
+          start = endPoint;
+        }
+      }
+      
       document.removeEventListener("click", this.lockIn);
     }
   }
@@ -76,6 +105,13 @@ class Tower extends Tile {
   }
 
   update({ ctx, unit })  {
+    this.colliders.forEach(collider => {
+      for (let i = 0; i < collider.numCollisions; ++i) {
+        const enemy = collider.collisions[i].collidingWith.parent;
+        enemy.damage(this.damage, this.pen, this.poison, this.slow);
+      }
+    });
+    
     Tile.prototype.update.apply(this, arguments);
 
     ctx.save();
@@ -177,9 +213,9 @@ class Tower extends Tile {
     if (!this.aimed) {
       const dir = new Vector(mouseX - this.x - unit / 2, mouseY - this.y - unit / 2);
       this.ray.updateDir(dir);
-    }
     
-    this.calculateBounce();
+      this.calculateBounce();
+    }
 
     ctx.save();
     // Draw laser

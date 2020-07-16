@@ -13,19 +13,20 @@ class Collider {
   static layerMasks = {
     obstacles: { obstacles: false, reflectors: false, lasers: false, enemies: false, ui: false, ray: false, beam: false },
     reflectors: { reflectors: false, obstacles: false,  lasers: false, enemies: false, ui: false, ray: false, beam: false },
-    lasers: { lasers: false, obstacles: true,  reflectors: true, enemies: true, ui: false, ray: false, beam: false },
-    enemies: { enemies: false, obstacles: false,  reflectors: false, lasers: true, ui: false, ray: false, beam: false },
+    lasers: { lasers: false, obstacles: false,  reflectors: false, enemies: true, ui: false, ray: false, beam: false },
+    enemies: { enemies: false, obstacles: false,  reflectors: false, lasers: false, ui: false, ray: false, beam: false },
     ui: { ui: false, obstacles: false,  reflectors: false, lasers: false, enemies: false, ray: false, beam: false },
     ray: { ray: false, obstacles: true,  ui: false, reflectors: true, lasers: false, enemies: false, beam: false },
     beam: { beam: false, ray: false, obstacles: true,  ui: false, reflectors: true, lasers: false, enemies: true }
   };
   
-  constructor(pos, rot, model, layer="default") {
+  constructor(pos, rot, model, layer="default", parent=null) {
     this.pos = pos;
     this.rot = rot;
     this.model = model;
     this.layer = layer;
     this.enabled = true;
+    this.parent = parent;
     this.collisions = [];
 
     this.updateVertices();
