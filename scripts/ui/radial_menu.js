@@ -33,8 +33,10 @@ class RadialMenu {
     this.buttons.forEach(button => button.updatePos(vec));
   }
 
-  update({ ctx }) {
+  update({ ctx, width, height }) {
     ctx.save();
+    ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+    ctx.fillRect(0, 0, width, height);
     ctx.translate(this.pos.x, this.pos.y);
     const innerVec = (new Vector(this.innerRadius, 0)).rotate(Math.PI / 16);
     const endVec = (new Vector(this.innerRadius, 0)).rotate(Math.PI * 7 / 16)
