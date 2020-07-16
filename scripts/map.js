@@ -25,13 +25,16 @@ class Map {
     this.colorPath = "rgba(0, 255, 217, 0.1)";
     this.pathWidth = 4;
     this.pathLength = 8;
+    this.towers = [];
 
     document.addEventListener("PlaceTower", ({ detail: { pos, color } }) => this.placeTower(pos.x, pos.y, color));
   }
 
   placeTower(x, y, color="red") {
     this.map[Math.floor(y / this.unit)][Math.floor(x / this.unit)].removeButton();
-    this.map[Math.floor(y / this.unit)][Math.floor(x / this.unit)] = new Tower(x, y, this.unit, color);
+    const tower = new Tower(x, y, this.unit, color);
+    this.map[Math.floor(y / this.unit)][Math.floor(x / this.unit)] = tower;
+    this.towers.push(tower);
   }
 
   generateMap(map) {
@@ -107,6 +110,10 @@ class Map {
 
     this.enemies.forEach(enemy => {
       enemy.update(...arguments);
+    });
+
+    this.towers.forEach(tower => {
+      tower.drawLaser(...arguments)
     });
   }
 }

@@ -10,8 +10,8 @@ class Collider {
     ray: []
   };
   static layerMasks = {
-    obstacles: { obstacles: false, reflectors: false, lasers: true, enemies: false, ui: false, ray: false },
-    reflectors: { reflectors: false, obstacles: false,  lasers: true, enemies: false, ui: false, ray: false },
+    obstacles: { obstacles: false, reflectors: false, lasers: false, enemies: false, ui: false, ray: false },
+    reflectors: { reflectors: false, obstacles: false,  lasers: false, enemies: false, ui: false, ray: false },
     lasers: { lasers: false, obstacles: true,  reflectors: true, enemies: true, ui: false, ray: false },
     enemies: { enemies: false, obstacles: false,  reflectors: false, lasers: true, ui: false, ray: false },
     ui: { ui: false, obstacles: false,  reflectors: false, lasers: false, enemies: false, ray: false },

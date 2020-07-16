@@ -1,11 +1,14 @@
 import Tile from './tile.js';
-import Collider from '../physics/collider.js';
 import Vector from '../physics/vector.js';
+import Ray from '../physics/ray.js';
+
+import debouncer from '../util/debouncer.js';
 
 class Tower extends Tile {
   constructor(x, y, unit, color) {
     super(x, y, unit);
     this.aimed = false;
+    this.ray = new Ray(new Vector(x + unit / 2, y + unit / 2), new Vector(0, 0), "lasers");
     this.colorLight = "#A2B3B9";
     this.color = "#97ABB1";
     this.colorDark = "#8BA1A7";
@@ -13,26 +16,34 @@ class Tower extends Tile {
     this.baseColor = "#2B2D42";
     this.baseDark = "#020202";
 
-    this.collider = new Collider(new Vector(x, y), 0, [new Vector(0, 0), new Vector(unit, 0), new Vector(unit, unit), new Vector(0, unit)], "obstacles");
-
     switch(color) {
       case "blue":
+        this.laserWidth = unit / 6;
         this.orbColor = "#08A4BD";
         this.orbBorder = "#446DF6";
         break;
       case "red":
+        this.laserWidth = unit / 8;
         this.orbColor = "#FF3F00";
         this.orbBorder = "#FF7F11";
         break;
       case "green":
+        this.laserWidth = unit / 8;
         this.orbColor = "#86CD82";
         this.orbBorder = "#57A773";
         break;
       case "yellow":
+        this.laserWidth = unit / 4;
         this.orbColor = "#F2DC5D";
         this.orbBorder = "#ED9B40";
         break;
     }
+
+    this.calculateBounce = debouncer(this.calculateBounce.bind(this), 17);
+  }
+
+  calculateBounce() {
+    this.ray.bounceCast("reflectors");
   }
 
   update({ ctx, unit })  {
@@ -56,9 +67,31 @@ class Tower extends Tile {
     ctx.lineTo(-unit / 8, unit / 2);
     ctx.fill();
     ctx.stroke();
+    ctx.restore();
+  }
+
+  drawLaser({ ctx, unit }) {
+    this.calculateBounce();
+
+    ctx.save();
+    ctx.translate(this.x + unit / 2, this.y + unit / 2);
+    // Draw laser
+    ctx.strokeStyle = this.orbColor;
+    ctx.lineWidth = this.laserWidth;
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.translate(-this.x - unit / 2, -this.y - unit / 2);
+    for (let i = 0; i < this.ray.numCollisions; ++i) {
+      const rayHit = this.ray.collisions[i];
+      ctx.lineTo(rayHit.hitPoint.x, rayHit.hitPoint.y);
+    }
+    ctx.stroke();
+
+    ctx.translate(this.x + unit / 2, this.y + unit / 2);
 
     // Orb
     ctx.fillStyle = this.orbColor;
+    ctx.lineWidth = 1;
     ctx.strokeStyle = this.orbBorder;
     ctx.beginPath();
     ctx.arc(0, 0, unit / 3, 0, 2 * Math.PI);
