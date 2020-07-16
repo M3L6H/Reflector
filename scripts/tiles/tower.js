@@ -94,13 +94,17 @@ class Tower extends Tile {
     this.calculateBounce();
 
     ctx.save();
-    ctx.translate(this.x + unit / 2, this.y + unit / 2);
     // Draw laser
-    ctx.strokeStyle = this.orbColor;
-    ctx.lineWidth = this.laserWidth;
+    if (this.aimed) {
+      ctx.strokeStyle = this.orbColor;
+      ctx.lineWidth = this.laserWidth;
+    } else {
+      ctx.strokeStyle = "#FF0000";
+      ctx.lineWidth = 1;
+      ctx.setLineDash([5, 15]);
+    }
     ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.translate(-this.x - unit / 2, -this.y - unit / 2);
+    ctx.moveTo(this.x + unit / 2, this.y + unit / 2);
     for (let i = 0; i < this.ray.numCollisions; ++i) {
       const rayHit = this.ray.collisions[i];
       ctx.lineTo(rayHit.hitPoint.x, rayHit.hitPoint.y);
