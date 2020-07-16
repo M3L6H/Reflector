@@ -70,7 +70,12 @@ class Tower extends Tile {
     ctx.restore();
   }
 
-  drawLaser({ ctx, unit }) {
+  drawLaser({ ctx, unit, mouseX, mouseY, width, height }) {
+    if (!this.aimed) {
+      const dir = new Vector(mouseX - this.x - unit / 2, mouseY - this.y - unit / 2);
+      this.ray.updateDir(dir);
+    }
+    
     this.calculateBounce();
 
     ctx.save();

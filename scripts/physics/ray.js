@@ -1,10 +1,11 @@
 import Collider from './collider.js';
+import Vector from "./vector.js";
 
 const precision = 0.01;
 
 class Ray extends Collider {
   constructor(pos, dir, layer="ray") {
-    super(pos, 0, [dir], layer);
+    super(pos, 0, [dir.unit()], layer);
     this.steps = [];
   }
 
@@ -29,6 +30,10 @@ class Ray extends Collider {
       });
       ctx.restore();
     }
+  }
+
+  updateDir(dir) {
+    this.model = [dir.unit()];
   }
 
   // The point is where we are calculating the distance from
@@ -134,8 +139,7 @@ class Ray extends Collider {
               norm = norm.inv();
             }
 
-            const ang = dir.angle(norm);
-            let newDir = norm.rotate(-Math.PI + ang);
+            let newDir = dir.vectorProj(edge).sub(dir.vectorProj(norm));
   
             dir = newDir.unit();
 

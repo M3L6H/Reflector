@@ -72,6 +72,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initialize();
 });
 
-document.addEventListener("Init", ({ detail: { unit, canvas } }) => {
-  new Renderer(unit, canvas);
+document.addEventListener("Init", ({ detail: { unit, canvas, width, height } }) => {
+  new Renderer(unit, canvas, width, height);
 });

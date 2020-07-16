@@ -8,9 +8,11 @@ import Reflector from './tiles/reflector.js';
 import Tower from './tiles/tower.js';
 
 import Enemy from './enemies/enemy.js';
+import Collider from './physics/collider.js';
+import Vector from './physics/vector.js';
 
 class Map {
-  constructor({ map, paths }, unit) {
+  constructor({ map, paths }, unit, width, height) {
     this.unit = unit;
 
     this.paths = paths;
@@ -26,6 +28,7 @@ class Map {
     this.pathWidth = 4;
     this.pathLength = 8;
     this.towers = [];
+    this.collider = new Collider(new Vector(0, 0), 0, [new Vector(0, 0), new Vector(width, 0), new Vector(width, height), new Vector(0, height)], "obstacles");
 
     document.addEventListener("PlaceTower", ({ detail: { pos, color } }) => this.placeTower(pos.x, pos.y, color));
   }

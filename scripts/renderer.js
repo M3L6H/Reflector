@@ -4,8 +4,8 @@ import UI from './ui/ui.js';
 
 // Handles the rendering order. Keeps index clean
 class Renderer {
-  constructor(unit, canvas) {
-    this.map = new Map(Level1, unit);;
+  constructor(unit, canvas, width, height) {
+    this.map = new Map(Level1, unit, width, height);
     this.ui = new UI(canvas, unit);
 
     document.addEventListener("Update", ({ detail }) => this.render(detail));
