@@ -32,7 +32,7 @@ class Collider {
     document.addEventListener("PhysicsUpdate", ({ detail }) => this.update(detail));
   }
 
-  update() {
+  update({ debug, ctx }) {
     this.collisions = [];
     this.numCollisions = 0;
 
@@ -45,6 +45,19 @@ class Collider {
           this.isCollidingWith(collider);
         });
       }
+    }
+    
+    if (debug) {
+      ctx.save();
+      ctx.strokeStyle = "rgba(0, 255, 0, 0.3)";
+      ctx.beginPath();
+      const len = this.vertices.length;
+      ctx.moveTo(this.vertices[len - 1].x, this.vertices[len - 1].y);
+      for (let i = 0; i < len; ++i) {
+        ctx.lineTo(this.vertices[i].x, this.vertices[i].y);
+      }
+      ctx.stroke();
+      ctx.restore();
     }
   }
 

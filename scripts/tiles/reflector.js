@@ -17,22 +17,23 @@ class Reflector extends Tile {
     this.down = code & 0b01000;
     this.left = code & 0b10000;
 
-    this.colliders = {};
+    this.reflectors = {};
+    this.collider = new Collider(new Vector(x, y), 0, [new Vector(0, 0), new Vector(unit, 0), new Vector(unit, unit), new Vector(0, unit)], "obstacles");
     
     if (this.up) {
-      this.colliders.up = new Collider(new Vector(x, y), 0, [new Vector(0, 0), new Vector(this.unit, 0)], "reflectors");
+      this.reflectors.up = new Collider(new Vector(x, y), 0, [new Vector(0, 0), new Vector(this.unit, 0)], "reflectors");
     }
     
     if (this.right) {
-      this.colliders.right = new Collider(new Vector(x, y), 0, [new Vector(this.unit, 0), new Vector(this.unit, this.unit)], "reflectors");
+      this.reflectors.right = new Collider(new Vector(x, y), 0, [new Vector(this.unit, 0), new Vector(this.unit, this.unit)], "reflectors");
     }
     
     if (this.down) {
-      this.colliders.down = new Collider(new Vector(x, y), 0, [new Vector(0, this.unit), new Vector(this.unit, this.unit)], "reflectors");
+      this.reflectors.down = new Collider(new Vector(x, y), 0, [new Vector(0, this.unit), new Vector(this.unit, this.unit)], "reflectors");
     }
     
     if (this.left) {
-      this.colliders.left = new Collider(new Vector(x, y), 0, [new Vector(0, 0), new Vector(0, this.unit)], "reflectors");
+      this.reflectors.left = new Collider(new Vector(x, y), 0, [new Vector(0, 0), new Vector(0, this.unit)], "reflectors");
     }
   }
 

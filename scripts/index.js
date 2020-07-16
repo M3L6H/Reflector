@@ -8,7 +8,7 @@ const createErrorMsg = (body) => {
 }
 
 let canvas, ctx, width, height, unit, mouseX, mouseY;
-let debug = false;
+let debug = true;
 
 // Initialization
 const initialize = () => {
