@@ -87,6 +87,7 @@ class UI {
     switch(this.zIndex) {
       case 1:
         this.towerMenu.update(...arguments);
+        break;
     }
   }
 }

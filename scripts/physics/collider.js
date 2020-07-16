@@ -2,6 +2,7 @@ import Vector from "./vector.js";
 
 class Collider {
   static layers = {
+    obstacles: [],
     reflectors: [],
     lasers: [],
     enemies: [],
@@ -9,11 +10,12 @@ class Collider {
     ray: []
   };
   static layerMasks = {
-    reflectors: { reflectors: false, lasers: true, enemies: false, ui: false, ray: false },
-    lasers: { lasers: false, reflectors: true, enemies: true, ui: false, ray: false },
-    enemies: { enemies: false, reflectors: false, lasers: true, ui: false, ray: false },
-    ui: { ui: false, reflectors: false, lasers: false, enemies: false, ray: false },
-    ray: { ray: false, ui: true, reflectors: false, lasers: false, enemies: false }
+    obstacles: { obstacles: false, reflectors: false, lasers: true, enemies: false, ui: false, ray: false },
+    reflectors: { reflectors: false, obstacles: false,  lasers: true, enemies: false, ui: false, ray: false },
+    lasers: { lasers: false, obstacles: true,  reflectors: true, enemies: true, ui: false, ray: false },
+    enemies: { enemies: false, obstacles: false,  reflectors: false, lasers: true, ui: false, ray: false },
+    ui: { ui: false, obstacles: false,  reflectors: false, lasers: false, enemies: false, ray: false },
+    ray: { ray: false, obstacles: false,  ui: true, reflectors: false, lasers: false, enemies: false }
   };
   
   constructor(pos, rot, model, layer="default") {

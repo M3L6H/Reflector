@@ -1,4 +1,6 @@
 import Tile from "./tile.js";
+import Collider from '../physics/collider.js';
+import Vector from '../physics/vector.js';
 
 class Reflector extends Tile {
   constructor(x, y, unit, code) {
@@ -14,6 +16,24 @@ class Reflector extends Tile {
     this.right = code & 0b00100;
     this.down = code & 0b01000;
     this.left = code & 0b10000;
+
+    this.colliders = {};
+    
+    if (this.up) {
+      this.colliders.up = new Collider(new Vector(x, y), 0, [new Vector(0, 0), new Vector(this.unit, 0)], "reflectors");
+    }
+    
+    if (this.right) {
+      this.colliders.right = new Collider(new Vector(x, y), 0, [new Vector(this.unit, 0), new Vector(this.unit, this.unit)], "reflectors");
+    }
+    
+    if (this.down) {
+      this.colliders.down = new Collider(new Vector(x, y), 0, [new Vector(0, this.unit), new Vector(this.unit, this.unit)], "reflectors");
+    }
+    
+    if (this.left) {
+      this.colliders.left = new Collider(new Vector(x, y), 0, [new Vector(0, 0), new Vector(0, this.unit)], "reflectors");
+    }
   }
 
   update({ ctx, unit }) {

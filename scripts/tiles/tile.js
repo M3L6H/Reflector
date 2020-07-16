@@ -1,3 +1,6 @@
+import Collider from '../physics/collider.js';
+import Vector from '../physics/vector.js';
+
 class Tile {
   constructor(x, y, unit) {
     this.x = x;
@@ -7,6 +10,7 @@ class Tile {
     this.colorLight = "#FF0000";
     this.color = "#FF0000";
     this.colorDark = "#FF0000";
+    this.collider = new Collider(new Vector(x, y), 0, [new Vector(0, 0), new Vector(unit, 0), new Vector(unit, unit), new Vector(0, unit)], "obstacles");
   }
 
   update({ ctx, unit }) {
