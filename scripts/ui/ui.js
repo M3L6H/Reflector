@@ -8,7 +8,7 @@ class UI {
     this.layers = [];
     this.canvas = canvas;
     this.unit = unit;
-    this.towerMenu = new RadialMenu([], new Vector(100, 100));
+    this.towerMenu = new RadialMenu([], unit, 1);
 
     this.canvas.addEventListener("click", this.handleClick.bind(this));
     document.addEventListener("TowerMenu", this.handleTowerMenu.bind(this));
@@ -47,7 +47,7 @@ class UI {
 
   handleTowerMenu({ detail: { pos } }) {
     this.zIndex = 1;
-    this.towerMenu.setPos(pos.add(new Vector(this.unit / 2, this.unit / 2)));
+    this.towerMenu.updatePos(pos.add(new Vector(this.unit / 2, this.unit / 2)));
   }
 
   update({ unit }) {
