@@ -24,8 +24,16 @@ class RadialMenu {
       const c = b.add((new Vector(0, this.ringThickness)).rotate(i * Math.PI / 2));
       const d = (new Vector(1, 1)).rotate(i * Math.PI / 2).unit().scale(c.mag());
       const e = a.add((new Vector(this.ringThickness, 0)).rotate(i * Math.PI / 2));
-      this.buttons.push(new Button(this.pos, [a, b, c, d, e], this.zIndex, () => console.log("Click")));
+      this.buttons.push(new Button(this.pos, [a, b, c, d, e], this.zIndex, () => console.log("Click"), this));
     }
+  }
+
+  hover() {
+
+  }
+
+  unhover() {
+
   }
 
   updatePos(vec) {

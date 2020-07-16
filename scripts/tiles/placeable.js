@@ -9,7 +9,7 @@ class Placeable extends Tile {
     this.color = "#13293D";
     this.colorDark = "#0E1F2F";
     this.over = false;
-    this.button = new Button(new Vector(x, y), [new Vector(0, 0), new Vector(0, unit), new Vector(unit, unit), new Vector(unit, 0)], 0, this.handleClick.bind(this));
+    this.button = new Button(new Vector(x, y), [new Vector(0, 0), new Vector(0, unit), new Vector(unit, unit), new Vector(unit, 0)], 0, this.handleClick.bind(this), this);
   }
 
   handleClick() {
@@ -17,22 +17,8 @@ class Placeable extends Tile {
     document.dispatchEvent(customEvent);
   }
 
-  update({ mouseX, mouseY, ctx, canvas }) {
+  update({ ctx }) {
     Tile.prototype.update.apply(this, arguments);
-
-    if (this.x < mouseX && mouseX < this.x + this.size && this.y < mouseY && mouseY < this.y + this.size) {
-      this.over = true;
-      
-      ctx.save();
-      ctx.translate(this.x, this.y);
-      ctx.fillStyle = "rgba(122, 255, 122, 0.3)";
-      ctx.fillRect(0, 0, this.size, this.size);
-      ctx.restore();
-
-      canvas.classList.add("pointer");
-    } else {
-      this.over = false;
-    }
   }
 }
 

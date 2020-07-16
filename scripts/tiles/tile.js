@@ -10,10 +10,6 @@ class Tile {
   }
 
   update({ ctx, mouseX, mouseY, canvas }) {
-    if (this.x < mouseX && mouseX < this.x + this.size && this.y < mouseY && mouseY < this.y + this.size) {
-      canvas.classList.remove("pointer");
-    }
-
     ctx.save();
     ctx.translate(this.x, this.y);
 
