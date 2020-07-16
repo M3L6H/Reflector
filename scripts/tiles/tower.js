@@ -39,6 +39,7 @@ class Tower extends Tile {
         this.laserWidth = unit / 8;
         this.orbColor = "#86CD82";
         this.orbBorder = "#57A773";
+        setInterval(() => this.emitting = !this.emitting, this.speed * 1000);
         break;
       case "yellow":
         this.laserWidth = unit / 5;
@@ -100,19 +101,15 @@ class Tower extends Tile {
       
     } else {
       // If we have a speed, we aren't constantly firing
-      if (this.speed) {
-
-      } else {
-        ctx.strokeStyle = this.orbColor;
-        ctx.lineWidth = this.laserWidth;
-        ctx.beginPath();
-        ctx.moveTo(this.x + unit / 2, this.y + unit / 2);
-        for (let i = 0; i < this.ray.numCollisions; ++i) {
-          const rayHit = this.ray.collisions[i];
-          ctx.lineTo(rayHit.hitPoint.x, rayHit.hitPoint.y);
-        }
-        ctx.stroke();
+      ctx.strokeStyle = this.orbColor;
+      ctx.lineWidth = this.laserWidth;
+      ctx.beginPath();
+      ctx.moveTo(this.x + unit / 2, this.y + unit / 2);
+      for (let i = 0; i < this.ray.numCollisions; ++i) {
+        const rayHit = this.ray.collisions[i];
+        ctx.lineTo(rayHit.hitPoint.x, rayHit.hitPoint.y);
       }
+      ctx.stroke();
     }
   }
 
