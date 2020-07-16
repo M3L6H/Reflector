@@ -1,4 +1,4 @@
-import Vector from "./vector.js";
+import debouncer from '../util/debouncer.js';
 
 class Collider {
   static layers = {
@@ -29,7 +29,7 @@ class Collider {
     this.updateVertices();
     this.updateLayers();
 
-    document.addEventListener("PhysicsUpdate", ({ detail }) => this.update(detail));
+    document.addEventListener("PhysicsUpdate", debouncer(({ detail }) => this.update(detail), 17));
   }
 
   update({ debug, ctx }) {
