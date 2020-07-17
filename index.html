@@ -5,11 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <script src="./scripts/index.js" type="module" ></script>
+  <script src="https://kit.fontawesome.com/1924d4fb1c.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="./styles/index.css" type="text/css">
   
   <title>Reflector</title>
 </head>
 <body>
-  <div id="root"></div>
+  <div id="root">
+    <div class="header">
+      <div class="left-group">
+        <span id="money" class="money">100 <span class="icon"><i class="fas fa-coins"></i></span></span>
+        <span id="health" class="health">10 <span class="icon"><i class="fas fa-heart"></i></span></span>
+      </div>
+      <div class="right-group">
+        <span id="pause-btn" class="pause-btn"><i class="fas fa-pause"></i></span>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
