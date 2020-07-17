@@ -16,6 +16,7 @@ class Enemy {
 
     this.maxHealth = 100;
     this.health = 100;
+    this.money = 10;
     this.armor = 0;
     this.flying = false;
     this.shielded = false;
@@ -47,7 +48,11 @@ class Enemy {
   }
 
   update({ ctx, delta, unit }) {
-    if (this.health <= 0) this.dead = true;
+    if (this.health <= 0) {
+      this.dead = true;
+      const e = new CustomEvent("EarnMoney", { detail: this });
+      document.dispatchEvent(e);
+    }
     
     if (this.dead) return;
     

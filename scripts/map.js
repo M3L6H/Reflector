@@ -12,14 +12,16 @@ import Collider from './physics/collider.js';
 import Vector from './physics/vector.js';
 
 class Map {
-  constructor({ map, paths, health }, unit, width, height) {
+  constructor({ map, paths, health, money }, unit, width, height) {
     this.unit = unit;
 
     this.health = health;
+    this.money = money;
     this.paths = paths;
     this.map = this.generateMap(map);
 
     document.getElementById("health").innerHTML = this.health;
+    document.getElementById("money").innerHTML = this.money;
 
     this.enemies = [
       new Enemy(Object.values(this.paths)[0], unit)
@@ -37,14 +39,24 @@ class Map {
     document.addEventListener("PlayerDamage", ({ detail: enemy }) => {
       this.health -= 1;
       document.getElementById("health").innerHTML = this.health;
-      for (let i = 0; i < this.enemies.length; ++i) {
-        if (this.enemies[i] === enemy) {
-          this.enemies.splice(i, 1);
-          break;
-        }
-      }
+      this.removeEnemy(enemy);
       // TODO: game over
     });
+
+    document.addEventListener("EarnMoney", ({ detail: enemy }) => {
+      this.money += enemy.money;
+      document.getElementById("money").innerHTML = this.money;
+      this.removeEnemy(enemy);
+    });
+  }
+
+  removeEnemy(enemy) {
+    for (let i = 0; i < this.enemies.length; ++i) {
+      if (this.enemies[i] === enemy) {
+        this.enemies.splice(i, 1);
+        break;
+      }
+    }
   }
 
   placeTower(x, y, color="red") {
