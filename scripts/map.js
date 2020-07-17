@@ -60,6 +60,27 @@ class Map {
   }
 
   placeTower(x, y, color="red") {
+    let price;
+
+    switch (color) {
+      case "red":
+        price = 100;
+        break;
+      case "blue":
+        price = 150;
+        break;
+      case "green":
+        price = 200;
+        break;
+      case "yellow":
+        price = 200;
+        break;
+    }
+    
+    if (this.money < price) return;
+    this.money -= price;
+    document.getElementById("money").innerHTML = this.money;
+    
     this.map[Math.floor(y / this.unit)][Math.floor(x / this.unit)].removeButton();
     const tower = new Tower(x, y, this.unit, color);
     this.map[Math.floor(y / this.unit)][Math.floor(x / this.unit)] = tower;
