@@ -27,6 +27,8 @@ class Enemy {
     this.colorBase = "#0C090D";
     this.color = "#E01A4F";
 
+    this.dead = false;
+
     this.damage = debouncer(this.damage.bind(this), 200);
   }
 
@@ -45,9 +47,14 @@ class Enemy {
   }
 
   update({ ctx, delta, unit }) {
+    if (this.health <= 0) this.dead = true;
+    
+    if (this.dead) return;
+    
     if (this.currNode + 1 >= this.path.length) {
-      // TODO: Take damage
-      return;
+      this.dead = true;
+      const e = new CustomEvent("PlayerDamage", { detail: this });
+      document.dispatchEvent(e);
     }
 
     let [targetX, targetY] = this.path[this.currNode];
