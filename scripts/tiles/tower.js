@@ -143,6 +143,7 @@ class Tower extends Tile {
       this.emitting = false;
       setTimeout(() => this.emitting = true, this.speed * 1000);
       this.laserBolts.push({ pos: new Vector(this.x + unit / 2, this.y + unit / 2), currNode: 0 });
+      this.colliders.push(new Collider(new Vector(this.x + unit / 2, this.y + unit / 2), 0, [new Vector(0, 0), new Vector(this.laserLength, 0)], "lasers"));
     } else {
       // If we have a speed, we aren't constantly firing
       ctx.strokeStyle = this.laserColor;
@@ -166,7 +167,7 @@ class Tower extends Tile {
     }
   }
 
-  drawLaserBolts({ ctx, delta, unit }) {
+  drawLaserBolts({ ctx, delta }) {
     for (let i = 0; i < this.laserBolts.length; ++i) {
       const that = this.laserBolts[i];
 
@@ -185,12 +186,17 @@ class Tower extends Tile {
       if (Math.sign(target.y - that.pos.y) !== Math.sign(dirY)) {
         that.pos.y = target.y;
       }
+
+      this.colliders[i].updatePos(that.pos);
+      this.colliders[i].updateModel([new Vector(0, 0), new Vector(-dirX * this.laserLength, -dirY * this.laserLength)]);
   
       if (that.pos.x === target.x && that.pos.y === target.y) {
         that.currNode += 1;
         
         if (that.currNode >= this.ray.collisions.length) {
           this.laserBolts.splice(i, 1);
+          this.colliders[i].remove();
+          this.colliders.splice(i, 1);
           --i;
         }
       }

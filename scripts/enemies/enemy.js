@@ -27,7 +27,7 @@ class Enemy {
     this.colorBase = "#0C090D";
     this.color = "#E01A4F";
 
-    this.damage = debouncer(this.damage.bind(this), 500);
+    this.damage = debouncer(this.damage.bind(this), 200);
   }
 
   damage(dmg, pen, poison=0, slow=1) {

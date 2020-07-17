@@ -69,6 +69,10 @@ class Collider {
     this.updateVertices();
   }
 
+  updateModel(model) {
+    this.model = model;
+  }
+
   updateLayer(layer) {
     this.layer = layer;
     this.updateLayers();
