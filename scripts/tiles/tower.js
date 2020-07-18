@@ -1,6 +1,7 @@
 import Tile from './tile.js';
 import Vector from '../physics/vector.js';
 import Ray from '../physics/ray.js';
+import Button from '../ui/button.js';
 import normalize from "../util/normalize.js";
 
 import debouncer from '../util/debouncer.js';
@@ -12,13 +13,15 @@ class Tower extends Tile {
     this.clicks = 0;
     this.aimed = false;
     this.emitting = true;
+    this.color = color;
     const layer = this.color === "yellow" ? "beam" : "ray";
     this.ray = new Ray(new Vector(x + unit / 2, y + unit / 2), new Vector(0, 0), layer);
-    this.colorLight = "#A2B3B9";
-    this.color = "#97ABB1";
-    this.colorDark = "#8BA1A7";
     this.laserBolts = [];
     this.colliders = [];
+    this.button = new Button(new Vector(x, y), [new Vector(0, 0), new Vector(unit, 0), new Vector(unit, unit), new Vector(0, unit)], 0, () => {
+      const customEvent = new CustomEvent("SellTower", { detail: this });
+      document.dispatchEvent(customEvent);
+    });
 
     this.baseColor = "#2B2D42";
     this.baseDark = "#020202";

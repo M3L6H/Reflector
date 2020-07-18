@@ -23,7 +23,7 @@ class Map {
     this.map = this.generateMap(map);
 
     document.getElementById("health").innerHTML = this.health;
-    document.getElementById("money").innerHTML = this.money;
+    this.updateMoney();
 
     this.enemies = [
       new Enemy(Object.values(this.paths)[0], unit)
@@ -38,6 +38,7 @@ class Map {
     this.collider = new Collider(new Vector(0, 0), 0, [new Vector(0, 0), new Vector(width, 0), new Vector(width, height), new Vector(0, height)], "obstacles");
 
     document.addEventListener("PlaceTower", ({ detail: { pos, color } }) => this.placeTower(pos.x, pos.y, color));
+    document.addEventListener("SellTower", ({ detail: tower }) => this.sellTower(tower));
     document.addEventListener("PlayerDamage", ({ detail: enemy }) => {
       this.health -= 1;
       document.getElementById("health").innerHTML = this.health;
@@ -47,7 +48,7 @@ class Map {
 
     document.addEventListener("EarnMoney", ({ detail: enemy }) => {
       this.money += enemy.money;
-      document.getElementById("money").innerHTML = this.money;
+      this.updateMoney();
       this.removeEnemy(enemy);
     });
   }
@@ -61,7 +62,11 @@ class Map {
     }
   }
 
-  placeTower(x, y, color="red") {
+  updateMoney() {
+    document.getElementById("money").innerHTML = this.money;
+  }
+
+  priceFromColor(color) {
     let price;
 
     switch (color) {
@@ -78,6 +83,12 @@ class Map {
         price = Constants.YELLOW_TOWER_PRICE;
         break;
     }
+
+    return price;
+  }
+
+  placeTower(x, y, color="red") {
+    const price = this.priceFromColor(color);
     
     if (this.money < price) return;
     this.money -= price;
@@ -87,6 +98,23 @@ class Map {
     const tower = new Tower(x, y, this.unit, color);
     this.map[Math.floor(y / this.unit)][Math.floor(x / this.unit)] = tower;
     this.towers.push(tower);
+  }
+
+  sellTower(tower) {
+    tower.button.remove();
+    const price = this.priceFromColor(tower.color);
+    this.money += price / 2;
+    this.updateMoney();
+
+    const placeable = new Placeable(tower.x, tower.y, this.unit);
+    this.map[Math.floor(tower.y / this.unit)][Math.floor(tower.x / this.unit)] = placeable;
+
+    for (let i = 0; i < this.towers.length; ++i) {
+      if (this.towers[i] === tower) {
+        this.towers.splice(i, 1);
+        break;
+      }
+    }
   }
 
   generateMap(map) {
