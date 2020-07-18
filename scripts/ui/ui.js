@@ -4,12 +4,13 @@ import Ray from "../physics/ray.js";
 import debouncer from '../util/debouncer.js';
 
 class UI {
-  constructor(canvas, unit) {
+  constructor(canvas, unit, money) {
     this.zIndex = 0;
     this.layers = [];
     this.canvas = canvas;
     this.unit = unit;
-    this.towerMenu = new RadialMenu([], unit, 1);
+    this.money = money;
+    this.towerMenu = new RadialMenu([], unit, 1, this.money);
     this.hovering = null;
 
     this.canvas.addEventListener("click", this.handleClick.bind(this));
@@ -83,10 +84,11 @@ class UI {
     this.towerMenu.updatePos(pos);
   }
 
-  update({ unit }) {
+  update(_, money) {
+    this.money = money;
     switch(this.zIndex) {
       case 1:
-        this.towerMenu.update(...arguments);
+        this.towerMenu.update(...arguments, this.money);
         break;
     }
   }

@@ -59,6 +59,8 @@ const initialize = () => {
     } else {
       pauseBtn.children[0].classList.add("fa-pause");
       pauseBtn.children[0].classList.remove("fa-play");
+
+      window.requestAnimationFrame(render);
     }
   });
   
@@ -81,9 +83,12 @@ const render = (time) => {
     
     const update = new CustomEvent("Update", { detail: { canvas, delta, ctx, width, height, unit, mouseX, mouseY, debug } });
     document.dispatchEvent(update);
-  }
 
-  window.requestAnimationFrame(render);
+    window.requestAnimationFrame(render);
+  } else {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
+    ctx.fillRect(0, 0, width, height);
+  }
 };
 
 document.addEventListener("DOMContentLoaded", () => {

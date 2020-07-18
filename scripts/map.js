@@ -11,6 +11,8 @@ import Enemy from './enemies/enemy.js';
 import Collider from './physics/collider.js';
 import Vector from './physics/vector.js';
 
+import * as Constants from './util/constants.js';
+
 class Map {
   constructor({ map, paths, health, money }, unit, width, height) {
     this.unit = unit;
@@ -64,16 +66,16 @@ class Map {
 
     switch (color) {
       case "red":
-        price = 100;
+        price = Constants.RED_TOWER_PRICE;
         break;
       case "blue":
-        price = 150;
+        price = Constants.BLUE_TOWER_PRICE;
         break;
       case "green":
-        price = 200;
+        price = Constants.GREEN_TOWER_PRICE;
         break;
       case "yellow":
-        price = 200;
+        price = Constants.YELLOW_TOWER_PRICE;
         break;
     }
     
