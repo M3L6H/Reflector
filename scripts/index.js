@@ -9,6 +9,7 @@ const createErrorMsg = (body) => {
 
 let canvas, ctx, width, height, unit, mouseX, mouseY;
 let debug = false;
+let paused = false;
 
 // Initialization
 const initialize = () => {
@@ -46,6 +47,20 @@ const initialize = () => {
     
     root.appendChild(canvas);
   }
+
+  // Set up pause button
+  const pauseBtn = document.getElementById("pause-btn");
+  pauseBtn.addEventListener("click", () => {
+    paused = !paused;
+
+    if (paused) {
+      pauseBtn.children[0].classList.remove("fa-pause");
+      pauseBtn.children[0].classList.add("fa-play");
+    } else {
+      pauseBtn.children[0].classList.add("fa-pause");
+      pauseBtn.children[0].classList.remove("fa-play");
+    }
+  });
   
   // Let all the elements of the game know we have finished initialization
   const init = new CustomEvent("Init", { detail: { unit, width, height, canvas } });
@@ -60,11 +75,14 @@ const render = (time) => {
   const delta = (!start && 0) + (start && (time - start));
   start = time;
 
-  ctx.fillStyle = "#D3D0CB";
-  ctx.fillRect(0, 0, width, height);
-  
-  const update = new CustomEvent("Update", { detail: { canvas, delta, ctx, width, height, unit, mouseX, mouseY, debug } });
-  document.dispatchEvent(update);
+  if (!paused) {
+    ctx.fillStyle = "#D3D0CB";
+    ctx.fillRect(0, 0, width, height);
+    
+    const update = new CustomEvent("Update", { detail: { canvas, delta, ctx, width, height, unit, mouseX, mouseY, debug } });
+    document.dispatchEvent(update);
+  }
+
   window.requestAnimationFrame(render);
 };
 
