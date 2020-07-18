@@ -34,7 +34,7 @@ class RadialMenu {
       const c = b.add((new Vector(0, this.ringThickness)).rotate(i * Math.PI / 2));
       const d = (new Vector(1, 1)).rotate(i * Math.PI / 2).unit().scale(c.mag());
       const e = a.add((new Vector(this.ringThickness, 0)).rotate(i * Math.PI / 2));
-      this.towers.push(new Tower(shifted, (new Vector(this.innerRadius + this.ringThickness / 2.1, 0)).rotate(Math.PI / 4).rotate(i * Math.PI / 2), colors[i]));
+      this.towers.push(new Tower(shifted, (new Vector(this.innerRadius + this.ringThickness / 2.1, 0)).rotate(Math.PI / 4).rotate(i * Math.PI / 2), colors[i], prices[i]));
       this.buttons.push(new Button(shifted, [a, b, c, d, e], this.zIndex, () => {
         if (this.money >= prices[i]) {
           const customEvent = new CustomEvent("PlaceTower", { detail: { pos: this.pos, color: colors[i] } });

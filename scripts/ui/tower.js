@@ -1,7 +1,8 @@
 export default class Tower {
-  constructor(pos, offset, color) {
+  constructor(pos, offset, color, price) {
     this.pos = pos;
     this.offset = offset;
+    this.price = price;
 
     this.baseColor = "#2B2D42";
     this.baseDark = "#020202";
@@ -69,6 +70,13 @@ export default class Tower {
     ctx.beginPath();
     ctx.arc(0, 0, unit / 5, Math.PI * 4 / 6 - 0.2, Math.PI * 5 / 6 + 0.2);
     ctx.stroke();
+
+    // Price
+    ctx.fillStyle = "#000000";
+    ctx.font = `${ unit / 3 }px sans-serif`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(this.price, 0, 0);
     ctx.restore();
   }
 };
