@@ -217,6 +217,37 @@ class Map {
     });
 
     for (let time in this.spawnList) {
+      if (parseInt(time) <= this.gameTime && this.elapsed % 500 < 300) {
+        const [spawn, num] = this.spawnList[time];
+        const [x, y] = spawn.split(", ").map(num => parseInt(num));
+        ctx.save();
+        ctx.translate(x * unit + unit / 2, y * unit + unit / 2);
+        switch(num) {
+          case 1:
+            ctx.fillStyle = "#7EA16B";
+            break;
+          case 2:
+            ctx.fillStyle = "#F9C22E";
+            break;
+          default:
+            ctx.fillStyle = "#E01A4F";
+        }
+        ctx.font = `${ unit * 0.75 }px sans-serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.strokeStyle = "#000000";
+        ctx.beginPath();
+        ctx.moveTo(0, -unit / 2);
+        ctx.lineTo(unit / 2, unit / 2);
+        ctx.lineTo(-unit / 2, unit / 2);
+        ctx.lineTo(0, -unit / 2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fillText("!", 0, unit / 6);
+        ctx.restore();
+      }
+      
       if (parseInt(time) + 5000 <= this.gameTime) {
         const [spawn, num] = this.spawnList[time];
         const Enemy = this.getEnemyClass(num);
