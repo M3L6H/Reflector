@@ -7,7 +7,7 @@ const createErrorMsg = (body) => {
   return msg;
 }
 
-let canvas, ctx, width, height, unit, mouseX, mouseY, renderer;
+let canvas, ctx, width, height, unit, mouseX, mouseY, renderer, pauseBtn;
 let debug = false;
 let paused = false;
 
@@ -51,26 +51,26 @@ const initialize = () => {
   }
 
   // Set up pause button
-  const pauseBtn = document.getElementById("pause-btn");
-  pauseBtn.addEventListener("click", () => {
-    paused = !paused;
-
-    if (paused) {
-      pauseBtn.children[0].classList.remove("fa-pause");
-      pauseBtn.children[0].classList.add("fa-play");
-    } else {
-      pauseBtn.children[0].classList.add("fa-pause");
-      pauseBtn.children[0].classList.remove("fa-play");
-
-      window.requestAnimationFrame(render);
-    }
-  });
+  pauseBtn = document.getElementById("pause-btn");
+  pauseBtn.addEventListener("click", () => togglePause());
+  window.addEventListener("blur", () => togglePause(true));
   
   // Let all the elements of the game know we have finished initialization
   const init = new CustomEvent("Init", { detail: { unit, width, height, canvas } });
   document.dispatchEvent(init);
   window.requestAnimationFrame(render);
-  console.log(unit);
+};
+
+const togglePause = (opt) => {
+  paused = opt === undefined ? !paused : opt;
+
+  if (paused) {
+    pauseBtn.children[0].classList.remove("fa-pause");
+    pauseBtn.children[0].classList.add("fa-play");
+  } else {
+    pauseBtn.children[0].classList.add("fa-pause");
+    pauseBtn.children[0].classList.remove("fa-play");
+  }
 };
 
 const numLevels = 2;
