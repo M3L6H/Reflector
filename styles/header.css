@@ -16,7 +16,11 @@
 }
 
 .money .icon {
-  color: yellow;
+  color: gold;
+}
+
+.enemies .icon {
+  color: green;
 }
 
 .pause-btn {

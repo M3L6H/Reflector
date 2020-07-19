@@ -28,10 +28,12 @@ class Map {
 
     document.getElementById("health").innerHTML = this.health;
     this.updateMoney();
-
+    
     this.enemies = [];
     this.spawnList = Object.assign({}, enemies);
     this.gameTime = 0;
+    this.enemyCounter = document.getElementById("enemies");
+    this.enemyCounter.innerHTML = Object.keys(this.spawnList).length;
 
     this.elapsed = 0;
     this.speed = 0.2;
@@ -217,6 +219,7 @@ class Map {
         const Enemy = this.getEnemyClass(num);
         this.enemies.push(new Enemy(this.paths[spawn], unit));
         delete this.spawnList[time];
+        this.enemyCounter.innerHTML = Object.keys(this.spawnList).length;
       }
     }
   }
