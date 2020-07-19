@@ -6,4 +6,5 @@ table, tr, td, thead, tbody {
   font-size: inherit;
   background: transparent;
   border: none;
+  font-family: "Noto Sans JP", sans-serif;
 }

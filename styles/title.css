@@ -13,3 +13,7 @@
   display: block;
   text-align: center;
 }
+
+.title, .subtitle {
+  font-weight: 900;
+}
