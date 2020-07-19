@@ -20,7 +20,8 @@ class Map {
   constructor({ map, paths, health, money, enemies }, unit, width, height) {
     this.unit = unit;
 
-    this.health = health;
+    this.maxHealth = health;
+    this.health = this.maxHealth;
     this.money = money;
     this.paths = paths;
     this.map = this.generateMap(map);

@@ -3,7 +3,7 @@ import Enemy from './enemy.js';
 export default class Speeder extends Enemy {
   constructor(path, unit) {
     super(path, unit);
-    this.speed = 75;
+    this.speed = 90;
     this.currentSpeed = this.speed;
 
     this.maxHealth = 200;

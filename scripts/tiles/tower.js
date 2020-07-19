@@ -50,8 +50,8 @@ class Tower extends Tile {
         break;
       case "green":
         this.speed = 1.4;
-        this.damage = 15;
-        this.pen = 5;
+        this.damage = 5;
+        this.pen = 30;
         this.poison = 1;
         this.laserWidth = unit / 8;
         this.laserColor = "rgba(134, 205, 130, 0.8)";
