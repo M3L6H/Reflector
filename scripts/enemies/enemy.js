@@ -72,8 +72,8 @@ class Enemy {
 
     const [dirX, dirY] = normalize([targetX - this.x, targetY - this.y]);
     
-    this.x += dirX * delta * this.currentSpeed / 500;
-    this.y += dirY * delta * this.currentSpeed / 500;
+    this.x += dirX * delta * this.currentSpeed / 500 * unit / 43;
+    this.y += dirY * delta * this.currentSpeed / 500 * unit / 43;
 
     if (Math.sign(targetX - this.x) !== Math.sign(dirX)) {
       this.x = targetX;

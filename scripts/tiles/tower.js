@@ -180,7 +180,7 @@ class Tower extends Tile {
     }
   }
 
-  drawLaserBolts({ ctx, delta }) {
+  drawLaserBolts({ ctx, delta, unit }) {
     for (let i = 0; i < this.laserBolts.length; ++i) {
       const that = this.laserBolts[i];
 
@@ -188,8 +188,8 @@ class Tower extends Tile {
   
       const [dirX, dirY] = normalize([target.x - that.pos.x, target.y - that.pos.y]);
       
-      that.pos.x += dirX * delta;
-      that.pos.y += dirY * delta;
+      that.pos.x += dirX * delta * unit / 43;
+      that.pos.y += dirY * delta * unit / 43;
   
       // Correct overshooting
       if (Math.sign(target.x - that.pos.x) !== Math.sign(dirX)) {
