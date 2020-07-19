@@ -3,7 +3,7 @@ import Enemy from './enemy.js';
 export default class Tank extends Enemy {
   constructor(path, unit) {
     super(path, unit);
-    this.speed = 15;
+    this.speed = 14;
     this.currentSpeed = this.speed;
 
     this.maxHealth = 500;

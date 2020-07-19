@@ -27,7 +27,7 @@ class Tower extends Tile {
 
     switch(color) {
       case "blue":
-        this.speed = 0.8;
+        this.speed = 0.7;
         this.damage = 15;
         this.pen = 0;
         this.slow = 0.5;

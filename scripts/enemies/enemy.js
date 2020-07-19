@@ -38,7 +38,7 @@ class Enemy {
     if (slow !== 1) {
       this.currentSpeed = this.speed * slow;
       if (this.timeout) clearTimeout(this.timeout);
-      this.timeout = setTimeout(() => this.currentSpeed = this.speed, 1000);
+      this.timeout = setTimeout(() => this.currentSpeed = this.speed, 2000);
     }
     this.health -= Math.max(0, dmg - Math.max(0, this.armor - pen));
 

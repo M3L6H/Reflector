@@ -17,7 +17,7 @@ class Renderer {
     this.height = height;
     this.setUpLevelSelect = setUpLevelSelect;
     this.gameOver = false;
-    this.level = localStorage.getItem("level") || 0;
+    this.level = parseInt(localStorage.getItem("level")) || 0;
     
     this.map = new Map(levels[this.level], unit, width, height);
     this.ui = new UI(canvas, unit, this.map.money);
@@ -31,6 +31,7 @@ class Renderer {
   }
 
   changeLevel(level) {
+    this.level = parseInt(level);
     localStorage.setItem("level", level);
     location.reload();
   }
@@ -85,7 +86,8 @@ class Renderer {
 
       if (!this.gameOver) {
         this.gameOver = true;
-        localStorage.setItem(`level-${ this.level + 1 }`, stars);
+        const currentStars = localStorage.getItem(`level-${ this.level + 1 }`) || 0;
+        localStorage.setItem(`level-${ this.level + 1 }`, Math.max(stars, parseInt(currentStars)));
         this.setUpLevelSelect();
       }
       return;
