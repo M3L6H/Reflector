@@ -17,7 +17,7 @@ class Renderer {
     this.height = height;
     this.setUpLevelSelect = setUpLevelSelect;
     this.gameOver = false;
-    this.level = 0;
+    this.level = localStorage.getItem("level") || 0;
     
     this.map = new Map(levels[this.level], unit, width, height);
     this.ui = new UI(canvas, unit, this.map.money);
@@ -31,10 +31,8 @@ class Renderer {
   }
 
   changeLevel(level) {
-    this.level = level;
-    this.gameOver = false;
-    this.map = new Map(levels[level], this.unit, this.width, this.height);
-    this.ui = new UI(this.canvas, this.unit, this.map.money);
+    localStorage.setItem("level", level);
+    location.reload();
   }
 
   render(detail) {
@@ -92,7 +90,7 @@ class Renderer {
       }
       return;
     }
-    
+
     this.map.update(detail);
     this.ui.update(detail, this.map.money);
     const physicsEvent = new CustomEvent("PhysicsUpdate", { detail });

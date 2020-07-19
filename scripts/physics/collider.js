@@ -32,7 +32,9 @@ class Collider {
     this.updateVertices();
     this.updateLayers();
 
-    document.addEventListener("PhysicsUpdate", debouncer(({ detail }) => this.update(detail), 17));
+    this.updateDebounced = debouncer(({ detail }) => this.update(detail), 17);
+
+    document.addEventListener("PhysicsUpdate", this.updateDebounced);
   }
 
   update({ debug, ctx }) {
@@ -104,6 +106,7 @@ class Collider {
   remove() {
     const idx = Collider.layers[this.layer].indexOf(this);
     Collider.layers[this.layer].splice(idx, 1);
+    document.removeEventListener("PhysicsUpdate", this.updateDebounced);
   }
 
   // Implementation of Separated Axis Theorem
