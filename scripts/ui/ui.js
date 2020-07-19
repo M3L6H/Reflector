@@ -14,6 +14,7 @@ class UI {
     this.hovering = null;
 
     this.canvas.addEventListener("click", this.handleClick.bind(this));
+    this.canvas.addEventListener("contextmenu", this.handleClick.bind(this));
     this.canvas.addEventListener("mousemove", debouncer(this.hover.bind(this), 100));
     document.addEventListener("TowerMenu", this.handleTowerMenu.bind(this));
     document.addEventListener("PlaceTower", () => this.zIndex = 2);
@@ -50,6 +51,7 @@ class UI {
   }
 
   handleClick(e) {
+    e.preventDefault();
     const rect = this.canvas.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;

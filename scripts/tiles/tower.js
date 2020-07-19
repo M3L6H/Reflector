@@ -75,8 +75,18 @@ class Tower extends Tile {
     this.calculateBounce = debouncer(this.calculateBounce.bind(this), 17);
 
     this.lockIn = this.lockIn.bind(this);
+    this.cancel = this.cancel.bind(this);
 
     document.addEventListener("click", this.lockIn);
+    document.addEventListener("contextmenu", this.cancel);
+  }
+
+  cancel(e) {
+    e.preventDefault();
+
+    if (!this.aimed) {
+      document.dispatchEvent(new CustomEvent("RefundTower", { detail: this }));
+    }
   }
 
   lockIn() {
@@ -100,6 +110,7 @@ class Tower extends Tile {
       }
       
       document.removeEventListener("click", this.lockIn);
+      document.removeEventListener("contextmenu", this.cancel);
     }
   }
 

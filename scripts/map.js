@@ -45,6 +45,7 @@ class Map {
 
     document.addEventListener("PlaceTower", ({ detail: { pos, color } }) => this.placeTower(pos.x, pos.y, color));
     document.addEventListener("SellTower", ({ detail: tower }) => this.sellTower(tower));
+    document.addEventListener("RefundTower", ({ detail: tower }) => this.sellTower(tower, 1));
     document.addEventListener("PlayerDamage", ({ detail: enemy }) => {
       this.health -= 1;
       document.getElementById("health").innerHTML = this.health;
@@ -116,10 +117,10 @@ class Map {
     this.towers.push(tower);
   }
 
-  sellTower(tower) {
+  sellTower(tower, refund=0.5) {
     tower.button.remove();
     const price = this.priceFromColor(tower.color);
-    this.money += price / 2;
+    this.money += price * refund;
     this.updateMoney();
 
     const placeable = new Placeable(tower.x, tower.y, this.unit);
