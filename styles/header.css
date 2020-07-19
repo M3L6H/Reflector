@@ -11,6 +11,15 @@
   padding-right: 1rem;
 }
 
+.right-group {
+  display: flex;
+  align-items: center;
+}
+
+.right-group > * {
+  padding-left: 1rem;
+}
+
 .health .icon {
   color: red;
 }
@@ -25,4 +34,6 @@
 
 .pause-btn {
   cursor: pointer;
+  display: flex;
+  align-items: center;
 }

@@ -1,0 +1,21 @@
+.button {
+  font-size: 1rem;
+  padding: 0.5rem 0.75rem;
+  padding-right: 1rem;
+  cursor: pointer;
+  background: #aaaaaa;
+  text-align: center;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  color: black;
+}
+
+.button:hover {
+  filter: brightness(80%);
+}
+
+#reset {
+  background-color: crimson;
+  color: white;
+}
