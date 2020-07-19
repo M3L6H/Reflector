@@ -37,3 +37,7 @@
   display: flex;
   align-items: center;
 }
+
+.pause-btn:hover {
+  color: chartreuse;
+}

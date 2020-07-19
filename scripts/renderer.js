@@ -21,6 +21,11 @@ class Renderer {
     this.ui = new UI(canvas, unit, this.map.money);
 
     document.addEventListener("Update", ({ detail }) => this.render(detail));
+
+    const restartButton = document.getElementById("restart-btn");
+    restartButton.addEventListener("click", () => {
+      this.changeLevel(this.level);
+    });
   }
 
   changeLevel(level) {

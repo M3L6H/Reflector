@@ -120,12 +120,19 @@ const render = (time) => {
     
     const update = new CustomEvent("Update", { detail: { canvas, delta, ctx, width, height, unit, mouseX, mouseY, debug } });
     document.dispatchEvent(update);
-
-    window.requestAnimationFrame(render);
   } else {
     ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
     ctx.fillRect(0, 0, width, height);
+    ctx.save();
+    ctx.font = "24px sans-serif";
+    ctx.fillStyle = "#FFFFFF";
+    ctx.textAlign = "center";
+    ctx.translate(width / 2, height / 2);
+    ctx.fillText("Paused", 0, 0);
+    ctx.restore();
   }
+
+  window.requestAnimationFrame(render);
 };
 
 document.addEventListener("DOMContentLoaded", () => {
