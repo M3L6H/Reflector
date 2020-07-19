@@ -1,8 +1,14 @@
 #levels {
   width: 100%;
+  display: flex;
 }
 
 .level {
   cursor: pointer;
   padding-left: 1rem;
+}
+
+.level.locked {
+  opacity: 0.5;
+  cursor: default;
 }

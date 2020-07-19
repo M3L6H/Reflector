@@ -72,17 +72,24 @@ const initialize = () => {
   window.requestAnimationFrame(render);
 };
 
-const numLevels = 1;
+const numLevels = 2;
 const setUpLevelSelect = () => {
   const levels = document.getElementById("levels");
   levels.innerHTML = "";
 
+  let lastNumStars = 3;
+
   for (let i = 0; i < numLevels; ++i) {
     const level = document.createElement('div');
     level.classList.add("level");
-    level.addEventListener("click", () => {
-      renderer.changeLevel(i);
-    });
+
+    if (lastNumStars !== 0) {
+      level.addEventListener("click", () => {
+        renderer.changeLevel(i);
+      });
+    } else {
+      level.classList.add("locked");
+    }
 
     const image = document.createElement("img");
     image.classList.add("level-thumb");
@@ -94,6 +101,7 @@ const setUpLevelSelect = () => {
     stars.classList.add("stars");
 
     const numStars = localStorage.getItem(`level-${ i + 1 }`) || 0;
+    lastNumStars = numStars;
 
     for (let i = 0; i < numStars; ++i) {
       const star = document.createElement("img");

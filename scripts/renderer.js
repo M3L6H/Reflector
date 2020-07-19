@@ -1,9 +1,11 @@
 import Map from './map.js';
 import Level1 from '../maps/01.js';
+import Level2 from '../maps/02.js';
 import UI from './ui/ui.js';
 
 const levels = [
-  Level1
+  Level1,
+  Level2
 ];
 
 // Handles the rendering order. Keeps index clean
@@ -17,7 +19,7 @@ class Renderer {
     this.gameOver = false;
     this.level = 0;
     
-    this.map = new Map(Level1, unit, width, height);
+    this.map = new Map(levels[this.level], unit, width, height);
     this.ui = new UI(canvas, unit, this.map.money);
 
     document.addEventListener("Update", ({ detail }) => this.render(detail));
