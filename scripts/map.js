@@ -215,7 +215,7 @@ class Map {
     });
 
     for (let time in this.spawnList) {
-      if (parseInt(time) <= this.gameTime) {
+      if (parseInt(time) + 5000 <= this.gameTime) {
         const [spawn, num] = this.spawnList[time];
         const Enemy = this.getEnemyClass(num);
         this.enemies.push(new Enemy(this.paths[spawn], unit));
