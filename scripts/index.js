@@ -23,7 +23,7 @@ const initialize = () => {
     root.appendChild(createErrorMsg("your screen is not wide enough to play this game!"));
     return;
   } else {
-    unit = Math.min(Math.floor(winWidth / 20), Math.floor(winHeight / 12));
+    unit = Math.min(Math.floor(winWidth / 20), Math.floor(winHeight / 14));
     const usableWidth = unit * 20;
     const targetHeight = unit * 12;
   
@@ -70,6 +70,7 @@ const initialize = () => {
   const init = new CustomEvent("Init", { detail: { unit, width, height, canvas } });
   document.dispatchEvent(init);
   window.requestAnimationFrame(render);
+  console.log(unit);
 };
 
 const numLevels = 2;
