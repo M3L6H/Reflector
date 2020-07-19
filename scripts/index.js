@@ -54,6 +54,13 @@ const initialize = () => {
   pauseBtn = document.getElementById("pause-btn");
   pauseBtn.addEventListener("click", () => togglePause());
   window.addEventListener("blur", () => togglePause(true));
+
+  // Set up help button
+  const helpBtn = document.getElementById("help-btn");
+  helpBtn.addEventListener("click", () => {
+    togglePause(true);
+    location.hash = "#instructions";
+  });
   
   // Let all the elements of the game know we have finished initialization
   const init = new CustomEvent("Init", { detail: { unit, width, height, canvas } });
