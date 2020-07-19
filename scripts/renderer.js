@@ -18,6 +18,8 @@ class Renderer {
     this.setUpLevelSelect = setUpLevelSelect;
     this.gameOver = false;
     this.level = parseInt(localStorage.getItem("level")) || 0;
+    this.star = new Image();
+    this.star.src = "https://upload.wikimedia.org/wikipedia/commons/6/63/Star%2A.svg";
     
     this.map = new Map(levels[this.level], unit, width, height);
     this.ui = new UI(canvas, unit, this.map.money);
@@ -49,7 +51,6 @@ class Renderer {
       ctx.fillText("You Lost.", 0, 0);
       ctx.fillText("Please select a level from the list to play again.", 0, 24);
       ctx.restore();
-      return;
     }
 
     if (this.map.enemies.length === 0 && Object.keys(this.map.spawnList).length === 0) {
@@ -66,19 +67,10 @@ class Renderer {
       ctx.fillText("You Won!", 0, 0);
       ctx.fillText("Please select another level from the list below.", 0, 48);
 
-      for (let i = 0; i < 3; ++i) {
-        ctx.fillStyle = i < stars ? "#F5EC42" : "rgba(0, 0, 0, 0)";
-        ctx.strokeStyle = "#000000";
+      for (let i = 0; i < stars; ++i) {
         ctx.save();
         ctx.translate(i < 1 ? -30 : (i > 1 ? 30 : 0), 14);
-        ctx.beginPath();
-        ctx.moveTo(0, -12);
-        ctx.lineTo(8, 12);
-        ctx.lineTo(-12, -2);
-        ctx.lineTo(12, -2);
-        ctx.lineTo(-8, 12);
-        ctx.lineTo(0, -12);
-        ctx.fill();
+        ctx.drawImage(this.star, -12, -12, 24, 24);
         ctx.stroke();
         ctx.restore();
       }
@@ -90,13 +82,12 @@ class Renderer {
         localStorage.setItem(`level-${ this.level + 1 }`, Math.max(stars, parseInt(currentStars)));
         this.setUpLevelSelect();
       }
-      return;
     }
 
-    this.map.update(detail);
-    this.ui.update(detail, this.map.money);
+    this.map.update({ ...detail, paused: this.gameOver });
+    this.ui.update({ ...detail, paused: this.gameOver }, this.map.money);
 
-    if (!detail.paused) {
+    if (!detail.paused && !this.gameOver) {
       const physicsEvent = new CustomEvent("PhysicsUpdate", { detail });
       document.dispatchEvent(physicsEvent);
     }
