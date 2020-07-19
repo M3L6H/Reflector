@@ -92,7 +92,9 @@ const setUpLevelSelect = () => {
     const stars = document.createElement("div");
     stars.classList.add("stars");
 
-    for (let i = 0; i < 3; ++i) {
+    const numStars = localStorage.getItem(`level-${ i + 1 }`) || 0;
+
+    for (let i = 0; i < numStars; ++i) {
       const star = document.createElement("img");
       star.classList.add("star");
       star.src = "./images/star.svg";
