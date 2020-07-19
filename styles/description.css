@@ -1,5 +1,8 @@
 .description {
   padding: 0 1rem;
+  margin: 0 auto;
+  max-width: 720px;
+  box-sizing: content-box;
 }
 
 .description p {

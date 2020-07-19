@@ -15,11 +15,10 @@
     <h1 class="title">Reflector</h1>
     <div class="description">
       <p>Welcome to Reflector! Reflector is a tower defense game where the towers all shoot lasers. Your goal is to position and aim your lasers in such a way that they reflect off the silver reflectors around the map and destroy your enemies.</p>
-      <p>Red lasers are your basic lasers. They do medium damage and have an average armor pierce. They also have an average fire rate.</p>
-      <p>Blue lasers are slower than red lasers and do less damage. However, they slow the enemy for two seconds. Very useful.</p>
-      <p>Yellow lasers are constant beams. They do more damage than red lasers but have no pierce, making them weak against armored units.</p>
-      <p>Green lasers are also beams but they have a cooldown period. They don't do as much damage as yellow lasers, but they have high pierce and cause a poison effect. Very useful against heavily armored units.</p>
-      <p>You can find a summary of the different enemy types in the table below.</p>
+      <p>Click on the blue tiles will open the tower selection ring. Choose one of the four towers. You will then need to aim it. If you wish to cancel, simply right click while aiming.</p>
+      <p>You can sell a tower at any point by clicking on it. You will recoup half its original cost.</p>
+      <p>Selling unused towers to place down other towers is an important strategy!</p>
+      <p>See below for more information</p>
     </div>
     <div class="header">
       <div class="left-group">
@@ -48,6 +47,14 @@
     </div>
     <div id="canvas"></div>
     <div id="levels"></div>
+    <h2 class="subtitle">Towers</h2>
+    <div class="description">
+      <p>Red lasers are your basic lasers. They do medium damage and have an average armor pierce. They also have an average fire rate.</p>
+      <p>Blue lasers are slower than red lasers and do less damage. However, they slow the enemy for two seconds. Very useful.</p>
+      <p>Yellow lasers are constant beams. They do more damage than red lasers but have no pierce, making them weak against armored units.</p>
+      <p>Green lasers are also beams but they have a cooldown period. They don't do as much damage as yellow lasers, but they have high pierce and cause a poison effect. Very useful against heavily armored units.</p>
+    </div>
+    <h2 class="subtitle">Enemies</h2>
     <table class="enemies">
       <thead>
         <tr>
@@ -78,6 +85,16 @@
         </tr>
       </tbody>
     </table>
+    <h2 class="subtitle">Tips</h2>
+    <div class="description">
+      <p>Reflector is a very hard game. It takes a lot of patience and trial end error to find the right positions and combinations of towers, so don't give up!</p>
+      <p>An important concept is the idea of selling and repositioning towers. Many of the levels are designed around this concept. Keep it in mind!</p>
+      <p>Another important idea is the notion of armor. Yellow and blue towers have no pierce, so they are completely ineffective against heavily armored units. Green towers cause poison, which is good if you can get it on the armored units early. However, shot for shot, red towers do more damage to armored units.</p>
+      <p>Maps in Reflector are designed to prevent players from shooting a laser straight down a path. However, in some cases there are clever ways to reflect lasers so that they end up shooting down a path. Take advantage of these positions!</p>
+      <p>Poison does not stack. Once it has been applied, it will stay on that unit for the rest of the time they are on the map.</p>
+      <p>Be careful overlapping tower shots. If two towers hit an enemy <em>at the same time</em>, only one of them will do damage. As such, it is advantageous to aim your towers so that they cover different parts of the map.</p>
+      <p>It is not necessary to get three stars to progress. Surviving with one hit point is enough to unlock the next level. However, many levels assume knowledge of concepts from previous levels. If you find yourself stuck, try redoing previous levels to get three stars on them.</p>
+    </div>
   </div>
 </body>
 </html>
