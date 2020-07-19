@@ -7,13 +7,15 @@ const createErrorMsg = (body) => {
   return msg;
 }
 
-let canvas, ctx, width, height, unit, mouseX, mouseY;
+let canvas, ctx, width, height, unit, mouseX, mouseY, renderer;
 let debug = false;
 let paused = false;
 
 // Initialization
 const initialize = () => {
-  const root = document.getElementById("root");
+  setUpLevelSelect();
+  
+  const root = document.getElementById("canvas");
   
   const winWidth = window.innerWidth, winHeight = window.innerHeight;
   
@@ -70,9 +72,29 @@ const initialize = () => {
   window.requestAnimationFrame(render);
 };
 
-let start = 0;
+const numLevels = 1;
+const setUpLevelSelect = () => {
+  const levels = document.getElementById("levels");
+
+  for (let i = 0; i < numLevels; ++i) {
+    const level = document.createElement('div');
+    level.classList.add("level");
+    level.addEventListener("click", () => {
+      renderer.changeLevel(i);
+    });
+
+    const image = document.createElement("img");
+    image.classList.add("level-thumb");
+    image.src = `./maps/${ (i + 1).toString().padStart(2, "0") }.png`;
+
+    level.appendChild(image);
+    
+    levels.appendChild(level);
+  }
+}
 
 // Render loop
+let start = 0;
 const render = (time) => {
   const delta = (!start && 0) + (start && (time - start));
   start = time;
@@ -96,5 +118,5 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("Init", ({ detail: { unit, canvas, width, height } }) => {
-  new Renderer(unit, canvas, width, height);
+  renderer = new Renderer(unit, canvas, width, height);
 });

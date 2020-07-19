@@ -29,7 +29,7 @@ class Map {
     this.updateMoney();
 
     this.enemies = [];
-    this.spawnList = enemies;
+    this.spawnList = Object.assign({}, enemies);
     this.gameTime = 0;
 
     this.elapsed = 0;
@@ -46,7 +46,6 @@ class Map {
       this.health -= 1;
       document.getElementById("health").innerHTML = this.health;
       this.removeEnemy(enemy);
-      // TODO: game over
     });
 
     document.addEventListener("EarnMoney", ({ detail: enemy }) => {

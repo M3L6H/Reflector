@@ -1,0 +1,8 @@
+#levels {
+  width: 100%;
+}
+
+.level {
+  cursor: pointer;
+  padding-left: 1rem;
+}
