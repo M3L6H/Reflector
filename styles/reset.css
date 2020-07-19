@@ -7,4 +7,6 @@ table, tr, td, thead, tbody {
   background: transparent;
   border: none;
   font-family: "Noto Sans JP", sans-serif;
+  text-decoration: none;
+  color: black;
 }

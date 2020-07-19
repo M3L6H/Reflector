@@ -1,0 +1,27 @@
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  background: white;
+  border-top: 1px solid lightgrey;
+
+  display: flex;
+  justify-content: space-around;
+
+  font-size: 0.8rem;
+}
+
+.right-group, .left-group {
+  margin: 0.5rem;
+}
+
+.right-group a {
+  padding-right: 0.25rem;
+  cursor: pointer;
+  color: darkgreen;
+}
+
+.right-group a:hover {
+  text-decoration: underline;
+}
