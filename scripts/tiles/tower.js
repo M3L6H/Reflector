@@ -14,8 +14,7 @@ class Tower extends Tile {
     this.aimed = false;
     this.emitting = true;
     this.color = color;
-    const layer = this.color === "yellow" ? "beam" : "ray";
-    this.ray = new Ray(new Vector(x + unit / 2, y + unit / 2), new Vector(0, 0), layer);
+    this.ray = new Ray(new Vector(x + unit / 2, y + unit / 2), new Vector(0, 0), "ray");
     this.laserBolts = [];
     this.colliders = [];
     this.button = new Button(new Vector(x, y), [new Vector(0, 0), new Vector(unit, 0), new Vector(unit, unit), new Vector(0, unit)], 0, () => {
