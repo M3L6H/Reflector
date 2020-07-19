@@ -86,8 +86,8 @@ class Renderer {
       }
     }
 
-    this.map.update({ ...detail, paused: this.gameOver });
-    this.ui.update({ ...detail, paused: this.gameOver }, this.map.money);
+    this.map.update({ ...detail, paused: this.gameOver || detail.paused });
+    this.ui.update({ ...detail, paused: this.gameOver || detail.paused }, this.map.money);
 
     if (!detail.paused && !this.gameOver) {
       const physicsEvent = new CustomEvent("PhysicsUpdate", { detail });
