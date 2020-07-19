@@ -18,9 +18,17 @@ footer {
 }
 
 .right-group a {
-  padding-right: 0.25rem;
+  padding-left: 0.25rem;
   cursor: pointer;
   color: darkgreen;
+}
+
+.right-group span {
+  padding-left: 1rem;
+}
+
+.left-group span {
+  padding-right: 1rem;
 }
 
 .right-group a:hover {
