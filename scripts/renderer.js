@@ -8,11 +8,14 @@ const levels = [
 
 // Handles the rendering order. Keeps index clean
 class Renderer {
-  constructor(unit, canvas, width, height) {
+  constructor(unit, canvas, width, height, setUpLevelSelect) {
     this.unit = unit;
     this.canvas = canvas;
     this.width = width;
     this.height = height;
+    this.setUpLevelSelect = setUpLevelSelect;
+    this.gameOver = false;
+    this.level = 0;
     
     this.map = new Map(Level1, unit, width, height);
     this.ui = new UI(canvas, unit, this.map.money);
@@ -21,6 +24,8 @@ class Renderer {
   }
 
   changeLevel(level) {
+    this.level = level;
+    this.gameOver = false;
     this.map = new Map(levels[level], this.unit, this.width, this.height);
     this.ui = new UI(this.canvas, this.unit, this.map.money);
   }
@@ -72,6 +77,12 @@ class Renderer {
         ctx.restore();
       }
       ctx.restore();
+
+      if (!this.gameOver) {
+        this.gameOver = true;
+        localStorage.setItem(`level-${ this.level + 1 }`, stars);
+        this.setUpLevelSelect();
+      }
       return;
     }
     

@@ -75,6 +75,7 @@ const initialize = () => {
 const numLevels = 1;
 const setUpLevelSelect = () => {
   const levels = document.getElementById("levels");
+  levels.innerHTML = "";
 
   for (let i = 0; i < numLevels; ++i) {
     const level = document.createElement('div');
@@ -132,5 +133,5 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("Init", ({ detail: { unit, canvas, width, height } }) => {
-  renderer = new Renderer(unit, canvas, width, height);
+  renderer = new Renderer(unit, canvas, width, height, setUpLevelSelect);
 });
