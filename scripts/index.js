@@ -137,7 +137,7 @@ const render = (time) => {
     ctx.fillRect(0, 0, width, height);
   } else if (justPaused) {
     justPaused = false;
-    ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
+    ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
     ctx.fillRect(0, 0, width, height);
     ctx.save();
     ctx.font = "24px sans-serif";
