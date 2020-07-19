@@ -88,6 +88,18 @@ const setUpLevelSelect = () => {
     image.src = `./maps/${ (i + 1).toString().padStart(2, "0") }.png`;
 
     level.appendChild(image);
+
+    const stars = document.createElement("div");
+    stars.classList.add("stars");
+
+    for (let i = 0; i < 3; ++i) {
+      const star = document.createElement("img");
+      star.classList.add("star");
+      star.src = "./images/star.svg";
+      stars.appendChild(star);
+    }
+
+    level.appendChild(stars);
     
     levels.appendChild(level);
   }
