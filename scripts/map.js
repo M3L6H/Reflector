@@ -7,14 +7,17 @@ import Void from './tiles/void.js';
 import Reflector from './tiles/reflector.js';
 import Tower from './tiles/tower.js';
 
-import Enemy from './enemies/enemy.js';
+import Normal from './enemies/enemy.js';
+import Tank from './enemies/tank.js';
+import Speeder from './enemies/speeder.js';
+
 import Collider from './physics/collider.js';
 import Vector from './physics/vector.js';
 
 import * as Constants from './util/constants.js';
 
 class Map {
-  constructor({ map, paths, health, money }, unit, width, height) {
+  constructor({ map, paths, health, money, enemies }, unit, width, height) {
     this.unit = unit;
 
     this.health = health;
@@ -25,9 +28,9 @@ class Map {
     document.getElementById("health").innerHTML = this.health;
     this.updateMoney();
 
-    this.enemies = [
-      new Enemy(Object.values(this.paths)[0], unit)
-    ];
+    this.enemies = [];
+    this.spawnList = enemies;
+    this.gameTime = 0;
 
     this.elapsed = 0;
     this.speed = 0.2;
@@ -51,6 +54,17 @@ class Map {
       this.updateMoney();
       this.removeEnemy(enemy);
     });
+  }
+
+  getEnemyClass(num) {
+    switch(num) {
+      case 1:
+        return Tank;
+      case 2:
+        return Speeder;
+      default:
+        return Normal;
+    }
   }
 
   removeEnemy(enemy) {
@@ -179,6 +193,7 @@ class Map {
 
   update({ delta, unit, ctx }) {
     this.elapsed = (this.elapsed + delta * this.speed) % 1000;
+    this.gameTime += delta;
 
     this.map.forEach(row => {
       row.forEach(tile => tile.update(...arguments))
@@ -195,6 +210,15 @@ class Map {
     this.towers.forEach(tower => {
       tower.drawLaser(...arguments)
     });
+
+    for (let time in this.spawnList) {
+      if (parseInt(time) <= this.gameTime) {
+        const [spawn, num] = this.spawnList[time];
+        const Enemy = this.getEnemyClass(num);
+        this.enemies.push(new Enemy(this.paths[spawn], unit));
+        delete this.spawnList[time];
+      }
+    }
   }
 }
 

@@ -10,12 +10,13 @@ class Enemy {
     this.currNode = 0;
     this.x = this.path[this.currNode][0] * unit;
     this.y = this.path[this.currNode][1] * unit;
-    this.speed = 20;
+    this.speed = 30;
+    this.currentSpeed = this.speed;
 
     this.collider = new Collider(new Vector(this.x + unit / 2, this.y + unit / 2), 0, [new Vector(-unit * 0.4, -unit * 0.4), new Vector(unit * 0.4, -unit * 0.4), new Vector(unit * 0.4, unit * 0.4), new Vector(-unit * 0.4, unit * 0.4)], "enemies", this);
 
     this.maxHealth = 100;
-    this.health = 100;
+    this.health = this.maxHealth;
     this.money = 10;
     this.armor = 0;
     this.flying = false;
@@ -35,12 +36,11 @@ class Enemy {
 
   damage(dmg, pen, poison=0, slow=1) {
     if (slow !== 1) {
-      const originalSpeed = this.speed;
-      this.speed *= slow;
+      this.currentSpeed = this.speed * slow;
       if (this.timeout) clearTimeout(this.timeout);
-      this.timeout = setTimeout(() => this.speed = originalSpeed, 1000);
+      this.timeout = setTimeout(() => this.currentSpeed = this.speed, 1000);
     }
-    this.health -= dmg - Math.max(0, this.armor - pen);
+    this.health -= Math.max(0, dmg - Math.max(0, this.armor - pen));
 
     if (poison !== 0 && !this.interval) {
       this.interval = setInterval(() => this.health -= poison, 100);
@@ -72,8 +72,8 @@ class Enemy {
 
     const [dirX, dirY] = normalize([targetX - this.x, targetY - this.y]);
     
-    this.x += dirX * delta * this.speed / 500;
-    this.y += dirY * delta * this.speed / 500;
+    this.x += dirX * delta * this.currentSpeed / 500;
+    this.y += dirY * delta * this.currentSpeed / 500;
 
     if (Math.sign(targetX - this.x) !== Math.sign(dirX)) {
       this.x = targetX;
