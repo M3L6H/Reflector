@@ -4,6 +4,9 @@
 
 .enemies thead {
   background: #444;
+}
+
+.enemies thead td {
   color: white;
 }
 
