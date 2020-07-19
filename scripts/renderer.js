@@ -95,8 +95,11 @@ class Renderer {
 
     this.map.update(detail);
     this.ui.update(detail, this.map.money);
-    const physicsEvent = new CustomEvent("PhysicsUpdate", { detail });
-    document.dispatchEvent(physicsEvent);
+
+    if (!detail.paused) {
+      const physicsEvent = new CustomEvent("PhysicsUpdate", { detail });
+      document.dispatchEvent(physicsEvent);
+    }
   }
 }
 

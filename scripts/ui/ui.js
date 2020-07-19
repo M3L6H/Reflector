@@ -12,6 +12,7 @@ class UI {
     this.money = money;
     this.towerMenu = new RadialMenu([], unit, 1, this.money);
     this.hovering = null;
+    this.paused = false;
 
     this.canvas.addEventListener("click", this.handleClick.bind(this));
     this.canvas.addEventListener("contextmenu", this.handleClick.bind(this));
@@ -22,6 +23,7 @@ class UI {
   }
 
   hover(e) {
+    if (this.paused) return;
     const rect = this.canvas.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
@@ -52,6 +54,7 @@ class UI {
 
   handleClick(e) {
     e.preventDefault();
+    if (this.paused) return;
     const rect = this.canvas.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
@@ -86,7 +89,10 @@ class UI {
     this.towerMenu.updatePos(pos);
   }
 
-  update(_, money) {
+  update({ paused }, money) {
+    this.paused = paused;
+    if (paused) return;
+    
     this.money = money;
     switch(this.zIndex) {
       case 1:

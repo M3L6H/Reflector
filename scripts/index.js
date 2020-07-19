@@ -119,17 +119,17 @@ const setUpLevelSelect = () => {
 
 // Render loop
 let start = 0;
+let justPaused = true;
 const render = (time) => {
   const delta = (!start && 0) + (start && (time - start));
   start = time;
 
   if (!paused) {
+    justPaused = true;
     ctx.fillStyle = "#D3D0CB";
     ctx.fillRect(0, 0, width, height);
-    
-    const update = new CustomEvent("Update", { detail: { canvas, delta, ctx, width, height, unit, mouseX, mouseY, debug } });
-    document.dispatchEvent(update);
-  } else {
+  } else if (justPaused) {
+    justPaused = false;
     ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
     ctx.fillRect(0, 0, width, height);
     ctx.save();
@@ -140,7 +140,9 @@ const render = (time) => {
     ctx.fillText("Paused", 0, 0);
     ctx.restore();
   }
-
+    
+  const update = new CustomEvent("Update", { detail: { canvas, delta, ctx, width, height, unit, mouseX, mouseY, debug, paused } });
+  document.dispatchEvent(update);
   window.requestAnimationFrame(render);
 };
 

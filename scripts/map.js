@@ -194,7 +194,9 @@ class Map {
     }
   }
 
-  update({ delta, unit, ctx }) {
+  update({ delta, unit, ctx, paused }) {
+    if (paused) return;
+    
     this.elapsed = (this.elapsed + delta * this.speed) % 1000;
     this.gameTime += delta;
 
