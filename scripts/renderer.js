@@ -1,11 +1,13 @@
 import Map from './map.js';
 import Level1 from '../maps/01.js';
 import Level2 from '../maps/02.js';
+import Level3 from '../maps/03.js';
 import UI from './ui/ui.js';
 
 const levels = [
   Level1,
-  Level2
+  Level2,
+  Level3
 ];
 
 // Handles the rendering order. Keeps index clean

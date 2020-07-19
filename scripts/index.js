@@ -80,7 +80,7 @@ const togglePause = (opt) => {
   }
 };
 
-const numLevels = 2;
+const numLevels = 3;
 const setUpLevelSelect = () => {
   const levels = document.getElementById("levels");
   levels.innerHTML = "";
