@@ -12,6 +12,15 @@
 </head>
 <body>
   <div id="root">
+    <h1 class="title">Reflector</h1>
+    <div class="description">
+      <p>Welcome to Reflector! Reflector is a tower defense game where the towers all shoot lasers. Your goal is to position and aim your lasers in such a way that they reflect off the silver reflectors around the map and destroy your enemies.</p>
+      <p>Red lasers are your basic lasers. They do medium damage and have an average armor pierce. They also have an average fire rate.</p>
+      <p>Blue lasers are slower than red lasers and do less damage. However, they slow the enemy for two seconds. Very useful.</p>
+      <p>Yellow lasers are constant beams. They do more damage than red lasers but have no pierce, making them weak against armored units.</p>
+      <p>Green lasers are also beams but they have a cooldown period. They don't do as much damage as yellow lasers, but they have high pierce and cause a poison effect. Very useful against heavily armored units.</p>
+      <p>You can find a summary of the different enemy types in the table below.</p>
+    </div>
     <div class="header">
       <div class="left-group">
         <span class="money">
@@ -39,6 +48,36 @@
     </div>
     <div id="canvas"></div>
     <div id="levels"></div>
+    <table class="enemies">
+      <thead>
+        <tr>
+          <td>Enemy</td>
+          <td>Health</td>
+          <td>Speed</td>
+          <td>Armor</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Red</td>
+          <td>Low</td>
+          <td>Normal</td>
+          <td>None</td>
+        </tr>
+        <tr>
+          <td>Yellow</td>
+          <td>Medium</td>
+          <td>Very Fast</td>
+          <td>None</td>
+        </tr>
+        <tr>
+          <td>Green</td>
+          <td>High</td>
+          <td>Slow</td>
+          <td>Very High</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </body>
 </html>
