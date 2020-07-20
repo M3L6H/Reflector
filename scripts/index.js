@@ -158,5 +158,5 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("Init", ({ detail: { unit, canvas, width, height } }) => {
-  renderer = new Renderer(unit, canvas, width, height, setUpLevelSelect);
+  renderer = new Renderer(unit, canvas, width, height, setUpLevelSelect, togglePause);
 });

@@ -12,12 +12,14 @@ const levels = [
 
 // Handles the rendering order. Keeps index clean
 class Renderer {
-  constructor(unit, canvas, width, height, setUpLevelSelect) {
+  constructor(unit, canvas, width, height, setUpLevelSelect, togglePause) {
     this.unit = unit;
     this.canvas = canvas;
     this.width = width;
     this.height = height;
     this.setUpLevelSelect = setUpLevelSelect;
+    this.togglePause = togglePause;
+    this.started = false;
     this.gameOver = false;
     this.level = parseInt(localStorage.getItem("level")) || 0;
     this.star = new Image();
@@ -26,12 +28,21 @@ class Renderer {
     this.map = new Map(levels[this.level], unit, width, height);
     this.ui = new UI(canvas, unit, this.map.money);
 
+    this.start = this.start.bind(this);
+
+    this.canvas.addEventListener("click", this.start);
     document.addEventListener("Update", ({ detail }) => this.render(detail));
 
     const restartButton = document.getElementById("restart-btn");
     restartButton.addEventListener("click", () => {
       this.changeLevel(this.level);
     });
+  }
+
+  start() {
+    this.started = true;
+    this.togglePause(false);
+    this.canvas.removeEventListener("click", this.start);
   }
 
   changeLevel(level) {
@@ -41,9 +52,21 @@ class Renderer {
   }
 
   render(detail) {
+    const ctx = detail.ctx;
+
+    if (!this.started) {
+      ctx.save();
+      ctx.fillStyle = "rgba(0, 0, 0)";
+      ctx.fillRect(0, 0, detail.width, detail.height);
+      ctx.font = `${ detail.unit / 2 }px sans-serif`;
+      ctx.textAlign = "center";
+      ctx.fillStyle = "#FFFFFF";
+      ctx.fillText("Click to start", detail.width / 2, detail.height / 2);
+      ctx.restore();
+    }
+    
     if (this.map.health <= 0) {
       this.gameOver = true;
-      const ctx = detail.ctx;
       ctx.save();
       ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
       ctx.fillRect(0, 0, detail.width, detail.height);
@@ -57,7 +80,6 @@ class Renderer {
     }
 
     if (this.map.enemies.length === 0 && Object.keys(this.map.spawnList).length === 0) {
-      const ctx = detail.ctx;
       ctx.save();
       ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
       ctx.fillRect(0, 0, detail.width, detail.height);
@@ -87,8 +109,8 @@ class Renderer {
       }
     }
 
-    this.map.update({ ...detail, paused: this.gameOver || detail.paused });
-    this.ui.update({ ...detail, paused: this.gameOver || detail.paused }, this.map.money);
+    this.map.update({ ...detail, paused: this.gameOver || detail.paused || !this.started });
+    this.ui.update({ ...detail, paused: this.gameOver || detail.paused || !this.started }, this.map.money);
 
     if (!detail.paused && !this.gameOver) {
       const physicsEvent = new CustomEvent("PhysicsUpdate", { detail });
