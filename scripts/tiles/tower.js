@@ -244,7 +244,7 @@ class Tower extends Tile {
     } else {
       ctx.strokeStyle = "#FF0000";
       ctx.setLineDash([4, 15]);
-      ctx.lineWidth = 1;
+      ctx.lineWidth = 3;
 
       ctx.beginPath();
       ctx.moveTo(this.x + unit / 2, this.y + unit / 2);
