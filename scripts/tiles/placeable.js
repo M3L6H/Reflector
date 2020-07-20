@@ -6,9 +6,9 @@ import Collider from '../physics/collider.js';
 class Placeable extends Tile {
   constructor(x, y, unit) {
     super(x, y, unit);
-    this.colorLight = "#18344E";
-    this.color = "#13293D";
-    this.colorDark = "#0E1F2F";
+    this.colorLight = "#27537C";
+    this.color = "#22496D";
+    this.colorDark = "#1D3E5D";
     this.over = false;
     this.button = new Button(new Vector(x, y), [new Vector(0, 0), new Vector(0, unit), new Vector(unit, unit), new Vector(unit, 0)], 0, this.handleClick.bind(this));
     this.collider = new Collider(new Vector(x, y), 0, [new Vector(0, 0), new Vector(unit, 0), new Vector(unit, unit), new Vector(0, unit)], "obstacles");
