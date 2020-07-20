@@ -89,7 +89,7 @@ class UI {
     this.towerMenu.updatePos(pos);
   }
 
-  update({ paused }, money) {
+  update({ paused, ctx, unit }, money) {
     this.paused = paused;
     if (paused) return;
     
@@ -97,6 +97,14 @@ class UI {
     switch(this.zIndex) {
       case 1:
         this.towerMenu.update(...arguments, this.money);
+      case 2:
+        ctx.save();
+        ctx.font = `${ unit / 2 }px sans-serif`;
+        ctx.fillStyle = "#FFFFFF";
+        ctx.strokeStyle = "#000000";
+        ctx.fillText("Right click to cancel", unit, unit);
+        ctx.strokeText("Right click to cancel", unit, unit);
+        ctx.restore();
         break;
     }
   }
