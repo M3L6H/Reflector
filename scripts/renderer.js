@@ -42,6 +42,7 @@ class Renderer {
 
   render(detail) {
     if (this.map.health <= 0) {
+      this.gameOver = true;
       const ctx = detail.ctx;
       ctx.save();
       ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
