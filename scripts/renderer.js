@@ -42,12 +42,14 @@ class Renderer {
   start() {
     this.started = true;
     this.togglePause(false);
+    location.hash = "";
     this.canvas.removeEventListener("click", this.start);
   }
 
   changeLevel(level) {
     this.level = parseInt(level);
     localStorage.setItem("level", level);
+    location.hash = "";
     location.reload();
   }
 

@@ -75,6 +75,7 @@ const togglePause = (opt) => {
     pauseBtn.children[0].classList.remove("fa-pause");
     pauseBtn.children[0].classList.add("fa-play");
   } else {
+    location.hash = "";
     pauseBtn.children[0].classList.add("fa-pause");
     pauseBtn.children[0].classList.remove("fa-play");
   }
