@@ -71,6 +71,8 @@ class Map {
 
   handleTutorialClick() {
     if (this.paused) return;
+
+    if (this.tutorial === 2 && this.map[2][2] instanceof Placeable) return;
     
     this.tutorial += 1;
     localStorage.setItem("tutorial", this.tutorial);
@@ -287,7 +289,7 @@ class Map {
         ctx.textBaseline = "bottom";
         ctx.textAlign = "right";
         ctx.font = `${ unit / 4 }px sans-serif`;
-        ctx.fillText("Click to continue", width - unit * 2.5, unit * 3.5);
+        ctx.fillText("Place tower to continue", width - unit * 2.5, unit * 3.5);
 
         ctx.restore();
 
@@ -313,8 +315,9 @@ class Map {
 
     if (this.tutorial < Constants.TUTORIAL_END) {
       this.renderTutorial(...arguments);
-      return;
     }
+
+    if (this.tutorial < 3) return;
     
     this.elapsed = (this.elapsed + delta * this.speed) % 1000;
     this.gameTime += delta;
@@ -330,6 +333,8 @@ class Map {
     this.towers.forEach(tower => {
       tower.drawLaser(...arguments)
     });
+
+    if (this.tutorial < Constants.TUTORIAL_END) return;
 
     for (let time in this.spawnList) {
       if (parseInt(time) <= this.gameTime && this.elapsed % 500 < 300) {
