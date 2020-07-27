@@ -12,3 +12,8 @@
   opacity: 0.5;
   cursor: default;
 }
+
+.label {
+  font-size: 0.8rem;
+  text-align: center;
+}

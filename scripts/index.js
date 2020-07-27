@@ -100,6 +100,12 @@ const setUpLevelSelect = () => {
       level.classList.add("locked");
     }
 
+    const label = document.createElement("div");
+    label.classList.add("label");
+    label.innerHTML = `Level ${ i + 1 }`;
+
+    level.appendChild(label);
+
     const image = document.createElement("img");
     image.classList.add("level-thumb");
     image.src = `./maps/${ (i + 1).toString().padStart(2, "0") }.png`;
