@@ -25,7 +25,7 @@ class Renderer {
     this.star = new Image();
     this.star.src = "https://upload.wikimedia.org/wikipedia/commons/6/63/Star%2A.svg";
     
-    this.map = new Map(levels[this.level], unit, width, height);
+    this.map = new Map(levels[this.level], unit, width, height, canvas);
     this.ui = new UI(canvas, unit, this.map.money);
 
     this.start = this.start.bind(this);

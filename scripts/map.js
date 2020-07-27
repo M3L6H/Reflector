@@ -15,12 +15,21 @@ import Collider from './physics/collider.js';
 import Vector from './physics/vector.js';
 
 import * as Constants from './util/constants.js';
+import getLines from './util/get_lines.js';
 
 class Map {
-  constructor({ level, map, paths, health, money, enemies }, unit, width, height) {
+  constructor({ level, map, paths, health, money, enemies }, unit, width, height, canvas) {
     this.unit = unit;
 
     this.level = level;
+    this.tutorial = parseInt(localStorage.getItem("tutorial"));
+    this.canvas = canvas;
+    this.handleTutorialClick = this.handleTutorialClick.bind(this);
+
+    if (this.tutorial < Constants.TUTORIAL_END) {
+      setTimeout(() => canvas.addEventListener("click", this.handleTutorialClick), 1000);
+    }
+    
     this.map = this.generateMap(map);
     this.maxHealth = health;
     this.health = this.maxHealth;
@@ -58,6 +67,21 @@ class Map {
       this.updateMoney();
       this.removeEnemy(enemy);
     });
+  }
+
+  handleTutorialClick() {
+    if (this.paused) return;
+    
+    this.tutorial += 1;
+    localStorage.setItem("tutorial", this.tutorial);
+
+    if (this.tutorial === 2) {
+      this.map[2][2].setEnabled(true);
+    }
+    
+    if (this.tutorial >= Constants.TUTORIAL_END) {
+      this.canvas.removeEventListener("click", this.handleTutorialClick);
+    }
   }
 
   getEnemyClass(num) {
@@ -136,7 +160,7 @@ class Map {
   }
 
   generateMap(map) {
-    const tutorial = this.level === 1 && !localStorage.getItem("tutorial");
+    const tutorial = this.tutorial < Constants.TUTORIAL_END;
     
     return map.map((row, y) => {
       return row.map((code, x) => {
@@ -144,7 +168,7 @@ class Map {
           case 0b00000:
             return new Empty(x * this.unit, y * this.unit, this.unit);
           case 0b00001:
-            return new Placeable(x * this.unit, y * this.unit, this.unit, !(tutorial && (x !== 2 || y !== 2)));
+            return new Placeable(x * this.unit, y * this.unit, this.unit, !tutorial);
           case 0b00011:
             return new Spawner(x * this.unit, y * this.unit, this.unit);
           case 0b00101:
@@ -197,15 +221,103 @@ class Map {
     }
   }
 
+  renderLines(text, prevCount, numParas, ctx, unit, maxWidth) {
+    const lines = getLines(ctx, text, maxWidth);
+    lines.forEach((line, i) => {
+      ctx.fillText(line, unit / 2, unit / 2 + numParas * unit / 3 + ((i + prevCount) * unit / 3), maxWidth)
+    });
+    return lines.length;
+  }
+
+  renderTutorial({ unit, ctx, height, width }) {
+    let prevCount = 0;
+
+    switch(this.tutorial) {
+      case 0:
+        ctx.save();
+        ctx.translate(unit, height - unit * 5);
+        ctx.fillStyle = "#444444";
+        ctx.fillRect(0, 0, width - unit * 2, unit * 4);
+
+        ctx.font = `${ unit / 3 }px sans-serif`;
+        ctx.fillStyle = "#FFFFFF";
+        ctx.textBaseline = "top";
+        ctx.fillText("Welcome to Reflector!", unit / 2, unit / 2, width - unit * 3);
+        prevCount = this.renderLines("Reflector is a tower defense game where the towers all shoot lasers. Your goal is to position and aim your lasers to reflect off the reflectors around the map and destroy your enemies.", prevCount, 2, ctx, unit, width - unit * 3);
+        prevCount = this.renderLines("Defeat all the enemies and you win, but let too many escape and you will lose. You can see the number of lives you have in the bar above.", prevCount, 3, ctx, unit, width - unit * 3);
+
+        ctx.textBaseline = "bottom";
+        ctx.textAlign = "right";
+        ctx.font = `${ unit / 4 }px sans-serif`;
+        ctx.fillText("Click to continue", width - unit * 2.5, unit * 3.5);
+        ctx.restore();
+        break;
+      case 1:
+        ctx.save();
+        ctx.translate(unit, height - unit * 5);
+        ctx.fillStyle = "#444444";
+        ctx.fillRect(0, 0, width - unit * 2, unit * 4);
+
+        ctx.font = `${ unit / 3 }px sans-serif`;
+        ctx.fillStyle = "#FFFFFF";
+        ctx.textBaseline = "top";
+        ctx.fillText("Enemies spawn at the green tile and try to get to the red tile.", unit / 2, unit / 2, width - unit * 3);
+        prevCount = this.renderLines("You can place towers on the blue tiles and the lasers they shoot will reflect off the silver edges. Black and white tiles are open space, but brown tiles will obstruct your lasers.", prevCount, 2, ctx, unit, width - unit * 3);
+        prevCount = this.renderLines("Let's try placing a tower now.", prevCount, 3, ctx, unit, width - unit * 3);
+
+        ctx.textBaseline = "bottom";
+        ctx.textAlign = "right";
+        ctx.font = `${ unit / 4 }px sans-serif`;
+        ctx.fillText("Click to continue", width - unit * 2.5, unit * 3.5);
+
+        ctx.restore();
+        break;
+      case 2:
+        ctx.save();
+        ctx.translate(unit, height - unit * 5);
+        ctx.fillStyle = "#444444";
+        ctx.fillRect(0, 0, width - unit * 2, unit * 4);
+
+        ctx.font = `${ unit / 3 }px sans-serif`;
+        ctx.fillStyle = "#FFFFFF";
+        ctx.textBaseline = "top";
+        ctx.fillText("Click on the indicated blue tile and select a red tower.", unit / 2, unit / 2, width - unit * 3);
+        prevCount = this.renderLines("Red towers are the most basic towers. They have an average fire rate, average damage, and average armor pierce. They are also the cheapest towers available.", prevCount, 2, ctx, unit, width - unit * 3);
+
+        ctx.textBaseline = "bottom";
+        ctx.textAlign = "right";
+        ctx.font = `${ unit / 4 }px sans-serif`;
+        ctx.fillText("Click to continue", width - unit * 2.5, unit * 3.5);
+
+        ctx.restore();
+
+        ctx.save();
+        ctx.translate(2 * unit, 2 * unit);
+        ctx.strokeStyle = "#FF0000";
+        ctx.lineWidth = unit / 8;
+        ctx.beginPath();
+        ctx.arc(unit / 2, unit / 2, unit / 2, 0, 2 * Math.PI);
+        ctx.stroke();
+        ctx.restore();
+        break;
+    }
+  }
+
   update({ delta, unit, ctx, paused }) {
+    this.paused = paused;
     if (paused) return;
-    
-    this.elapsed = (this.elapsed + delta * this.speed) % 1000;
-    this.gameTime += delta;
 
     this.map.forEach(row => {
       row.forEach(tile => tile.update(...arguments))
     });
+
+    if (this.tutorial < Constants.TUTORIAL_END) {
+      this.renderTutorial(...arguments);
+      return;
+    }
+    
+    this.elapsed = (this.elapsed + delta * this.speed) % 1000;
+    this.gameTime += delta;
 
     for (let i = 0; i < 10; ++i) {
       this.drawPath(ctx, unit, 8 * i);

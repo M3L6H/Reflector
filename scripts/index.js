@@ -13,6 +13,11 @@ let paused = false;
 
 // Initialization
 const initialize = () => {
+  // Set up tutorial
+  // if (!localStorage.getItem("tutorial")) {
+    localStorage.setItem("tutorial", 0);
+  // }
+  
   setUpLevelSelect();
   
   const root = document.getElementById("canvas");

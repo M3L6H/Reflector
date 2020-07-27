@@ -15,6 +15,10 @@ class Placeable extends Tile {
     this.button.enabled = enabled;
   }
 
+  setEnabled(enabled) {
+    this.button.enabled = enabled;
+  }
+
   removeButton() {
     this.button.remove();
     this.collider.remove();
