@@ -17,14 +17,15 @@ import Vector from './physics/vector.js';
 import * as Constants from './util/constants.js';
 
 class Map {
-  constructor({ map, paths, health, money, enemies }, unit, width, height) {
+  constructor({ level, map, paths, health, money, enemies }, unit, width, height) {
     this.unit = unit;
 
+    this.level = level;
+    this.map = this.generateMap(map);
     this.maxHealth = health;
     this.health = this.maxHealth;
     this.money = money;
     this.paths = paths;
-    this.map = this.generateMap(map);
 
     document.getElementById("health").innerHTML = this.health;
     this.updateMoney();
@@ -135,13 +136,15 @@ class Map {
   }
 
   generateMap(map) {
+    const tutorial = this.level === 1 && !localStorage.getItem("tutorial");
+    
     return map.map((row, y) => {
       return row.map((code, x) => {
         switch (code) {
           case 0b00000:
             return new Empty(x * this.unit, y * this.unit, this.unit);
           case 0b00001:
-            return new Placeable(x * this.unit, y * this.unit, this.unit);
+            return new Placeable(x * this.unit, y * this.unit, this.unit, !(tutorial && (x !== 2 || y !== 2)));
           case 0b00011:
             return new Spawner(x * this.unit, y * this.unit, this.unit);
           case 0b00101:
