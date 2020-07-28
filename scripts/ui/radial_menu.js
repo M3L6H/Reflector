@@ -54,6 +54,10 @@ class RadialMenu {
       this.buttons[0].enabled = false;
       this.buttons[2].enabled = false;
       this.buttons[3].enabled = false;
+    } else if (this.tutorial === Constants.TUTORIAL_YELLOW) {
+      this.buttons[0].enabled = false;
+      this.buttons[1].enabled = false;
+      this.buttons[3].enabled = false;
     }
     
     this.towers.forEach(tower => tower.updatePos(shifted));

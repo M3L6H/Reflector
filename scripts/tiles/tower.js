@@ -107,7 +107,7 @@ class Tower extends Tile {
 
       this.tutorial = parseInt(localStorage.getItem("tutorial"));
 
-      if (this.tutorial === 3 && (Math.abs(mouseX - this.unit) > this.unit / 10 || Math.abs(mouseY - 3.5 * this.unit) > this.unit / 10)) {
+      if ((this.tutorial === 3 || this.tutorial === Constants.TUTORIAL_AIM_GREEN) && (Math.abs(mouseX - this.unit) > this.unit / 10 || Math.abs(mouseY - 3.5 * this.unit) > this.unit / 10)) {
         return;
       }
       

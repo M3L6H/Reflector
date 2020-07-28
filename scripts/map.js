@@ -81,15 +81,20 @@ class Map {
     const mouseY = e.clientY - rect.top;
 
     if (this.tutorial === 2 && this.map[2][2] instanceof Placeable) return;
-    if (this.tutorial === 3 && (Math.abs(mouseX - this.unit) > this.unit / 10 || Math.abs(mouseY - 3.5 * this.unit) > this.unit / 10)) {
+    if ((this.tutorial === 3 || this.tutorial === Constants.TUTORIAL_AIM_GREEN) && (Math.abs(mouseX - this.unit) > this.unit / 10 || Math.abs(mouseY - 3.5 * this.unit) > this.unit / 10)) {
       return;
     }
     if (this.tutorial >= 5 && this.tutorial < 20) return;
+    if (this.tutorial >= 25 && this.tutorial < 27) return;
     if (this.tutorial === 21 && this.map[2][2] instanceof Tower) return;
     if (this.tutorial === 22 && this.map[2][2] instanceof Placeable) return;
 
     if (this.tutorial === 20) {
       this.map[2][2].setSellable(true);
+    }
+
+    if (this.tutorial === 27) {
+      this.map[17][4].setEnabled(true);
     }
     
     this.tutorial += 1;
@@ -436,6 +441,98 @@ class Map {
         ctx.stroke();
         ctx.restore();
         break;
+      case 23:
+        ctx.save();
+        ctx.translate(unit, height - unit * 5);
+        ctx.fillStyle = "#444444";
+        ctx.fillRect(0, 0, width - unit * 2, unit * 4);
+
+        ctx.font = `${ unit / 3 }px sans-serif`;
+        ctx.fillStyle = "#FFFFFF";
+        ctx.textBaseline = "top";
+        ctx.fillText("Let's aim the green tower the same way we aimed our red tower before.", unit / 2, unit / 2, width - unit * 3);
+
+        ctx.textBaseline = "bottom";
+        ctx.textAlign = "right";
+        ctx.font = `${ unit / 4 }px sans-serif`;
+        ctx.fillText("Aim tower to continue", width - unit * 2.5, unit * 3.5);
+
+        ctx.restore();
+
+        ctx.save();
+        ctx.translate(unit, 3 * unit);
+        ctx.strokeStyle = "#FF0000";
+        ctx.beginPath();
+        ctx.arc(0, unit / 2, unit / 10, 0, 2 * Math.PI);
+        ctx.stroke();
+        ctx.restore();
+        break;
+      case 24:
+        ctx.save();
+        ctx.translate(unit, height - unit * 5);
+        ctx.fillStyle = "#444444";
+        ctx.fillRect(0, 0, width - unit * 2, unit * 4);
+
+        ctx.font = `${ unit / 3 }px sans-serif`;
+        ctx.fillStyle = "#FFFFFF";
+        ctx.textBaseline = "top";
+        ctx.fillText("Amazing. Let's see how well our defense holds now.", unit / 2, unit / 2, width - unit * 3);
+        prevCount = this.renderLines("Keep an eye out for that poison. It will really eat away at the tanky unit's health!", prevCount, 2, ctx, unit, width - unit * 3);
+
+        ctx.textBaseline = "bottom";
+        ctx.textAlign = "right";
+        ctx.font = `${ unit / 4 }px sans-serif`;
+        ctx.fillText("Click to continue", width - unit * 2.5, unit * 3.5);
+
+        ctx.restore();
+        break;
+      case 27:
+        ctx.save();
+        ctx.translate(unit, height - unit * 5);
+        ctx.fillStyle = "#444444";
+        ctx.fillRect(0, 0, width - unit * 2, unit * 4);
+
+        ctx.font = `${ unit / 3 }px sans-serif`;
+        ctx.fillStyle = "#FFFFFF";
+        ctx.textBaseline = "top";
+        ctx.fillText("We killed the tank units, but now there's a new problem!", unit / 2, unit / 2, width - unit * 3);
+        prevCount = this.renderLines("Yellow units are very fast. There's a chance our poison is not going to be enough to kill them before they reach the end of the map.", prevCount, 2, ctx, unit, width - unit * 3);
+
+        ctx.textBaseline = "bottom";
+        ctx.textAlign = "right";
+        ctx.font = `${ unit / 4 }px sans-serif`;
+        ctx.fillText("Click to continue", width - unit * 2.5, unit * 3.5);
+
+        ctx.restore();
+        break;
+      case 28:
+        ctx.save();
+        ctx.translate(unit, height - unit * 5);
+        ctx.fillStyle = "#444444";
+        ctx.fillRect(0, 0, width - unit * 2, unit * 4);
+
+        ctx.font = `${ unit / 3 }px sans-serif`;
+        ctx.fillStyle = "#FFFFFF";
+        ctx.textBaseline = "top";
+        ctx.fillText("Fortunately we now have a lot of money.", unit / 2, unit / 2, width - unit * 3);
+        prevCount = this.renderLines("Let's purchase a yellow laser. Yellow lasers are constant beams that deal high damage. They are very effective against yellow units.", prevCount, 2, ctx, unit, width - unit * 3);
+
+        ctx.textBaseline = "bottom";
+        ctx.textAlign = "right";
+        ctx.font = `${ unit / 4 }px sans-serif`;
+        ctx.fillText("Click to continue", width - unit * 2.5, unit * 3.5);
+
+        ctx.restore();
+
+        ctx.save();
+        ctx.translate(17 * unit, 4 * unit);
+        ctx.strokeStyle = "#FF0000";
+        ctx.lineWidth = unit / 8;
+        ctx.beginPath();
+        ctx.arc(unit / 2, unit / 2, unit / 2, 0, 2 * Math.PI);
+        ctx.stroke();
+        ctx.restore();
+        break;
     }
   }
 
@@ -447,12 +544,6 @@ class Map {
       row.forEach(tile => tile.update(...arguments))
     });
 
-    if (this.tutorial < Constants.TUTORIAL_END) {
-      this.renderTutorial(...arguments);
-    }
-
-    if (this.tutorial < 3) return;
-    
     this.elapsed = (this.elapsed + delta * this.speed) % 1000;
 
     for (let i = 0; i < 10; ++i) {
@@ -460,15 +551,19 @@ class Map {
     }
 
     this.enemies.forEach(enemy => {
-      enemy.update(...arguments);
+      enemy.update(...arguments, this.tutorial >= 27);
     });
 
     this.towers.forEach(tower => {
       tower.drawLaser(...arguments)
     });
 
-    if (this.tutorial < 5 || this.tutorial >= 20) return;
-    if (this.tutorial < 20) this.tutorial = parseInt(localStorage.getItem("tutorial"));
+    if (this.tutorial < Constants.TUTORIAL_END) {
+      this.renderTutorial(...arguments);
+    }
+
+    if (this.tutorial < 5 || (this.tutorial >= 20 && this.tutorial < 25) || this.tutorial >= 27) return;
+    if (this.tutorial < Constants.TUTORIAL_END) this.tutorial = parseInt(localStorage.getItem("tutorial"));
     this.gameTime += delta;
 
     for (let time in this.spawnList) {

@@ -38,6 +38,8 @@ class Enemy {
   }
 
   damage(dmg, pen, poison=0, slow=1) {
+    if (this.stopped) return;
+    
     if (slow !== 1) {
       this.currentSpeed = this.speed * slow;
       if (this.timeout) clearTimeout(this.timeout);
@@ -46,11 +48,13 @@ class Enemy {
     this.health -= Math.max(0, dmg - Math.max(0, this.armor - pen));
 
     if (poison !== 0 && !this.interval) {
-      this.interval = setInterval(() => this.health -= poison, 100);
+      this.interval = setInterval(() => { if (!this.stopped) this.health -= poison; }, 100);
     }
   }
 
-  update({ ctx, delta, unit }) {
+  update({ ctx, delta, unit }, stopped=false) {
+    this.stopped = stopped;
+    
     if (this.health <= 0) {
       if (this.tutorial < Constants.TUTORIAL_END) {
         localStorage.setItem("tutorial", parseInt(localStorage.getItem("tutorial")) + 1);
@@ -69,28 +73,30 @@ class Enemy {
       document.dispatchEvent(e);
     }
 
-    let [targetX, targetY] = this.path[this.currNode];
-    targetX *= unit;
-    targetY *= unit;
-
-    if (this.x === targetX && this.y === targetY) {
-      this.currNode += 1;
+    if (!stopped) {
+      let [targetX, targetY] = this.path[this.currNode];
+      targetX *= unit;
+      targetY *= unit;
+  
+      if (this.x === targetX && this.y === targetY) {
+        this.currNode += 1;
+      }
+  
+      const [dirX, dirY] = normalize([targetX - this.x, targetY - this.y]);
+      
+      this.x += dirX * delta * this.currentSpeed / 500 * unit / 43;
+      this.y += dirY * delta * this.currentSpeed / 500 * unit / 43;
+  
+      if (Math.sign(targetX - this.x) !== Math.sign(dirX)) {
+        this.x = targetX;
+      }
+  
+      if (Math.sign(targetY - this.y) !== Math.sign(dirY)) {
+        this.y = targetY;
+      }
+  
+      this.collider.updatePos(new Vector(this.x + unit / 2, this.y + unit / 2));
     }
-
-    const [dirX, dirY] = normalize([targetX - this.x, targetY - this.y]);
-    
-    this.x += dirX * delta * this.currentSpeed / 500 * unit / 43;
-    this.y += dirY * delta * this.currentSpeed / 500 * unit / 43;
-
-    if (Math.sign(targetX - this.x) !== Math.sign(dirX)) {
-      this.x = targetX;
-    }
-
-    if (Math.sign(targetY - this.y) !== Math.sign(dirY)) {
-      this.y = targetY;
-    }
-
-    this.collider.updatePos(new Vector(this.x + unit / 2, this.y + unit / 2));
     
     ctx.save();
     ctx.translate(this.x + unit / 2, this.y + unit / 2);
