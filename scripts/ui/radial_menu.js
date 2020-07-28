@@ -52,11 +52,13 @@ class RadialMenu {
 
     if (this.tutorial === Constants.TUTORIAL_GREEN) {
       this.buttons[0].enabled = false;
+      this.buttons[1].enabled = true;
       this.buttons[2].enabled = false;
       this.buttons[3].enabled = false;
     } else if (this.tutorial === Constants.TUTORIAL_YELLOW) {
       this.buttons[0].enabled = false;
       this.buttons[1].enabled = false;
+      this.buttons[2].enabled = true;
       this.buttons[3].enabled = false;
     }
     
@@ -77,7 +79,7 @@ class RadialMenu {
     const outerRadius = outerVec.mag();
 
     for (let i = 0; i < 4; ++i) {
-      if (this.money >= this.prices[i] && this.buttons[i].enabled) {
+      if (this.money >= this.prices[i] && (this.tutorial < Constants.TUTORIAL_GREEN || this.tutorial >= Constants.TUTORIAL_END || (this.tutorial === Constants.TUTORIAL_GREEN && i === 1) || (this.tutorial === Constants.TUTORIAL_YELLOW && i === 3))) {
         ctx.fillStyle = "#00AA00";
         ctx.strokeStyle = "#008800";
       } else {

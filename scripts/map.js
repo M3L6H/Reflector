@@ -88,13 +88,14 @@ class Map {
     if (this.tutorial >= 25 && this.tutorial < 27) return;
     if (this.tutorial === 21 && this.map[2][2] instanceof Tower) return;
     if (this.tutorial === 22 && this.map[2][2] instanceof Placeable) return;
+    if (this.tutorial === 28 && this.map[4][17] instanceof Placeable) return;
 
     if (this.tutorial === 20) {
       this.map[2][2].setSellable(true);
     }
 
     if (this.tutorial === 27) {
-      this.map[17][4].setEnabled(true);
+      this.map[4][17].setEnabled(true);
     }
     
     this.tutorial += 1;
@@ -520,7 +521,7 @@ class Map {
         ctx.textBaseline = "bottom";
         ctx.textAlign = "right";
         ctx.font = `${ unit / 4 }px sans-serif`;
-        ctx.fillText("Click to continue", width - unit * 2.5, unit * 3.5);
+        ctx.fillText("Place tower to continue", width - unit * 2.5, unit * 3.5);
 
         ctx.restore();
 
@@ -530,6 +531,32 @@ class Map {
         ctx.lineWidth = unit / 8;
         ctx.beginPath();
         ctx.arc(unit / 2, unit / 2, unit / 2, 0, 2 * Math.PI);
+        ctx.stroke();
+        ctx.restore();
+        break;
+      case 29:
+        ctx.save();
+        ctx.translate(unit, height - unit * 3);
+        ctx.fillStyle = "#444444";
+        ctx.fillRect(0, 0, width - unit * 2, unit * 2);
+
+        ctx.font = `${ unit / 3 }px sans-serif`;
+        ctx.fillStyle = "#FFFFFF";
+        ctx.textBaseline = "top";
+        ctx.fillText("Perfect. Aim the tower at the indicated position.", unit / 2, unit / 2, width - unit * 3);
+
+        ctx.textBaseline = "bottom";
+        ctx.textAlign = "right";
+        ctx.font = `${ unit / 4 }px sans-serif`;
+        ctx.fillText("Aim tower to continue", width - unit * 2.5, unit * 1.5);
+
+        ctx.restore();
+
+        ctx.save();
+        ctx.translate(11 * unit, 8 * unit);
+        ctx.strokeStyle = "#FF0000";
+        ctx.beginPath();
+        ctx.arc(0.75 * unit, 0, unit / 10, 0, 2 * Math.PI);
         ctx.stroke();
         ctx.restore();
         break;
