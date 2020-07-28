@@ -111,6 +111,10 @@ class Tower extends Tile {
         return;
       }
       
+      if (this.tutorial === Constants.TUTORIAL_AIM_YELLOW && (Math.abs(mouseX - this.unit * 11.75) > this.unit / 10 || Math.abs(mouseY - 8 * this.unit) > this.unit / 10)) {
+        return;
+      }
+      
       this.aimed = true;
 
       if (!this.laserLength) {

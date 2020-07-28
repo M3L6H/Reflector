@@ -56,7 +56,7 @@ class Enemy {
     this.stopped = stopped;
     
     if (this.health <= 0) {
-      if (this.tutorial < Constants.TUTORIAL_END) {
+      if (this.tutorial < Constants.TUTORIAL_END && this.color !== "#F9C22E") {
         localStorage.setItem("tutorial", parseInt(localStorage.getItem("tutorial")) + 1);
       }
       

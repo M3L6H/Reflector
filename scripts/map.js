@@ -89,6 +89,9 @@ class Map {
     if (this.tutorial === 21 && this.map[2][2] instanceof Tower) return;
     if (this.tutorial === 22 && this.map[2][2] instanceof Placeable) return;
     if (this.tutorial === 28 && this.map[4][17] instanceof Placeable) return;
+    if (this.tutorial === Constants.TUTORIAL_AIM_YELLOW && (Math.abs(mouseX - this.unit * 11.75) > this.unit / 10 || Math.abs(mouseY - 8 * this.unit) > this.unit / 10)) {
+      return;
+    }
 
     if (this.tutorial === 20) {
       this.map[2][2].setSellable(true);
@@ -560,6 +563,26 @@ class Map {
         ctx.stroke();
         ctx.restore();
         break;
+      case 30:
+        ctx.save();
+        ctx.translate(unit, height - unit * 5);
+        ctx.fillStyle = "#444444";
+        ctx.fillRect(0, 0, width - unit * 2, unit * 4);
+
+        ctx.font = `${ unit / 3 }px sans-serif`;
+        ctx.fillStyle = "#FFFFFF";
+        ctx.textBaseline = "top";
+        ctx.fillText("Amazing. That's the end of the tutorial.", unit / 2, unit / 2, width - unit * 3);
+        prevCount = this.renderLines("For more information, click the question mark in the top right. You will be redirected to detailed written instructions with additional tips.", prevCount, 2, ctx, unit, width - unit * 3);
+        prevCount = this.renderLines("Now let's watch our towers work their magic!", prevCount, 3, ctx, unit, width - unit * 3);
+
+        ctx.textBaseline = "bottom";
+        ctx.textAlign = "right";
+        ctx.font = `${ unit / 4 }px sans-serif`;
+        ctx.fillText("Click to continue", width - unit * 2.5, unit * 3.5);
+
+        ctx.restore();
+        break;
     }
   }
 
@@ -578,14 +601,14 @@ class Map {
     }
 
     this.enemies.forEach(enemy => {
-      enemy.update(...arguments, this.tutorial >= 27);
+      enemy.update(...arguments, this.tutorial >= 27 && this.tutorial < Constants.TUTORIAL_END);
     });
 
     this.towers.forEach(tower => {
       tower.drawLaser(...arguments)
     });
 
-    if (this.tutorial < Constants.TUTORIAL_END) {
+    if (this.tutorial < Constants.TUTORIAL_END && this.level === 1) {
       this.renderTutorial(...arguments);
     }
 
