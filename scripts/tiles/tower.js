@@ -9,7 +9,7 @@ import Collider from "../physics/collider.js";
 import * as Constants from '../util/constants.js';
 
 class Tower extends Tile {
-  constructor(x, y, unit, color, canvas) {
+  constructor(x, y, unit, color, canvas, sellable=true) {
     super(x, y, unit);
     this.clicks = 0;
     this.aimed = false;
@@ -24,6 +24,7 @@ class Tower extends Tile {
       const customEvent = new CustomEvent("SellTower", { detail: this });
       document.dispatchEvent(customEvent);
     });
+    this.button.enabled = sellable;
 
     this.baseColor = "#2B2D42";
     this.baseDark = "#020202";
@@ -81,6 +82,10 @@ class Tower extends Tile {
 
     document.addEventListener("click", this.lockIn);
     document.addEventListener("contextmenu", this.cancel);
+  }
+
+  setSellable(sellable) {
+    this.button.enabled = sellable;
   }
 
   cancel(e) {

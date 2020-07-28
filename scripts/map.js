@@ -74,6 +74,7 @@ class Map {
     e.preventDefault();
 
     if (this.paused) return;
+    this.tutorial = parseInt(localStorage.getItem("tutorial"));
 
     const rect = this.canvas.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
@@ -82,6 +83,13 @@ class Map {
     if (this.tutorial === 2 && this.map[2][2] instanceof Placeable) return;
     if (this.tutorial === 3 && (Math.abs(mouseX - this.unit) > this.unit / 10 || Math.abs(mouseY - 3.5 * this.unit) > this.unit / 10)) {
       return;
+    }
+    if (this.tutorial >= 5 && this.tutorial < 20) return;
+    if (this.tutorial === 21 && this.map[2][2] instanceof Tower) return;
+    if (this.tutorial === 22 && this.map[2][2] instanceof Placeable) return;
+
+    if (this.tutorial === 20) {
+      this.map[2][2].setSellable(true);
     }
     
     this.tutorial += 1;
@@ -149,7 +157,7 @@ class Map {
     document.getElementById("money").innerHTML = this.money;
     
     this.map[Math.floor(y / this.unit)][Math.floor(x / this.unit)].removeButton();
-    const tower = new Tower(x, y, this.unit, color, this.canvas);
+    const tower = new Tower(x, y, this.unit, color, this.canvas, this.tutorial >= Constants.TUTORIAL_END);
     this.map[Math.floor(y / this.unit)][Math.floor(x / this.unit)] = tower;
     this.towers.push(tower);
   }
@@ -323,7 +331,7 @@ class Map {
         ctx.textBaseline = "top";
         ctx.fillText("When placing a tower, you will have to aim it.", unit / 2, unit / 2, width - unit * 3);
         prevCount = this.renderLines("Normally you would be able to right click to cancel the placement, but since this a tutorial, that functionality is disabled.", prevCount, 2, ctx, unit, width - unit * 3);
-        prevCount = this.renderLines("Aim the tower at the indicated position, then left click to confirm.", prevCount, 2, ctx, unit, width - unit * 3);
+        prevCount = this.renderLines("Aim the tower at the indicated position, then left click to confirm.", prevCount, 3, ctx, unit, width - unit * 3);
 
         ctx.textBaseline = "bottom";
         ctx.textAlign = "right";
@@ -337,6 +345,94 @@ class Map {
         ctx.strokeStyle = "#FF0000";
         ctx.beginPath();
         ctx.arc(0, unit / 2, unit / 10, 0, 2 * Math.PI);
+        ctx.stroke();
+        ctx.restore();
+        break;
+      case 4:
+        ctx.save();
+        ctx.translate(unit, height - unit * 5);
+        ctx.fillStyle = "#444444";
+        ctx.fillRect(0, 0, width - unit * 2, unit * 4);
+
+        ctx.font = `${ unit / 3 }px sans-serif`;
+        ctx.fillStyle = "#FFFFFF";
+        ctx.textBaseline = "top";
+        ctx.fillText("Now that you have placed a tower, you are ready to defend.", unit / 2, unit / 2, width - unit * 3);
+        prevCount = this.renderLines("Note that the tower will keep firing in the direction you specified. Unlike traditional tower defense games, the towers in Reflector do not automatically aim at the enemies.", prevCount, 2, ctx, unit, width - unit * 3);
+        prevCount = this.renderLines("In a moment, enemies will come flooding in. Lets watch our tower do some work!", prevCount, 3, ctx, unit, width - unit * 3);
+
+        ctx.textBaseline = "bottom";
+        ctx.textAlign = "right";
+        ctx.font = `${ unit / 4 }px sans-serif`;
+        ctx.fillText("Click to continue", width - unit * 2.5, unit * 3.5);
+
+        ctx.restore();
+        break;
+      case 20:
+        ctx.save();
+        ctx.translate(unit, height - unit * 5);
+        ctx.fillStyle = "#444444";
+        ctx.fillRect(0, 0, width - unit * 2, unit * 4);
+
+        ctx.font = `${ unit / 3 }px sans-serif`;
+        ctx.fillStyle = "#FFFFFF";
+        ctx.textBaseline = "top";
+        ctx.fillText("Perfect! Look at that amazing defense.", unit / 2, unit / 2, width - unit * 3);
+        prevCount = this.renderLines("If you look to the top left, you will see that some numbers have changed. We can see that there are 12 enemies remaining. We also now have 150 coins.", prevCount, 2, ctx, unit, width - unit * 3);
+        prevCount = this.renderLines("We could use our money to buy another red or a blue tower. But if you were paying attention, you would have seen a green warning. That indicates tanky enemies are coming.", prevCount, 3, ctx, unit, width - unit * 3);
+
+        ctx.textBaseline = "bottom";
+        ctx.textAlign = "right";
+        ctx.font = `${ unit / 4 }px sans-serif`;
+        ctx.fillText("Click to continue", width - unit * 2.5, unit * 3.5);
+
+        ctx.restore();
+        break;
+      case 21:
+        ctx.save();
+        ctx.translate(unit, height - unit * 5);
+        ctx.fillStyle = "#444444";
+        ctx.fillRect(0, 0, width - unit * 2, unit * 4);
+
+        ctx.font = `${ unit / 3 }px sans-serif`;
+        ctx.fillStyle = "#FFFFFF";
+        ctx.textBaseline = "top";
+        ctx.fillText("Tanky enemies have a lot of armor and health.", unit / 2, unit / 2, width - unit * 3);
+        prevCount = this.renderLines("This means they are strong against both blue and yellow towers. However, they are weak to green towers, which have high penetration and apply a poison effect.", prevCount, 2, ctx, unit, width - unit * 3);
+        prevCount = this.renderLines("But a green tower costs 200 coins. Fortunately we can sell towers by clicking on them. Selling a tower refunds us half its original cost. Let's sell our red tower now.", prevCount, 3, ctx, unit, width - unit * 3);
+
+        ctx.textBaseline = "bottom";
+        ctx.textAlign = "right";
+        ctx.font = `${ unit / 4 }px sans-serif`;
+        ctx.fillText("Click on tower to sell", width - unit * 2.5, unit * 3.5);
+
+        ctx.restore();
+        break;
+      case 22:
+        ctx.save();
+        ctx.translate(unit, height - unit * 5);
+        ctx.fillStyle = "#444444";
+        ctx.fillRect(0, 0, width - unit * 2, unit * 4);
+
+        ctx.font = `${ unit / 3 }px sans-serif`;
+        ctx.fillStyle = "#FFFFFF";
+        ctx.textBaseline = "top";
+        ctx.fillText("Perfect. Now we have enough to buy a green tower.", unit / 2, unit / 2, width - unit * 3);
+        prevCount = this.renderLines("Let's place it at the same place where our red tower previously was.", prevCount, 2, ctx, unit, width - unit * 3);
+
+        ctx.textBaseline = "bottom";
+        ctx.textAlign = "right";
+        ctx.font = `${ unit / 4 }px sans-serif`;
+        ctx.fillText("Place tower to continue", width - unit * 2.5, unit * 3.5);
+
+        ctx.restore();
+
+        ctx.save();
+        ctx.translate(2 * unit, 2 * unit);
+        ctx.strokeStyle = "#FF0000";
+        ctx.lineWidth = unit / 8;
+        ctx.beginPath();
+        ctx.arc(unit / 2, unit / 2, unit / 2, 0, 2 * Math.PI);
         ctx.stroke();
         ctx.restore();
         break;
@@ -371,7 +467,8 @@ class Map {
       tower.drawLaser(...arguments)
     });
 
-    if (this.tutorial < Constants.TUTORIAL_END) return;
+    if (this.tutorial < 5 || this.tutorial >= 20) return;
+    if (this.tutorial < 20) this.tutorial = parseInt(localStorage.getItem("tutorial"));
     this.gameTime += delta;
 
     for (let time in this.spawnList) {

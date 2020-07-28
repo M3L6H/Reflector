@@ -46,8 +46,16 @@ class RadialMenu {
 
   updatePos(vec) {
     this.pos = vec;
+    this.tutorial = parseInt(localStorage.getItem("tutorial"));
     const shifted = this.pos.add(new Vector(this.unit / 2, this.unit / 2));
     this.buttons.forEach(button => button.updatePos(shifted));
+
+    if (this.tutorial === Constants.TUTORIAL_GREEN) {
+      this.buttons[0].enabled = false;
+      this.buttons[2].enabled = false;
+      this.buttons[3].enabled = false;
+    }
+    
     this.towers.forEach(tower => tower.updatePos(shifted));
   }
 
@@ -65,7 +73,7 @@ class RadialMenu {
     const outerRadius = outerVec.mag();
 
     for (let i = 0; i < 4; ++i) {
-      if (this.money >= this.prices[i]) {
+      if (this.money >= this.prices[i] && this.buttons[i].enabled) {
         ctx.fillStyle = "#00AA00";
         ctx.strokeStyle = "#008800";
       } else {

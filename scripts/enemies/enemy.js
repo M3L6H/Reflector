@@ -3,6 +3,7 @@ import Vector from '../physics/vector.js';
 import normalize from '../util/normalize.js';
 import clamp from '../util/clamp.js';
 import debouncer from '../util/debouncer.js';
+import * as Constants from '../util/constants.js';
 
 class Enemy {
   constructor(path, unit) {
@@ -25,6 +26,8 @@ class Enemy {
     this.reflectorRight = false;
     this.reflectorDown = false;
     this.reflectorLeft = false;
+
+    this.tutorial = parseInt(localStorage.getItem("tutorial"));
 
     this.colorBase = "#0C090D";
     this.color = "#E01A4F";
@@ -49,6 +52,10 @@ class Enemy {
 
   update({ ctx, delta, unit }) {
     if (this.health <= 0) {
+      if (this.tutorial < Constants.TUTORIAL_END) {
+        localStorage.setItem("tutorial", parseInt(localStorage.getItem("tutorial")) + 1);
+      }
+      
       this.dead = true;
       const e = new CustomEvent("EarnMoney", { detail: this });
       document.dispatchEvent(e);
