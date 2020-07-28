@@ -612,7 +612,7 @@ class Map {
       this.renderTutorial(...arguments);
     }
 
-    if (this.tutorial < 5 || (this.tutorial >= 20 && this.tutorial < 25) || this.tutorial >= 27) return;
+    if (this.tutorial < 5 || (this.tutorial >= 20 && this.tutorial < 25) || (this.tutorial >= 27 && this.tutorial < Constants.TUTORIAL_END)) return;
     if (this.tutorial < Constants.TUTORIAL_END) this.tutorial = parseInt(localStorage.getItem("tutorial"));
     this.gameTime += delta;
 

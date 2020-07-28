@@ -1,4 +1,5 @@
 import Renderer from './renderer.js';
+import * as Constants from './util/constants.js';
 
 const createErrorMsg = (body) => {
   const msg = document.createElement("p");
@@ -14,9 +15,10 @@ let paused = false;
 // Initialization
 const initialize = () => {
   // Set up tutorial
-  // if (!localStorage.getItem("tutorial")) {
+  const tut = localStorage.getItem("tutorial");
+  if (!tut || parseInt(tut) < Constants.TUTORIAL_END) {
     localStorage.setItem("tutorial", 0);
-  // }
+  }
   
   setUpLevelSelect();
   
