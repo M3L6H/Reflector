@@ -2,6 +2,7 @@ import RadialMenu from './radial_menu.js';
 import Vector from '../physics/vector.js';
 import Ray from "../physics/ray.js";
 import debouncer from '../util/debouncer.js';
+import * as Constants from '../util/constants.js';
 
 class UI {
   constructor(canvas, unit, money) {
@@ -55,6 +56,7 @@ class UI {
   handleClick(e) {
     e.preventDefault();
     if (this.paused) return;
+    this.tutorial = parseInt(localStorage.getItem("tutorial"));
     const rect = this.canvas.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
@@ -98,6 +100,7 @@ class UI {
       case 1:
         this.towerMenu.update(...arguments, this.money);
       case 2:
+        if (this.tutorial <= Constants.TUTORIAL_END) break;
         ctx.save();
         ctx.font = `${ unit / 2 }px sans-serif`;
         ctx.fillStyle = "#FFFFFF";

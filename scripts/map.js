@@ -35,6 +35,7 @@ class Map {
     this.health = this.maxHealth;
     this.money = money;
     this.paths = paths;
+    this.unit = unit;
 
     document.getElementById("health").innerHTML = this.health;
     this.updateMoney();
@@ -69,10 +70,19 @@ class Map {
     });
   }
 
-  handleTutorialClick() {
+  handleTutorialClick(e) {
+    e.preventDefault();
+
     if (this.paused) return;
 
+    const rect = this.canvas.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
     if (this.tutorial === 2 && this.map[2][2] instanceof Placeable) return;
+    if (this.tutorial === 3 && (Math.abs(mouseX - this.unit) > this.unit / 10 || Math.abs(mouseY - 3.5 * this.unit) > this.unit / 10)) {
+      return;
+    }
     
     this.tutorial += 1;
     localStorage.setItem("tutorial", this.tutorial);
@@ -139,7 +149,7 @@ class Map {
     document.getElementById("money").innerHTML = this.money;
     
     this.map[Math.floor(y / this.unit)][Math.floor(x / this.unit)].removeButton();
-    const tower = new Tower(x, y, this.unit, color);
+    const tower = new Tower(x, y, this.unit, color, this.canvas);
     this.map[Math.floor(y / this.unit)][Math.floor(x / this.unit)] = tower;
     this.towers.push(tower);
   }
@@ -302,6 +312,34 @@ class Map {
         ctx.stroke();
         ctx.restore();
         break;
+      case 3:
+        ctx.save();
+        ctx.translate(unit, height - unit * 5);
+        ctx.fillStyle = "#444444";
+        ctx.fillRect(0, 0, width - unit * 2, unit * 4);
+
+        ctx.font = `${ unit / 3 }px sans-serif`;
+        ctx.fillStyle = "#FFFFFF";
+        ctx.textBaseline = "top";
+        ctx.fillText("When placing a tower, you will have to aim it.", unit / 2, unit / 2, width - unit * 3);
+        prevCount = this.renderLines("Normally you would be able to right click to cancel the placement, but since this a tutorial, that functionality is disabled.", prevCount, 2, ctx, unit, width - unit * 3);
+        prevCount = this.renderLines("Aim the tower at the indicated position, then left click to confirm.", prevCount, 2, ctx, unit, width - unit * 3);
+
+        ctx.textBaseline = "bottom";
+        ctx.textAlign = "right";
+        ctx.font = `${ unit / 4 }px sans-serif`;
+        ctx.fillText("Aim tower to continue", width - unit * 2.5, unit * 3.5);
+
+        ctx.restore();
+
+        ctx.save();
+        ctx.translate(unit, 3 * unit);
+        ctx.strokeStyle = "#FF0000";
+        ctx.beginPath();
+        ctx.arc(0, unit / 2, unit / 10, 0, 2 * Math.PI);
+        ctx.stroke();
+        ctx.restore();
+        break;
     }
   }
 
@@ -320,7 +358,6 @@ class Map {
     if (this.tutorial < 3) return;
     
     this.elapsed = (this.elapsed + delta * this.speed) % 1000;
-    this.gameTime += delta;
 
     for (let i = 0; i < 10; ++i) {
       this.drawPath(ctx, unit, 8 * i);
@@ -335,6 +372,7 @@ class Map {
     });
 
     if (this.tutorial < Constants.TUTORIAL_END) return;
+    this.gameTime += delta;
 
     for (let time in this.spawnList) {
       if (parseInt(time) <= this.gameTime && this.elapsed % 500 < 300) {

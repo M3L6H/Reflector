@@ -6,17 +6,20 @@ import normalize from "../util/normalize.js";
 
 import debouncer from '../util/debouncer.js';
 import Collider from "../physics/collider.js";
+import * as Constants from '../util/constants.js';
 
 class Tower extends Tile {
-  constructor(x, y, unit, color) {
+  constructor(x, y, unit, color, canvas) {
     super(x, y, unit);
     this.clicks = 0;
     this.aimed = false;
     this.emitting = true;
     this.color = color;
+    this.canvas = canvas;
     this.ray = new Ray(new Vector(x + unit / 2, y + unit / 2), new Vector(0, 0), "ray");
     this.laserBolts = [];
     this.colliders = [];
+    this.tutorial = parseInt(localStorage.getItem("tutorial"));
     this.button = new Button(new Vector(x, y), [new Vector(0, 0), new Vector(unit, 0), new Vector(unit, unit), new Vector(0, unit)], 0, () => {
       const customEvent = new CustomEvent("SellTower", { detail: this });
       document.dispatchEvent(customEvent);
@@ -83,16 +86,26 @@ class Tower extends Tile {
   cancel(e) {
     e.preventDefault();
 
-    if (!this.aimed) {
+    if (!this.aimed && this.tutorial >= Constants.TUTORIAL_END) {
       document.dispatchEvent(new CustomEvent("RefundTower", { detail: this }));
     }
   }
 
-  lockIn() {
+  lockIn(e) {
     // Dumb, but necessary because the click triggers when the tower is placed
     this.clicks++;
 
     if (this.clicks > 1) {
+      const rect = this.canvas.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+
+      this.tutorial = parseInt(localStorage.getItem("tutorial"));
+
+      if (this.tutorial === 3 && (Math.abs(mouseX - this.unit) > this.unit / 10 || Math.abs(mouseY - 3.5 * this.unit) > this.unit / 10)) {
+        return;
+      }
+      
       this.aimed = true;
 
       if (!this.laserLength) {
