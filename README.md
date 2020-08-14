@@ -37,6 +37,8 @@ JavvaScript code needed, but that is the only exception.
 
 ### Accurate Collision Detection
 
+![Image of collision detection](/images/collisions.png)
+
 Because I did not use any external libraries, I had to roll my own collision
 detection system. What I ended up implementing was a form of the Separated Axis
 Theorem. I considered using AABB, but wanted to have the ability for arbitrary
@@ -104,6 +106,8 @@ isCollidingWith(other) {
 ```
 
 ### Raycasting
+
+![Image of raycasting with reflections](/images/reflections.png)
 
 Accurate raycasting and reflections was an essential feature to the game. After
 implementing SAT collision, I realized that I would need to separately implement
