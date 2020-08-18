@@ -26,6 +26,8 @@ class Enemy {
     this.reflectorRight = false;
     this.reflectorDown = false;
     this.reflectorLeft = false;
+    this.poisoned = false;
+    this.elapsed = 0;
 
     this.tutorial = parseInt(localStorage.getItem("tutorial"));
 
@@ -47,14 +49,23 @@ class Enemy {
     }
     this.health -= Math.max(0, dmg - Math.max(0, this.armor - pen));
 
-    if (poison !== 0 && !this.interval) {
-      this.interval = setInterval(() => { if (!this.stopped) this.health -= poison; }, 100);
+    if (poison !== 0 && !this.poisoned) {
+      this.poisoned = poison;
     }
   }
 
   update({ ctx, delta, unit }, stopped=false) {
     this.stopped = stopped;
     
+    if (this.poisoned && !this.stopped) {
+      this.elapsed += delta;
+
+      if (this.elapsed >= 80) {
+        this.health -= this.poisoned;
+        this.elapsed = 0;
+      }
+    }
+
     if (this.health <= 0) {
       if (this.tutorial < Constants.TUTORIAL_END && this.color !== "#F9C22E") {
         localStorage.setItem("tutorial", parseInt(localStorage.getItem("tutorial")) + 1);
