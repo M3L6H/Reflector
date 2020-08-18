@@ -67,7 +67,7 @@ class Renderer {
     if (!this.started) {
       let message = "Click to start";
 
-      if (this.tutorial < Constants.TUTORIAL_END) {
+      if (this.tutorial < Constants.TUTORIAL_END && this.level === 0) {
         message += " tutorial";
       }
       
