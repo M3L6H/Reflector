@@ -69,6 +69,8 @@ class Renderer {
 
       if (this.tutorial < Constants.TUTORIAL_END && this.level === 0) {
         message += " tutorial";
+      } else {
+        message += ` Level ${ this.level + 1 }`;
       }
       
       ctx.save();
