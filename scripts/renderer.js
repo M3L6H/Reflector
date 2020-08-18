@@ -17,6 +17,7 @@ class Renderer {
   constructor(unit, canvas, width, height, setUpLevelSelect, togglePause) {
     this.unit = unit;
     this.canvas = canvas;
+    this.canvas.classList.add("pointer");
     this.width = width;
     this.height = height;
     this.setUpLevelSelect = setUpLevelSelect;
@@ -47,6 +48,7 @@ class Renderer {
     this.togglePause(false);
     location.hash = "";
     this.canvas.removeEventListener("click", this.start);
+    this.canvas.classList.remove("pointer");
   }
 
   changeLevel(level) {
