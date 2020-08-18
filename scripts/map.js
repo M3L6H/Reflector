@@ -82,7 +82,7 @@ class Map {
     const mouseY = e.clientY - rect.top;
 
     if (this.tutorial === 2 && this.map[2][2] instanceof Placeable) return;
-    if ((this.tutorial === 3 || this.tutorial === Constants.TUTORIAL_AIM_GREEN) && (Math.abs(mouseX - this.unit) > this.unit / 10 || Math.abs(mouseY - 3.5 * this.unit) > this.unit / 10)) {
+    if ((this.tutorial === 3 || this.tutorial === Constants.TUTORIAL_AIM_GREEN) && (Math.abs(this.towers[0].ray.collisions[0].hitPoint.x - this.unit) > this.unit / 10 || Math.abs(this.towers[0].ray.collisions[0].hitPoint.y - 3.5 * this.unit) > this.unit / 10)) {
       return;
     }
     if (this.tutorial >= 5 && this.tutorial < 20) return;
@@ -90,7 +90,7 @@ class Map {
     if (this.tutorial === 21 && this.map[2][2] instanceof Tower) return;
     if (this.tutorial === 22 && this.map[2][2] instanceof Placeable) return;
     if (this.tutorial === 28 && this.map[4][17] instanceof Placeable) return;
-    if (this.tutorial === Constants.TUTORIAL_AIM_YELLOW && (Math.abs(mouseX - this.unit * 11.75) > this.unit / 10 || Math.abs(mouseY - 8 * this.unit) > this.unit / 10)) {
+    if (this.tutorial === Constants.TUTORIAL_AIM_YELLOW && (Math.abs(this.towers[1].ray.collisions[0].hitPoint.x - this.unit * 11.75) > this.unit / 10 || Math.abs(this.towers[1].ray.collisions[0].hitPoint.y - 8 * this.unit) > this.unit / 10)) {
       return;
     }
 
