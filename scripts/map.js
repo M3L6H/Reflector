@@ -28,7 +28,7 @@ class Map {
     this.handleTutorialClick = this.handleTutorialClick.bind(this);
 
     if (this.tutorial < Constants.TUTORIAL_END) {
-      setTimeout(() => canvas.addEventListener("click", this.handleTutorialClick), 1000);
+      setTimeout(() => canvas.addEventListener("click", this.handleTutorialClick), 2000);
     }
     
     this.map = this.generateMap(map);
@@ -78,8 +78,6 @@ class Map {
     this.tutorial = parseInt(localStorage.getItem("tutorial"));
 
     const rect = this.canvas.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
 
     if (this.tutorial === 2 && this.map[2][2] instanceof Placeable) return;
     if ((this.tutorial === 3 || this.tutorial === Constants.TUTORIAL_AIM_GREEN) && (Math.abs(this.towers[0].ray.collisions[0].hitPoint.x - this.unit) > this.unit / 10 || Math.abs(this.towers[0].ray.collisions[0].hitPoint.y - 3.5 * this.unit) > this.unit / 10)) {
@@ -268,6 +266,16 @@ class Map {
       }
     } else if (this.button.enabled) {
       this.button.enabled = false;
+    }
+
+    const tutorialBtn = document.getElementById("tutorial");
+    if (tutorialBtn.innerHTML === "Play Tutorial") {
+      tutorialBtn.innerHTML = "Skip Tutorial";
+      tutorialBtn.onclick = () => {
+        localStorage.setItem("tutorial", Constants.TUTORIAL_END);
+        this.tutorial = Constants.TUTORIAL_END;
+        location.reload();
+      };
     }
 
     switch(this.tutorial) {
