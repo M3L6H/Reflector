@@ -597,7 +597,7 @@ class Map {
         ctx.fillStyle = "#FFFFFF";
         ctx.textBaseline = "top";
         ctx.fillText("Amazing. That's the end of the tutorial.", unit / 2, unit / 2, width - unit * 3);
-        prevCount = this.renderLines("For more information, click the question mark in the top right. You will be redirected to detailed written instructions with additional tips.", prevCount, 2, ctx, unit, width - unit * 3);
+        prevCount = this.renderLines("For more information, click the question mark in the top right. You will be redirected to detailed written instructions with additional tips. You can play the tutorial again at any time by clicking the button in the top right.", prevCount, 2, ctx, unit, width - unit * 3);
         prevCount = this.renderLines("Now let's watch our towers work their magic!", prevCount, 3, ctx, unit, width - unit * 3);
 
         ctx.textBaseline = "bottom";
