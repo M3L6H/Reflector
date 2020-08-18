@@ -4,6 +4,8 @@ import Level2 from '../maps/02.js';
 import Level3 from '../maps/03.js';
 import UI from './ui/ui.js';
 
+import * as Constants from './util/constants.js';
+
 const levels = [
   Level1,
   Level2,
@@ -24,7 +26,8 @@ class Renderer {
     this.level = parseInt(localStorage.getItem("level")) || 0;
     this.star = new Image();
     this.star.src = "https://upload.wikimedia.org/wikipedia/commons/6/63/Star%2A.svg";
-    
+    this.tutorial = parseInt(localStorage.getItem("tutorial"));
+
     this.map = new Map(levels[this.level], unit, width, height, canvas);
     this.ui = new UI(canvas, unit, this.map.money);
 
@@ -57,13 +60,19 @@ class Renderer {
     const ctx = detail.ctx;
 
     if (!this.started) {
+      let message = "Click to start";
+
+      if (this.tutorial < Constants.TUTORIAL_END) {
+        message += " tutorial";
+      }
+      
       ctx.save();
       ctx.fillStyle = "rgba(0, 0, 0)";
       ctx.fillRect(0, 0, detail.width, detail.height);
       ctx.font = `${ detail.unit / 2 }px sans-serif`;
       ctx.textAlign = "center";
       ctx.fillStyle = "#FFFFFF";
-      ctx.fillText("Click to start", detail.width / 2, detail.height / 2);
+      ctx.fillText(message, detail.width / 2, detail.height / 2);
       ctx.restore();
     }
     
