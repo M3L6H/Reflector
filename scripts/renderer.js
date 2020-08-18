@@ -32,7 +32,7 @@ class Renderer {
     this.star.src = "https://upload.wikimedia.org/wikipedia/commons/6/63/Star%2A.svg";
     this.tutorial = parseInt(localStorage.getItem("tutorial"));
 
-    this.map = new Map(levels[this.level], unit, width, height, canvas);
+    this.map = new Map(levels[this.level], unit, width, height, canvas, this.button);
     this.ui = new UI(canvas, unit, this.map.money);
 
     this.start = this.start.bind(this);

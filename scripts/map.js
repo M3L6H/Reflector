@@ -18,12 +18,13 @@ import * as Constants from './util/constants.js';
 import getLines from './util/get_lines.js';
 
 class Map {
-  constructor({ level, map, paths, health, money, enemies }, unit, width, height, canvas) {
+  constructor({ level, map, paths, health, money, enemies }, unit, width, height, canvas, button) {
     this.unit = unit;
 
     this.level = level;
     this.tutorial = parseInt(localStorage.getItem("tutorial"));
     this.canvas = canvas;
+    this.button = button;
     this.handleTutorialClick = this.handleTutorialClick.bind(this);
 
     if (this.tutorial < Constants.TUTORIAL_END) {
@@ -261,13 +262,13 @@ class Map {
   renderTutorial({ unit, ctx, height, width }) {
     let prevCount = 0;
 
-    // if ([0, 1, 4, 20, 24, 27, 30].includes(this.tutorial)) {
-    //   if (!this.canvas.classList.contains("pointer")) {
-    //     this.canvas.classList.add("pointer");
-    //   }
-    // } else if (this.canvas.classList.contains("pointer")) {
-    //   this.canvas.classList.remove("pointer");
-    // }
+    if ([0, 1, 4, 20, 24, 27, 30].includes(this.tutorial)) {
+      if (!this.button.enabled) {
+        this.button.enabled = true;
+      }
+    } else if (this.button.enabled) {
+      this.button.enabled = false;
+    }
 
     switch(this.tutorial) {
       case 0:
@@ -321,6 +322,7 @@ class Map {
         ctx.fillText("Click on the indicated blue tile and select a red tower.", unit / 2, unit / 2, width - unit * 3);
         prevCount = this.renderLines("Red towers are the most basic towers. They have an average fire rate, average damage, and average armor pierce. They are also the cheapest towers available.", prevCount, 2, ctx, unit, width - unit * 3);
 
+        ctx.fillStyle = "#FF0000";
         ctx.textBaseline = "bottom";
         ctx.textAlign = "right";
         ctx.font = `${ unit / 4 }px sans-serif`;
@@ -350,6 +352,7 @@ class Map {
         prevCount = this.renderLines("Normally you would be able to right click to cancel the placement, but since this a tutorial, that functionality is disabled.", prevCount, 2, ctx, unit, width - unit * 3);
         prevCount = this.renderLines("Aim the tower at the indicated position, then left click to confirm.", prevCount, 3, ctx, unit, width - unit * 3);
 
+        ctx.fillStyle = "#FF0000";
         ctx.textBaseline = "bottom";
         ctx.textAlign = "right";
         ctx.font = `${ unit / 4 }px sans-serif`;
@@ -418,6 +421,7 @@ class Map {
         prevCount = this.renderLines("This means they are strong against both blue and yellow towers. However, they are weak to green towers, which have high penetration and apply a poison effect.", prevCount, 2, ctx, unit, width - unit * 3);
         prevCount = this.renderLines("But a green tower costs 200 coins. Fortunately we can sell towers by clicking on them. Selling a tower refunds us half its original cost. Let's sell our red tower now.", prevCount, 3, ctx, unit, width - unit * 3);
 
+        ctx.fillStyle = "#FF0000";
         ctx.textBaseline = "bottom";
         ctx.textAlign = "right";
         ctx.font = `${ unit / 4 }px sans-serif`;
@@ -437,6 +441,7 @@ class Map {
         ctx.fillText("Perfect. Now we have enough to buy a green tower.", unit / 2, unit / 2, width - unit * 3);
         prevCount = this.renderLines("Let's place it at the same place where our red tower previously was.", prevCount, 2, ctx, unit, width - unit * 3);
 
+        ctx.fillStyle = "#FF0000";
         ctx.textBaseline = "bottom";
         ctx.textAlign = "right";
         ctx.font = `${ unit / 4 }px sans-serif`;
@@ -464,6 +469,7 @@ class Map {
         ctx.textBaseline = "top";
         ctx.fillText("Let's aim the green tower the same way we aimed our red tower before.", unit / 2, unit / 2, width - unit * 3);
 
+        ctx.fillStyle = "#FF0000";
         ctx.textBaseline = "bottom";
         ctx.textAlign = "right";
         ctx.font = `${ unit / 4 }px sans-serif`;
@@ -529,6 +535,7 @@ class Map {
         ctx.fillText("Fortunately we now have a lot of money.", unit / 2, unit / 2, width - unit * 3);
         prevCount = this.renderLines("Let's purchase a yellow laser. Yellow lasers are constant beams that deal high damage. They are very effective against yellow units.", prevCount, 2, ctx, unit, width - unit * 3);
 
+        ctx.fillStyle = "#FF0000";
         ctx.textBaseline = "bottom";
         ctx.textAlign = "right";
         ctx.font = `${ unit / 4 }px sans-serif`;
@@ -556,6 +563,7 @@ class Map {
         ctx.textBaseline = "top";
         ctx.fillText("Perfect. Aim the tower at the indicated position.", unit / 2, unit / 2, width - unit * 3);
 
+        ctx.fillStyle = "#FF0000";
         ctx.textBaseline = "bottom";
         ctx.textAlign = "right";
         ctx.font = `${ unit / 4 }px sans-serif`;
