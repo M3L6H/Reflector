@@ -13,24 +13,24 @@ footer {
   height: 2.2rem;
 }
 
-.right-group, .left-group {
+footer .right-group, .left-group {
   margin: 0.5rem;
 }
 
-.right-group a {
+footer .right-group a {
   padding-left: 0.25rem;
   cursor: pointer;
   color: darkgreen;
 }
 
-.right-group span {
+footer .right-group span {
   padding-left: 1rem;
 }
 
-.left-group span {
+footer .left-group span {
   padding-right: 1rem;
 }
 
-.right-group a:hover {
+footer .right-group a:hover {
   text-decoration: underline;
 }

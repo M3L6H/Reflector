@@ -15,6 +15,11 @@
   filter: brightness(80%);
 }
 
+#tutorial {
+  background-color: darkgreen;
+  color: white;
+}
+
 #reset {
   background-color: crimson;
   color: white;
