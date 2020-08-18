@@ -261,6 +261,14 @@ class Map {
   renderTutorial({ unit, ctx, height, width }) {
     let prevCount = 0;
 
+    // if ([0, 1, 4, 20, 24, 27, 30].includes(this.tutorial)) {
+    //   if (!this.canvas.classList.contains("pointer")) {
+    //     this.canvas.classList.add("pointer");
+    //   }
+    // } else if (this.canvas.classList.contains("pointer")) {
+    //   this.canvas.classList.remove("pointer");
+    // }
+
     switch(this.tutorial) {
       case 0:
         ctx.save();

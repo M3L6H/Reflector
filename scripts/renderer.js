@@ -6,6 +6,9 @@ import UI from './ui/ui.js';
 
 import * as Constants from './util/constants.js';
 
+import Button from './ui/button.js';
+import Vector from './physics/vector.js';
+
 const levels = [
   Level1,
   Level2,
@@ -17,9 +20,9 @@ class Renderer {
   constructor(unit, canvas, width, height, setUpLevelSelect, togglePause) {
     this.unit = unit;
     this.canvas = canvas;
-    this.canvas.classList.add("pointer");
     this.width = width;
     this.height = height;
+    this.button = new Button(new Vector(0, 0), [new Vector(0, 0), new Vector(width, 0), new Vector(width, height), new Vector(0, height)], 0, () => {});
     this.setUpLevelSelect = setUpLevelSelect;
     this.togglePause = togglePause;
     this.started = false;
@@ -48,7 +51,7 @@ class Renderer {
     this.togglePause(false);
     location.hash = "";
     this.canvas.removeEventListener("click", this.start);
-    this.canvas.classList.remove("pointer");
+    this.button.enabled = false;
   }
 
   changeLevel(level) {
@@ -76,8 +79,9 @@ class Renderer {
       ctx.fillStyle = "#FFFFFF";
       ctx.fillText(message, detail.width / 2, detail.height / 2);
       ctx.restore();
+      return;
     }
-    
+
     if (this.map.health <= 0) {
       this.gameOver = true;
       ctx.save();
