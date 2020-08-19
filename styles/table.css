@@ -1,27 +1,47 @@
-.enemies {
+.enemies, .towers {
   border-spacing: 0;
 }
 
-.enemies thead {
+.enemies thead, .towers thead {
   background: #444;
 }
 
-.enemies thead td {
+.enemies thead td, .towers thead td {
   color: white;
 }
 
-.enemies td {
+.enemies td, .towers td {
   padding: 0.5rem;
 }
 
-.enemies td:nth-child(n + 2) {
+.enemies td:nth-child(n + 2), .towers td:nth-child(n + 2) {
   padding-left: 1rem;
 }
 
-.enemies tbody tr:nth-child(2n - 1) {
+.enemies tbody tr:nth-child(2n - 1), .towers tbody tr:nth-child(2n - 1) {
   background: lightgrey;
 }
 
-.enemies tbody tr:nth-child(2n) {
+.enemies tbody tr:nth-child(2n), .towers tbody tr:nth-child(2n) {
   background: grey;
+}
+
+#red-laser {
+  background-color: darkred;
+  color: white;
+}
+
+#blue-laser {
+  background-color: cadetblue;
+  color: white;
+}
+
+#yellow-laser {
+  background-color: darkgoldenrod;
+  color: white;
+}
+
+#green-laser {
+  background-color: darkgreen;
+  color: white;
 }
