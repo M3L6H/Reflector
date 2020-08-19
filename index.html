@@ -78,10 +78,9 @@
     <h1 class="title" id="instructions">Reflector</h1>
     <div class="description">
       <p>Welcome to Reflector! Reflector is a tower defense game where the towers all shoot lasers. Your goal is to position and aim your lasers in such a way that they reflect off the silver reflectors around the map and destroy your enemies.</p>
-      <p>Clicking on the blue tiles will open the tower selection ring. Choose one of the four towers. You will then need to aim it. If you wish to cancel, simply right click while aiming.</p>
-      <p>You can sell a tower at any point by clicking on it. You will recoup half its original cost.</p>
-      <p>Selling unused towers to place down other towers is an important strategy!</p>
-      <p>See below for more information</p>
+      <p>If you're new to the game, it is highly trecommended to play the tutorial, which you will find in the top right of the page.</p>
+      <p>If you have already played the tutorial and are looking for more help, check out the tower/enemy details below and give the tips a read-through!</p>
+      <p>Keep in mind that Reflector is a challenging game, so take your time and enjoy it!</p>
     </div>
     <h2 class="subtitle">Towers</h2>
     <table class="towers">
@@ -98,7 +97,7 @@
       </thead>
       <tbody>
         <tr>
-          <td id="red-laser">Red laser</td>
+          <td class="red-cell">Red laser</td>
           <td>100</td>
           <td>++</td>
           <td>+++</td>
@@ -107,7 +106,7 @@
           <td>N/A</td>
         </tr>
         <tr>
-          <td id="blue-laser">Blue laser</td>
+          <td class="blue-cell">Blue laser</td>
           <td>150</td>
           <td>+</td>
           <td>++</td>
@@ -116,7 +115,7 @@
           <td>2s slow</td>
         </tr>
         <tr>
-          <td id="yellow-laser">Yellow laser</td>
+          <td class="yellow-cell">Yellow laser</td>
           <td>200</td>
           <td>+++</td>
           <td>N/A</td>
@@ -125,7 +124,7 @@
           <td>N/A</td>
         </tr>
         <tr>
-          <td id="green-laser">Green laser</td>
+          <td class="green-cell">Green laser</td>
           <td>200</td>
           <td>+</td>
           <td>+</td>
@@ -150,22 +149,25 @@
       </thead>
       <tbody>
         <tr>
-          <td>Red</td>
-          <td>Low</td>
-          <td>Normal</td>
-          <td>None</td>
+          <td class="red-cell">Red enemy</td>
+          <td>+</td>
+          <td>>></td>
+          <td>-</td>
         </tr>
         <tr>
-          <td>Yellow</td>
-          <td>Medium</td>
-          <td>Very Fast</td>
-          <td>None</td>
+          <td class="yellow-cell">Yellow enemy</td>
+          <td>++</td>
+          <td>>>></td>
+          <td>-</td>
         </tr>
         <tr>
-          <td>Green</td>
-          <td>High</td>
-          <td>Slow</td>
-          <td>Very High</td>
+          <td class="green-cell">Green enemy</td>
+          <td>+++</td>
+          <td>></td>
+          <td>+++</td>
+        </tr>
+        <tr>
+          <td colspan="4">More +'s or >'s indicate a larger value. A - indicates none.</td>
         </tr>
       </tbody>
     </table>
@@ -173,7 +175,7 @@
     <div class="description">
       <p>Reflector is a very hard game. It takes a lot of patience and trial end error to find the right positions and combinations of towers, so don't give up!</p>
       <p>An important concept is the idea of selling and repositioning towers. Many of the levels are designed around this concept. Keep it in mind!</p>
-      <p>Another important idea is the notion of armor. Yellow and blue towers have no pierce, so they are completely ineffective against heavily armored units. Green towers cause poison, which is good if you can get it on the armored units early. However, shot for shot, red towers do more damage to armored units.</p>
+      <p>Another important idea is the notion of armor. Yellow and blue towers have no pierce, so they are completely ineffective against heavily armored units. Green towers cause poison, which is good if you can get it on the armored units early. However, <em>shot for shot, red towers do more damage to armored units</em>.</p>
       <p>Maps in Reflector are designed to prevent players from shooting a laser straight down a path. However, in some cases there are clever ways to reflect lasers so that they end up shooting down a path. Take advantage of these positions!</p>
       <p>Poison does not stack. Once it has been applied, it will stay on that unit for the rest of the time they are on the map.</p>
       <p>Be careful overlapping tower shots. If two towers hit an enemy <em>at the same time</em>, only one of them will do damage. As such, it is advantageous to aim your towers so that they cover different parts of the map.</p>

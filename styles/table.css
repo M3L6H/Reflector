@@ -26,22 +26,22 @@
   background: grey;
 }
 
-#red-laser {
+.red-cell {
   background-color: darkred;
   color: white;
 }
 
-#blue-laser {
+.blue-cell {
   background-color: cadetblue;
   color: white;
 }
 
-#yellow-laser {
+.yellow-cell {
   background-color: darkgoldenrod;
   color: white;
 }
 
-#green-laser {
+.green-cell {
   background-color: darkgreen;
   color: white;
 }
