@@ -32,12 +32,12 @@
   color: green;
 }
 
-.pause-btn {
+.icon-btn, .icon-btn.tooltip-container {
   cursor: pointer;
   display: flex;
   align-items: center;
 }
 
-.pause-btn:hover {
+.icon-btn:hover {
   color: chartreuse;
 }

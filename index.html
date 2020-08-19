@@ -16,30 +16,60 @@
   <div id="root">
     <div class="header">
       <div class="left-group">
-        <span class="money">
+        <span class="money tooltip-container">
           <span id="money">100</span>
           <span class="icon"><i class="fas fa-coins"></i></span>
+          <div class="tooltip">
+            <div class="tooltip-content">
+              Money
+            </div>
+          </div>
         </span>
-        <span class="health">
+        <span class="health tooltip-container">
           <span id="health">10</span>
           <span class="icon"><i class="fas fa-heart"></i></span>
+          <div class="tooltip">
+            <div class="tooltip-content">
+              Health
+            </div>
+          </div>
         </span>
-        <span class="enemies">
+        <span class="enemies tooltip-container">
           <span id="enemies">10</span>
           <span class="icon"><i class="fas fa-skull"></i></span>
+          <div class="tooltip">
+            <div class="tooltip-content">
+              Enemies Remaining
+            </div>
+          </div>
         </span>
       </div>
       <div class="right-group">
         <button class="button" id="tutorial" onclick="localStorage.setItem('tutorial', 0); localStorage.setItem('level', 0); location.reload();">Play Tutorial</button>
         <button class="button" id="reset" onclick="if (confirm('WARNING. This is NOT the restart level button. This will reset ALL your progress. Continue?')) { localStorage.clear(); location.reload(); }" >Reset</button>
-        <span id="help-btn" class="pause-btn">
+        <span id="help-btn" class="icon-btn tooltip-container">
           <i class="fas fa-question"></i>
+          <div class="tooltip right">
+            <div class="tooltip-content">
+              Help
+            </div>
+          </div>
         </span>
-        <span id="restart-btn" class="pause-btn">
+        <span id="restart-btn" class="icon-btn tooltip-container">
           <i class="fas fa-undo-alt"></i>
+          <div class="tooltip right">
+            <div class="tooltip-content">
+              Restart Level
+            </div>
+          </div>
         </span>
-        <span id="pause-btn" class="pause-btn">
+        <span id="pause-btn" class="icon-btn tooltip-container">
           <i class="fas fa-pause"></i>
+          <div class="tooltip right">
+            <div class="tooltip-content">
+              Pause/Play
+            </div>
+          </div>
         </span>
       </div>
     </div>

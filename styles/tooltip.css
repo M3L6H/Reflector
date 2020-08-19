@@ -1,0 +1,41 @@
+.tooltip-container {
+  position: relative;
+  cursor: default;
+  overflow: visible;
+}
+
+.tooltip {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  overflow: visible;
+  visibility: hidden;
+  width: 100vw;
+}
+
+.tooltip-content {
+  top: 0;
+  left: 0;
+  position: absolute;
+  background: white;
+  border: 1px solid black;
+  border-radius: 4px;
+  padding: 0.7rem 1rem;
+  z-index: 1;
+  font-size: 1rem;
+}
+
+.tooltip.right {
+  right: 0;
+  left: auto;
+}
+
+.tooltip.right .tooltip-content {
+  top: 0.35rem;
+  right: 0;
+  left: auto;
+}
+
+.tooltip-container:hover .tooltip {
+  visibility: visible;
+}
