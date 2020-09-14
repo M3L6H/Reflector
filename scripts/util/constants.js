@@ -8,3 +8,5 @@ export const TUTORIAL_YELLOW = 28;
 export const TUTORIAL_AIM_YELLOW = 29;
 export const TUTORIAL_AIM_GREEN = 23;
 export const TUTORIAL_END = 31;
+
+export const APP_NAME = "reflector";
