@@ -7,7 +7,7 @@ import normalize from "../util/normalize.js";
 import debouncer from '../util/debouncer.js';
 import Collider from "../physics/collider.js";
 import * as Constants from '../util/constants.js';
-import * as Storage from './util/storage.js';
+import * as Storage from '../util/storage.js';
 
 class Tower extends Tile {
   constructor(x, y, unit, color, canvas, sellable=true) {

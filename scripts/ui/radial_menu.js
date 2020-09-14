@@ -3,7 +3,7 @@ import Button from './button.js';
 import { Tower } from './ui.js';
 
 import * as Constants from '../util/constants.js';
-import * as Storage from './util/storage.js';
+import * as Storage from '../util/storage.js';
 
 class RadialMenu {
   constructor(items, unit, zIndex, money, pos=new Vector(0, 0)) {

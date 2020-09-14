@@ -3,7 +3,7 @@ import Vector from '../physics/vector.js';
 import Ray from "../physics/ray.js";
 import debouncer from '../util/debouncer.js';
 import * as Constants from '../util/constants.js';
-import * as Storage from './util/storage.js';
+import * as Storage from '../util/storage.js';
 
 class UI {
   constructor(canvas, unit, money) {

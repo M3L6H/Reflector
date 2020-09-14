@@ -4,7 +4,7 @@ import normalize from '../util/normalize.js';
 import clamp from '../util/clamp.js';
 import debouncer from '../util/debouncer.js';
 import * as Constants from '../util/constants.js';
-import * as Storage from './util/storage.js';
+import * as Storage from '../util/storage.js';
 
 class Enemy {
   constructor(path, unit) {
