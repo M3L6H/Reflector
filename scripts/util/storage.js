@@ -3,20 +3,14 @@ import { APP_NAME } from './constants';
 const getKey = key => `${ APP_NAME }/${ key }`;
 
 const getAppKeys = () => {
-  const appKeys = localStorage.getItem(getKey(";"));
-  return appKeys.split(";");
+  const appDict = JSON.parse(localStorage.getItem(getKey("__appkeys__")));
+  return Object.keys(appDict);
 };
 
 const addToAppKeys = key => {
-  if (key.includes(";")) {
-    throw "Key names cannot include a semi-colon!";
-  }
-
-  const appDict = {};
-  getAppKeys().forEach(key => appDict[key] = true);
-  appDict[getKey(key)] = true;
-
-  localStorage.setItem(getKey(";"), Object.keys(appDict).join(";"));
+  const appDict = JSON.parse(localStorage.getItem(getKey("__appkeys__")));
+  appDict[key] = true;
+  localStorage.setItem(getKey("__appkeys__"), JSON.stringify(appDict));
 };
 
 export const getItem = key => localStorage.getItem(getKey(key));
