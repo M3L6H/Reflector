@@ -21,5 +21,6 @@ export const setItem = (key, value) => {
 };
 
 export const clear = () => {
-  getAppKeys().forEach(key => localStorage.removeItem(key));
+  getAppKeys().forEach(key => localStorage.removeItem(getKey(key)));
+  localStorage.removeItem(getKey("__appkeys__"));
 };
