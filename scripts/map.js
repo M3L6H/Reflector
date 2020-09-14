@@ -16,13 +16,14 @@ import Vector from './physics/vector.js';
 
 import * as Constants from './util/constants.js';
 import getLines from './util/get_lines.js';
+import * as Storage from './util/storage.js';
 
 class Map {
   constructor({ level, map, paths, health, money, enemies }, unit, width, height, canvas, button) {
     this.unit = unit;
 
     this.level = level;
-    this.tutorial = parseInt(localStorage.getItem("tutorial"));
+    this.tutorial = parseInt(Storage.getItem("tutorial"));
     this.canvas = canvas;
     this.button = button;
     this.handleTutorialClick = this.handleTutorialClick.bind(this);
@@ -75,9 +76,7 @@ class Map {
     e.preventDefault();
 
     if (this.paused) return;
-    this.tutorial = parseInt(localStorage.getItem("tutorial"));
-
-    const rect = this.canvas.getBoundingClientRect();
+    this.tutorial = parseInt(Storage.getItem("tutorial"));
 
     if (this.tutorial === 2 && this.map[2][2] instanceof Placeable) return;
     if ((this.tutorial === 3 || this.tutorial === Constants.TUTORIAL_AIM_GREEN) && (Math.abs(this.towers[0].ray.collisions[0].hitPoint.x - this.unit) > this.unit / 10 || Math.abs(this.towers[0].ray.collisions[0].hitPoint.y - 3.5 * this.unit) > this.unit / 10)) {
@@ -101,7 +100,7 @@ class Map {
     }
     
     this.tutorial += 1;
-    localStorage.setItem("tutorial", this.tutorial);
+    Storage.setItem("tutorial", this.tutorial);
 
     if (this.tutorial === 2) {
       this.map[2][2].setEnabled(true);
@@ -272,7 +271,7 @@ class Map {
     if (tutorialBtn.innerHTML === "Play Tutorial") {
       tutorialBtn.innerHTML = "Skip Tutorial";
       tutorialBtn.onclick = () => {
-        localStorage.setItem("tutorial", Constants.TUTORIAL_END);
+        Storage.setItem("tutorial", Constants.TUTORIAL_END);
         this.tutorial = Constants.TUTORIAL_END;
         location.reload();
       };
@@ -637,7 +636,7 @@ class Map {
     }
 
     if (this.tutorial < 5 || (this.tutorial >= 20 && this.tutorial < 25) || (this.tutorial >= 27 && this.tutorial < Constants.TUTORIAL_END)) return;
-    if (this.tutorial < Constants.TUTORIAL_END) this.tutorial = parseInt(localStorage.getItem("tutorial"));
+    if (this.tutorial < Constants.TUTORIAL_END) this.tutorial = parseInt(Storage.getItem("tutorial"));
     this.gameTime += delta;
 
     for (let time in this.spawnList) {

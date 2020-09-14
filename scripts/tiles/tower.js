@@ -7,6 +7,7 @@ import normalize from "../util/normalize.js";
 import debouncer from '../util/debouncer.js';
 import Collider from "../physics/collider.js";
 import * as Constants from '../util/constants.js';
+import * as Storage from './util/storage.js';
 
 class Tower extends Tile {
   constructor(x, y, unit, color, canvas, sellable=true) {
@@ -19,7 +20,7 @@ class Tower extends Tile {
     this.ray = new Ray(new Vector(x + unit / 2, y + unit / 2), new Vector(0, 0), "ray");
     this.laserBolts = [];
     this.colliders = [];
-    this.tutorial = parseInt(localStorage.getItem("tutorial"));
+    this.tutorial = parseInt(Storage.getItem("tutorial"));
     this.button = new Button(new Vector(x, y), [new Vector(0, 0), new Vector(unit, 0), new Vector(unit, unit), new Vector(0, unit)], 0, () => {
       const customEvent = new CustomEvent("SellTower", { detail: this });
       document.dispatchEvent(customEvent);
@@ -105,7 +106,7 @@ class Tower extends Tile {
       const mouseX = e.clientX - rect.left;
       const mouseY = e.clientY - rect.top;
 
-      this.tutorial = parseInt(localStorage.getItem("tutorial"));
+      this.tutorial = parseInt(Storage.getItem("tutorial"));
 
       if ((this.tutorial === 3 || this.tutorial === Constants.TUTORIAL_AIM_GREEN) && (Math.abs(mouseX - this.unit) > this.unit / 10 || Math.abs(mouseY - 3.5 * this.unit) > this.unit / 10)) {
         return;

@@ -3,6 +3,7 @@ import Vector from '../physics/vector.js';
 import Ray from "../physics/ray.js";
 import debouncer from '../util/debouncer.js';
 import * as Constants from '../util/constants.js';
+import * as Storage from './util/storage.js';
 
 class UI {
   constructor(canvas, unit, money) {
@@ -56,7 +57,7 @@ class UI {
   handleClick(e) {
     e.preventDefault();
     if (this.paused) return;
-    this.tutorial = parseInt(localStorage.getItem("tutorial"));
+    this.tutorial = parseInt(Storage.getItem("tutorial"));
     const rect = this.canvas.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;

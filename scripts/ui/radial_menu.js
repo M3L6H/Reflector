@@ -3,6 +3,7 @@ import Button from './button.js';
 import { Tower } from './ui.js';
 
 import * as Constants from '../util/constants.js';
+import * as Storage from './util/storage.js';
 
 class RadialMenu {
   constructor(items, unit, zIndex, money, pos=new Vector(0, 0)) {
@@ -46,7 +47,7 @@ class RadialMenu {
 
   updatePos(vec) {
     this.pos = vec;
-    this.tutorial = parseInt(localStorage.getItem("tutorial"));
+    this.tutorial = parseInt(Storage.getItem("tutorial"));
     const shifted = this.pos.add(new Vector(this.unit / 2, this.unit / 2));
     this.buttons.forEach(button => button.updatePos(shifted));
 

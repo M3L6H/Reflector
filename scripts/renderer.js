@@ -5,6 +5,7 @@ import Level3 from '../maps/03.js';
 import UI from './ui/ui.js';
 
 import * as Constants from './util/constants.js';
+import * as Storage from './util/storage.js';
 
 import Button from './ui/button.js';
 import Vector from './physics/vector.js';
@@ -27,10 +28,10 @@ class Renderer {
     this.togglePause = togglePause;
     this.started = false;
     this.gameOver = false;
-    this.level = parseInt(localStorage.getItem("level")) || 0;
+    this.level = parseInt(Storage.getItem("level")) || 0;
     this.star = new Image();
     this.star.src = "https://upload.wikimedia.org/wikipedia/commons/6/63/Star%2A.svg";
-    this.tutorial = parseInt(localStorage.getItem("tutorial"));
+    this.tutorial = parseInt(Storage.getItem("tutorial"));
 
     this.map = new Map(levels[this.level], unit, width, height, canvas, this.button);
     this.ui = new UI(canvas, unit, this.map.money);
@@ -56,7 +57,7 @@ class Renderer {
 
   changeLevel(level) {
     this.level = parseInt(level);
-    localStorage.setItem("level", level);
+    Storage.setItem("level", level);
     location.hash = "";
     location.reload();
   }
@@ -122,8 +123,8 @@ class Renderer {
 
       if (!this.gameOver) {
         this.gameOver = true;
-        const currentStars = localStorage.getItem(`level-${ this.level + 1 }`) || 0;
-        localStorage.setItem(`level-${ this.level + 1 }`, Math.max(stars, parseInt(currentStars)));
+        const currentStars = Storage.getItem(`level-${ this.level + 1 }`) || 0;
+        Storage.setItem(`level-${ this.level + 1 }`, Math.max(stars, parseInt(currentStars)));
         this.setUpLevelSelect();
       }
     }

@@ -4,6 +4,7 @@ import normalize from '../util/normalize.js';
 import clamp from '../util/clamp.js';
 import debouncer from '../util/debouncer.js';
 import * as Constants from '../util/constants.js';
+import * as Storage from './util/storage.js';
 
 class Enemy {
   constructor(path, unit) {
@@ -29,7 +30,7 @@ class Enemy {
     this.poisoned = false;
     this.elapsed = 0;
 
-    this.tutorial = parseInt(localStorage.getItem("tutorial"));
+    this.tutorial = parseInt(Storage.getItem("tutorial"));
 
     this.colorBase = "#0C090D";
     this.color = "#E01A4F";
@@ -68,7 +69,7 @@ class Enemy {
 
     if (this.health <= 0) {
       if (this.tutorial < Constants.TUTORIAL_END && this.color !== "#F9C22E") {
-        localStorage.setItem("tutorial", parseInt(localStorage.getItem("tutorial")) + 1);
+        Storage.setItem("tutorial", parseInt(Storage.getItem("tutorial")) + 1);
       }
       
       this.dead = true;

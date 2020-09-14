@@ -1,5 +1,6 @@
 import Renderer from './renderer.js';
 import * as Constants from './util/constants.js';
+import * as Storage from './util/storage.js';
 
 const createErrorMsg = (body) => {
   const msg = document.createElement("p");
@@ -15,9 +16,9 @@ let paused = false;
 // Initialization
 const initialize = () => {
   // Set up tutorial
-  const tut = localStorage.getItem("tutorial");
+  const tut = Storage.getItem("tutorial");
   if (!tut || parseInt(tut) < Constants.TUTORIAL_END) {
-    localStorage.setItem("tutorial", 0);
+    Storage.setItem("tutorial", 0);
   }
   
   setUpLevelSelect();
@@ -122,7 +123,7 @@ const setUpLevelSelect = () => {
     const stars = document.createElement("div");
     stars.classList.add("stars");
 
-    const numStars = localStorage.getItem(`level-${ i + 1 }`) || 0;
+    const numStars = Storage.getItem(`level-${ i + 1 }`) || 0;
     lastNumStars = numStars;
 
     for (let i = 0; i < numStars; ++i) {
