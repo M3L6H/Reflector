@@ -58,6 +58,23 @@ const initialize = () => {
     root.appendChild(canvas);
   }
 
+  // Set up tutorial button
+  const tutorialBtn = document.getElementById("tutorial-btn");
+  tutorialBtn.addEventListener("click", () => {
+    Storage.setItem('tutorial', 0);
+    Storage.setItem('level', 0);
+    location.reload();
+  });
+
+  // Set up reset button
+  const resetBtn = document.getElementById("reset-btn");
+  resetBtn.addEventListener("click", () => {
+    if (confirm(Constants.RESET_WARNING)) {
+      Storage.clear();
+      location.reload();
+    }
+  });
+
   // Set up pause button
   pauseBtn = document.getElementById("pause-btn");
   pauseBtn.addEventListener("click", () => togglePause());

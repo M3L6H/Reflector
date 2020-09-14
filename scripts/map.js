@@ -267,7 +267,7 @@ class Map {
       this.button.enabled = false;
     }
 
-    const tutorialBtn = document.getElementById("tutorial");
+    const tutorialBtn = document.getElementById("tutorial-btn");
     if (tutorialBtn.innerHTML === "Play Tutorial") {
       tutorialBtn.innerHTML = "Skip Tutorial";
       tutorialBtn.onclick = () => {

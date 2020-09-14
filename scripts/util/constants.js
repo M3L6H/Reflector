@@ -10,3 +10,5 @@ export const TUTORIAL_AIM_GREEN = 23;
 export const TUTORIAL_END = 31;
 
 export const APP_NAME = "reflector";
+
+export const RESET_WARNING = "WARNING. This is NOT the restart level button. This will reset ALL your progress. Continue?";
